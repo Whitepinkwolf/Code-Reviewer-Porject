@@ -16,7 +16,7 @@ def main():
     primary_key_name='id'
     print_list=[]
 
-    # db.delete_database('code2')
+    db.delete_database('code2')
     # db.delete_table(db_name,table_name)
 
     # db.create_database(db_name)
