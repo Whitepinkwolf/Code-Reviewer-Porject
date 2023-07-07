@@ -13,7 +13,7 @@ def main():
     folder_path = 'D:\\project_code\\c\\kaoyan'  # 替换为实际文件夹路径
     root=TreeNode(folder_path)
     root.build_tree_recursive()
-    # file=root.find_file('editor')
+    # file=root.find_file('my_computer')
     root.filter_files(filter_rule)
     root.print_file_tree()
 
