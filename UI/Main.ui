@@ -60,15 +60,33 @@
      </widget>
     </widget>
    </widget>
-   <widget class="CodeEditor" name="plainTextEdit">
+   <widget class="QTabWidget" name="commentTabWidget">
     <property name="geometry">
      <rect>
       <x>330</x>
       <y>0</y>
-      <width>911</width>
+      <width>931</width>
       <height>791</height>
      </rect>
     </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Tab 1</string>
+     </attribute>
+     <widget class="CodeEditor" name="plainTextEdit">
+      <property name="geometry">
+       <rect>
+        <x>-70</x>
+        <y>-120</y>
+        <width>1001</width>
+        <height>891</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
