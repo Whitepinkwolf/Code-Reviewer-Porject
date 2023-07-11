@@ -9,14 +9,18 @@ import pymysql
 def main():
 
     db=DataBase()
-    db.login('root','jijdoaklf','localhost')
+    db.login('root','AS132619','localhost')
     db_name='code3'
     table_name='third_table'
-    keys={'id':'int','name':'text'}
+    keys={'id':'int',
+          'name':'text'}
     primary_key_name='id'
     print_list=[]
-
-    db.delete_database('code2')
+    data=[
+        (2,'liuqi2'),
+        (3,'hahh')
+    ]
+    # db.delete_database('code2')
     # db.delete_table(db_name,table_name)
 
     # db.create_database(db_name)
@@ -24,7 +28,8 @@ def main():
 
     # print_list=db.query_table(db_name)
     # print_list=db.query_database()
-    # print_list = db.query_keys(db_name,table_name)
+    db.insert_data(data,db_name,table_name)
+    print_list = db.query_keys(db_name,table_name)
     print(print_list)
 
 class DataBase:
@@ -55,6 +60,12 @@ class DataBase:
             exit(f'create error:the {database_name} is existed')
 
     def create_table(self,db_name,table_name,keys,primary_key_name):
+        """
+        @description: 创建指定的表
+        keys为字典类型，表的键
+        primary_key_name:首键的name，如果在keys存在就会创建主键
+        @Time：2023/7/10 || 11:45 ||20324
+        """
         query = f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{db_name}' AND table_name = '{table_name}'"
         if len(self.runSql(query)) == 0:
             columns = []  # 获取键值对
@@ -91,6 +102,10 @@ class DataBase:
             exit(f'delete error:the {database_name}.{table_name} is not exists')
 
     def runSql(self,command):
+        """
+        @description: result是一个列表，其中包含了查询结果的所有行数据。每个行数据以元组的形式存储在列表中。
+        @Time：2023/7/10 || 8:52 ||20324
+        """
         if not self.is_logged_in:
             exit('数据库未登录')
         cur = self.conn.cursor()
@@ -122,6 +137,50 @@ class DataBase:
         result = self.runSql(sql)
         dbs = [row[0] for row in result]
         return dbs
+
+    def insert_data(self, data, database, table):
+        """
+        @description:
+        接受list存储的 dict 或者 tuple
+        @Time：2023/7/10 || 11:42 ||20324
+        """
+        if not self.is_logged_in:
+            exit('数据库未登录')
+        cur = self.conn.cursor()
+        keys = self.query_keys(database, table)  # 获取表的字段列表
+        if isinstance(data, list):
+            for item in data:
+                if isinstance(item, tuple):
+                    values = item
+                    placeholders = ', '.join(['%s'] * len(keys))  # 传递占位符防止SQL注入攻击
+                    sql = f"INSERT INTO {database}.{table} ({', '.join(keys)}) VALUES ({placeholders})"
+                    try:
+                        cur.execute(sql, values)
+                        self.conn.commit()
+                    except Exception as e:
+                        self.conn.rollback()
+                        exit(f'插入数据错误，数据：{item}，错误信息：{str(e)}')
+
+                elif isinstance(item, dict):
+                    values=[]
+                    for key in keys:
+                        value = item.get(key, None)
+                        values.append(value)
+                    placeholders = ', '.join(['%s'] * len(keys))
+                    sql = f"INSERT INTO {database}.{table} ({', '.join(keys)}) VALUES ({placeholders})"
+                    try:
+                        cur.execute(sql, values)
+                        self.conn.commit()
+                    except Exception as e:
+                        self.conn.rollback()
+                        exit(f'插入数据错误，数据：{item}，错误信息：{str(e)}')
+                else:
+                    exit('输入的数据类型错误，应为 list+tuple')
+        else:
+            exit('数据类型错误，应为列表类型')
+
+        cur.close()
+
 
 if __name__=='__main__':
     main()
