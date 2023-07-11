@@ -8,19 +8,19 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(927, 761)
-        self.plainTextEdit = CodeEditor(Form)
+class Ui_comment(object):
+    def setupUi(self, comment):
+        comment.setObjectName("comment")
+        comment.resize(927, 761)
+        self.plainTextEdit = CodeEditor(comment)
         self.plainTextEdit.setGeometry(QtCore.QRect(0, 0, 1001, 891))
         self.plainTextEdit.setObjectName("plainTextEdit")
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(comment)
+        QtCore.QMetaObject.connectSlotsByName(comment)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, comment):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        comment.setWindowTitle(_translate("comment", "Form"))
 
 from UI.CodeEditor import CodeEditor

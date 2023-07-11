@@ -4,7 +4,7 @@ import sys
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from UI.Main import Ui_MainWindow
-from UI.commentWidget import Ui_Form
+from UI.commentWidget import Ui_comment
 
 
 class Window(QMainWindow, Ui_MainWindow):
@@ -27,9 +27,8 @@ class Window(QMainWindow, Ui_MainWindow):
 
         item_path = model.filePath(index)
 
-        self.add_CommentWidget(item_path)
-
         if not os.path.isdir(item_path):
+            self.add_CommentWidget(item_path)
             try:
                 with open(item_path, 'r', encoding='utf-8') as file:
                     file_content = file.read()
@@ -58,13 +57,13 @@ class Window(QMainWindow, Ui_MainWindow):
         self.treeView.hideColumn(2)
         self.treeView.hideColumn(3)
 
-class comment_Widget(QtWidgets.QWidget, Ui_Form):
+class comment_Widget(QtWidgets.QWidget, Ui_comment):
     def __init__(self, parent=None):
         super(comment_Widget, self).__init__(parent)
         self.setupUi(self)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    win =  Window()
+    win = Window()
     win.show()
     sys.exit(app.exec())
