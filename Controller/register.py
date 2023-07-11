@@ -1,9 +1,11 @@
 import re
 
 from PyQt5.QtWidgets import *
+
+from Data.leanCloud import UserStore, UserQuery
 from UI.registerWidget import Ui_Register
 from Data import leanCloud
-from leanCloud import *
+from leancloud import *
 from PyQt5.QtCore import pyqtSignal,Qt
 
 

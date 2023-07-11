@@ -1,8 +1,10 @@
 from PyQt5.QtWidgets import *
+
+from Data.leanCloud import UserQuery
 from UI.loginWidget import Ui_Login
 from register import MainRegistWindow
 from Data import leanCloud
-from leanCloud import *
+from leancloud import *
 from app import Window
 import sys
 import configparser

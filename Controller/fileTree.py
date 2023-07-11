@@ -9,7 +9,7 @@ import os
 from PyQt5.QtWidgets import  QTreeWidgetItem
 from PyQt5.QtCore import QModelIndex
 from PyQt5 import QtWidgets, QtCore
-from detect.crawler import File
+
 class FileTree:
     def __init__(self):
         self.file_path=""
