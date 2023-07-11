@@ -90,80 +90,103 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QScrollArea" name="scrollArea_2">
+   <widget class="QTabWidget" name="commentTabWidget">
     <property name="geometry">
      <rect>
-      <x>870</x>
+      <x>310</x>
       <y>0</y>
-      <width>401</width>
-      <height>601</height>
+      <width>961</width>
+      <height>731</height>
      </rect>
     </property>
-    <property name="widgetResizable">
-     <bool>true</bool>
+    <property name="currentIndex">
+     <number>0</number>
     </property>
-    <widget class="QWidget" name="scrollAreaWidgetContents_2">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>399</width>
-       <height>599</height>
-      </rect>
-     </property>
-     <widget class="QTableView" name="tableView">
+    <widget class="QWidget" name="tab_1">
+     <attribute name="title">
+      <string>Tab 1</string>
+     </attribute>
+     <widget class="QScrollArea" name="scrollArea_3">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>381</width>
-        <height>581</height>
+        <x>-10</x>
+        <y>0</y>
+        <width>511</width>
+        <height>691</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>509</width>
+         <height>689</height>
+        </rect>
+       </property>
+       <widget class="NewCodeEditor" name="textEdit">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>491</width>
+          <height>671</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QScrollArea" name="scrollArea_2">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>-10</y>
+        <width>401</width>
+        <height>601</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>399</width>
+         <height>599</height>
+        </rect>
+       </property>
+       <widget class="QTableView" name="tableView">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>381</width>
+          <height>581</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QPlainTextEdit" name="pte_content">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>610</y>
+        <width>391</width>
+        <height>71</height>
        </rect>
       </property>
      </widget>
     </widget>
-   </widget>
-   <widget class="QPlainTextEdit" name="pte_content">
-    <property name="geometry">
-     <rect>
-      <x>870</x>
-      <y>610</y>
-      <width>391</width>
-      <height>71</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QScrollArea" name="scrollArea_3">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>0</y>
-      <width>511</width>
-      <height>691</height>
-     </rect>
-    </property>
-    <property name="widgetResizable">
-     <bool>true</bool>
-    </property>
-    <widget class="QWidget" name="scrollAreaWidgetContents_3">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>509</width>
-       <height>689</height>
-      </rect>
-     </property>
-     <widget class="NewCodeEditor" name="textEdit">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>491</width>
-        <height>671</height>
-       </rect>
-      </property>
-     </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Tab 2</string>
+     </attribute>
     </widget>
    </widget>
   </widget>
