@@ -7,10 +7,12 @@ from UI.FindDialog import *
 from UI.Main import *
 
 
-
 class FindDialog(QtWidgets.QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         super().__init__(parent)
+
+        self.parent = parent
+
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.pushButton.clicked.connect(self.find_text)
@@ -21,9 +23,9 @@ class FindDialog(QtWidgets.QDialog):
     def find_text(self):
         search_text = self.ui.lineEdit.text()
         if search_text:
-            main_window = self.parent()
-            if isinstance(main_window, QtWidgets.QMainWindow):
-                text_edit = main_window.findChild(QTextEdit, 'textEdit')
+            main_window = self.parent
+            if isinstance(main_window, QtWidgets.QWidget):
+                text_edit = main_window.findChild(QTextEdit, 'commentCodeEditor')
                 self.highlight_text(text_edit, search_text)
 
     def highlight_text(self, plain_text_edit, search_text):
@@ -51,10 +53,10 @@ class FindDialog(QtWidgets.QDialog):
         if self.sign:
             self.find_text()
             self.sign = False
-        main_window = self.parent()
-        if isinstance(main_window, QtWidgets.QMainWindow):
+        main_window = self.parent
+        if isinstance(main_window, QtWidgets.QWidget):
 
-            text_edit = main_window.findChild(QTextEdit, 'textEdit')
+            text_edit = main_window.findChild(QTextEdit, 'commentCodeEditor')
             selections = text_edit.extraSelections()
             if self.current_index == len(selections):
                 self.current_index = 0  # 若已到达最后一个匹配字符串，则从第一个开始
@@ -68,7 +70,7 @@ class FindDialog(QtWidgets.QDialog):
 
 
 def set_search_dialog(ui, MainWindow):
-    ui.action_6.triggered.connect(lambda: show_find_dialog(MainWindow))
+    ui.findAction.triggered.connect(lambda: show_find_dialog(MainWindow))
 
 def show_find_dialog(MainWindow):
     dialog = FindDialog(parent=MainWindow)

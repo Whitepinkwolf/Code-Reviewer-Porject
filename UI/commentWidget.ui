@@ -6,29 +6,95 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>927</width>
-    <height>761</height>
+    <width>966</width>
+    <height>770</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="CodeEditor" name="plainTextEdit">
+  <widget class="QPlainTextEdit" name="ShowTextEdit">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>680</y>
+     <width>381</width>
+     <height>71</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QScrollArea" name="scrollArea_2">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>10</y>
+     <width>411</width>
+     <height>661</height>
+    </rect>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>409</width>
+      <height>659</height>
+     </rect>
+    </property>
+    <widget class="QTableView" name="ShowDefineTableView">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>381</width>
+       <height>631</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
-     <width>1001</width>
-     <height>891</height>
+     <y>10</y>
+     <width>511</width>
+     <height>741</height>
     </rect>
    </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>509</width>
+      <height>739</height>
+     </rect>
+    </property>
+    <widget class="NewCodeEditor" name="commentCodeEditor">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>491</width>
+       <height>721</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
   </widget>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>CodeEditor</class>
-   <extends>QPlainTextEdit</extends>
-   <header location="global">CodeEditor</header>
+   <class>NewCodeEditor</class>
+   <extends>QTextEdit</extends>
+   <header location="global">NewCodeEditor</header>
   </customwidget>
  </customwidgets>
  <resources/>
