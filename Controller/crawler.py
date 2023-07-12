@@ -5,7 +5,6 @@
 @user: 20324
 """
 import os
-
 import clang.cindex
 import re
 class Function:
@@ -40,7 +39,7 @@ class File:
         self.var_list = []
         self.macro_list=[]
         self.struct_list=[]
-        self.file_path=filepath
+        self.file_path=filepath.replace("/", "\\")
     def find_define(self):
         #  define：匹配 #define 字符串。
         # \s +：匹配一个或多个空白字符。
@@ -118,12 +117,16 @@ class File:
                     if function.name == parent_function_name:
                         variable = Variable(variable_name, variable_type)
                         function.local_variables.append(variable)
-
-    def parse_c_file(self):
-        self.find_define()
+    def get_translation(self):
         file_path = self.file_path
         index = clang.cindex.Index.create()
         translation_unit = index.parse(file_path)
+        return translation_unit
+
+    def parse_c_file(self):
+        self.find_define()
+
+        translation_unit = self.get_translation()
 
         self.parse_functions(translation_unit)
         self.parse_global_variables(translation_unit)
@@ -147,16 +150,16 @@ if __name__ == "__main__":
         for variable in function.local_variables:
             print(variable.name, ":", variable.type)
         print("---")
-    # for macro in file_obj.macro_list:
-    #     print("___________Macro:", macro.name)
-    #     # print("Value:", macro.content)
-    #     # print("---")
-    # #
-    # for struct in file_obj.struct_list:
-    #     print(f"___________Struct:{struct.name}")
-    #     # print("Fields:")
-    #     # for field in struct.fields:
-    #     #     print(field[0], ":", field[1])
-    # for variable in file_obj.var_list:
-    #     print('___________Gobal var:')
-    #     print(variable.name, ":", variable.type)
+    for macro in file_obj.macro_list:
+        print("___________Macro:", macro.name)
+        # print("Value:", macro.content)
+        # print("---")
+    #
+    for struct in file_obj.struct_list:
+        print(f"___________Struct:{struct.name}")
+        # print("Fields:")
+        # for field in struct.fields:
+        #     print(field[0], ":", field[1])
+    for variable in file_obj.var_list:
+        print('___________Gobal var:')
+        print(variable.name, ":", variable.type)

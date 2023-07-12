@@ -7,7 +7,7 @@
 import fnmatch
 import os
 from PyQt5 import QtWidgets
-from Controller.crawler import File
+from detect.crawler import File
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
 
@@ -16,17 +16,56 @@ def is_c_or_h_file(file_path):
     return file_path.endswith('.c') or file_path.endswith('.h')
 
 def File_get(file_path):
-    file_path = file_path.replace("/", "\\")
     file_obj=File(file_path)
     file_obj.parse_c_file()
     element_list=[]
     for function in file_obj.fun_list:
-        element_list.append(function.combine_function())
+        element_list.append('fun:'+function.name)
     for struct in file_obj.struct_list:
-        element_list.append(struct.name)
+        element_list.append('struct:'+struct.name)
     for gobal_var in file_obj.var_list:
-        element_list.append(gobal_var.name)
+        element_list.append('var:'+gobal_var.name)
+    for macro in file_obj.macro_list:
+        element_list.append('macro:'+macro.name)
     return element_list
+
+
+def index_get_path(ui):
+    treeview = ui.treeView
+    index = treeview.currentIndex()
+    model = ui.treeView.model()
+    path = model.itemFromIndex(index).text()
+    parent_index = index.parent()
+    while parent_index.isValid():  # 向上层遍历获取路径
+        parent_name = treeview.model().itemFromIndex(parent_index).text()
+        path = parent_name + '/' + path  # 使用斜杠分隔路径部分
+        parent_index = parent_index.parent()
+    item_path = path
+    if os.path.isfile(item_path):
+        return item_path,None
+    else:   #不是文件,分离最后一部分,并获取其中的对象
+        item_path,element=os.path.split(path)
+        e_type=element.split(':')[0]  #对应的类
+        e_name = element.split(':')[1]# 真实的名字
+        file_obj=File(item_path)
+        file_obj.parse_c_file()
+        if e_type=='fun':
+            for fun_obj in file_obj.fun_list:
+                if fun_obj.name==e_name:
+                    return item_path,fun_obj
+        elif e_type=='struct':
+            for fun_obj in file_obj.struct_list:
+                if fun_obj.name == e_name:
+                    return item_path, fun_obj
+        elif e_type=='var':
+            for fun_obj in file_obj.var_list:
+                if fun_obj.name == e_name:
+                    return item_path, fun_obj
+        elif e_type=='macro':
+            for fun_obj in file_obj.macro_list:
+                if fun_obj.name == e_name:
+                    return item_path, fun_obj
+        exit(f'指定的类型{e_type}，名字{e_name}不存在')
 
 class FileTree:
     def __init__(self, ui):
