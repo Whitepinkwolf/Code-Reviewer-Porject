@@ -29,7 +29,6 @@ def File_get(file_path):
         element_list.append('macro:'+macro.name)
     return element_list
 
-
 def index_get_path(ui):
     treeview = ui.treeView
     index = treeview.currentIndex()

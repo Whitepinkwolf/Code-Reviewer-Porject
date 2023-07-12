@@ -23,7 +23,6 @@ class Variable:
     def __init__(self, name, type):
         self.name = name
         self.type = type
-
 class Macro:
     def __init__(self,name,content):
         # #define a 10   ,name=a  content=10
