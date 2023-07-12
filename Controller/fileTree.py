@@ -7,7 +7,7 @@
 import fnmatch
 import os
 from PyQt5 import QtWidgets
-from detect.crawler import File
+from Controller.crawler import File
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
 
