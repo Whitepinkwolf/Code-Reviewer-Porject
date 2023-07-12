@@ -223,48 +223,72 @@ def tableview_double_clicked(index):
 """
     创建一个查找对话框，并对在plaintext中查找到的字符串高亮处理。
 """
-
+#
+# def file_tree_clicked():
+#     treeview = ui.treeView
+#     textEdit = ui.textEdit
+#     # textEdit.setStyleSheet("background-color: #000000;")
+#     # 策略双击槽函数
+#     index = treeview.currentIndex()
+#     model = index.model()  # 请注意这里可以获得model的对象
+#     item_path = model.filePath(index)
+#     if not os.path.isdir(item_path) and check_extension(item_path):
+#         try:
+#             with open(item_path, 'r', encoding='gbk') as file:
+#                 file_content = file.read()
+#                 # print(file_content)  # 在这里可以使用文件内容进行进一步的处理
+#
+#                 # print(code_text.toPlainText())
+#                 getdata = Getdata(item_path)
+#                 getdata.get_file_info_pre()
+#                 getdata.get_local_info()
+#                 file_content, header_files, macro_definitions, variable_names, function_declarations = getdata.get_all_local_data()
+#                 set_c_file_tableview(header_files, macro_definitions, variable_names, function_declarations)
+#
+#                 """
+#                 还没有颜色
+#                 """
+#                 lexer = get_lexer_by_name('c')
+#                 formatter = HtmlFormatter(style='xcode')
+#                 # 获取样式定义并嵌入到 HTML 代码中
+#                 css_style = formatter.get_style_defs('.highlight')
+#                 highlighted_code = highlight(file_content, lexer, formatter)
+#                 html_code = f'<style>{css_style}</style>{highlighted_code}'
+#                 textEdit.setHtml(html_code)
+#         except FileNotFoundError:
+#             print("文件不存在")
+#         except IOError:
+#             print("无法读取文件")
 def file_tree_clicked():
+
     treeview = ui.treeView
-    textEdit = ui.textEdit
-    # textEdit.setStyleSheet("background-color: #000000;")
+    code_text = ui.plainTextEdit
     # 策略双击槽函数
     index = treeview.currentIndex()
-    model = index.model()  # 请注意这里可以获得model的对象
-    item_path = model.filePath(index)
-    if not os.path.isdir(item_path) and check_extension(item_path):
+    model=ui.treeView.model()
+    clicked_item = model.itemFromIndex(index) #获取当前节点
+    # model.folder_path
+    name = clicked_item.text() #获取当前节点存储的内容，也就是文件名字
+
+    path = name
+    parent_index = index.parent()
+    while parent_index.isValid():
+        parent_item = treeview.model().itemFromIndex(parent_index)
+        parent_name = parent_item.text()
+        path = parent_name + '/' + path  # 使用斜杠分隔路径部分
+        parent_index = parent_index.parent()
+    item_path=path
+
+    if not os.path.isdir(item_path):
         try:
-            with open(item_path, 'r', encoding='gbk') as file:
+            with open(item_path, 'r', encoding='utf-8') as file:
                 file_content = file.read()
                 # print(file_content)  # 在这里可以使用文件内容进行进一步的处理
-
-                # print(code_text.toPlainText())
-                getdata = Getdata(item_path)
-                getdata.get_file_info_pre()
-                getdata.get_local_info()
-                file_content, header_files, macro_definitions, variable_names, function_declarations = getdata.get_all_local_data()
-                set_c_file_tableview(header_files, macro_definitions, variable_names, function_declarations)
-
-                """
-                还没有颜色
-                """
-                lexer = get_lexer_by_name('c')
-                formatter = HtmlFormatter(style='xcode')
-                # 获取样式定义并嵌入到 HTML 代码中
-                css_style = formatter.get_style_defs('.highlight')
-                highlighted_code = highlight(file_content, lexer, formatter)
-                html_code = f'<style>{css_style}</style>{highlighted_code}'
-                textEdit.setHtml(html_code)
-
-
-
-
-
+                code_text.setPlainText(file_content)
         except FileNotFoundError:
             print("文件不存在")
         except IOError:
             print("无法读取文件")
-
 
 
 def set_file_tree(ui):
@@ -286,8 +310,8 @@ def Groove_signal():
     @description: 消息  槽的连接
     @Time：2023/7/11 || 10:00 ||20324
     """
-    ui.action.triggered.connect(lambda: file_node.open_folder_dialog(ui)) #打开文件夹操作
-    ui.comboBox.activated.connect(lambda: file_node.display_filtered_files(ui))
+    ui.action.triggered.connect(lambda: file_node.open_folder_dialog()) #打开文件夹操作
+    ui.comboBox.activated.connect(lambda: file_node.display_filtered_files())
 
 def Property_fun():
     """
@@ -303,7 +327,7 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
 
-    file_node = FileTree()  # 文件树操作对象
+    file_node = FileTree(ui)  # 文件树操作对象
     Groove_signal()  #槽函数与消息连接封装
     Property_fun()
     set_file_tree(ui)
