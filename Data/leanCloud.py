@@ -9,7 +9,7 @@ masterkey = "ZDm5SkP4WOnkeK7suMar3gmU"
 '''初始化'''
 # lean_initialization = leancloud.init(appId, appKey)
 lean_initialization = leancloud.init(appId, master_key=masterkey)
-#print(lean_initialization)  #None
+# print(lean_initialization)  #None
 
 '''开启调试日志'''
 # 调试日志开启后，SDK 会把网络请求、错误消息等信息输出到 IDE 的日志窗口，
@@ -23,7 +23,8 @@ lean_initialization = leancloud.init(appId, master_key=masterkey)
 # test_object.set('words', "Hello world!")    #在当前对象此字段(words)上赋值(Hello world!)
 # test_object.save()   #将对象数据保存至服务器
 
-# '''风险函数存储'''
+
+'''风险函数存储'''
 # RiskFunctionObject = leancloud.Object.extend('RiskFunctionObject')
 # riskFunctionObject = RiskFunctionObject()
 # riskFunctionObject.set('FunctionName', "gets")
@@ -32,13 +33,18 @@ lean_initialization = leancloud.init(appId, master_key=masterkey)
 # riskFunctionObject.save()
 
 '''风险函数打印'''
+
+
 def riskFunctionShow(riskFunction):
     print(f'objectId = {riskFunction.get("objectId")}, '
           f'FunctionName = {riskFunction.get("FunctionName")}, '
           f'RiskLevel = {riskFunction.get("RiskLevel")}, '
           f'Solution = {riskFunction.get("Solution")}, ')
 
+
 '''风险函数查询'''
+
+
 def riskFunctionQuery():
     '''
     基础查询: 创建Object.query查询对象，用equal_to设置查询条件，用find进行查询
@@ -54,7 +60,10 @@ def riskFunctionQuery():
     for riskFunction in RiskFunction_list:
         riskFunctionShow(riskFunction)
 
+
 '''用户信息存储'''
+
+
 def UserStore(username, password):
     UserObject = leancloud.Object.extend('UserObject')
     userObject = UserObject()
@@ -62,13 +71,19 @@ def UserStore(username, password):
     userObject.set('Password', password)
     userObject.save()
 
+
 '''用户信息打印'''
+
+
 def UserShow(riskFunction):
     print(f'objectId = {riskFunction.get("objectId")}, '
           f'Username = {riskFunction.get("username")}, '
           f'Password = {riskFunction.get("password")}, ')
 
+
 '''用户信息匹配'''
+
+
 def UserQuery(Login_username):
     '''
     基础查询: 创建Object.query查询对象，用equal_to设置查询条件，用find进行查询
@@ -83,5 +98,46 @@ def UserQuery(Login_username):
         return User.get("Password")
 
 
+def getRiskFunction():
+    """
+    获取风险函数库中的所有函数
+    返回格式：[{'FunctionName': "xxx",
+              'RiskLevel': "xxx",
+              'Solution': "xxx"
+    }]
+    """
+    query = leancloud.Query('RiskFunctionObject')
+    riskFunctionObject = query.find()
+    riskFunctionResult = []
+    for riskFunction in riskFunctionObject:
+        result = {'FunctionName': riskFunction.get('FunctionName'),
+                  'RiskLevel': riskFunction.get('RiskLevel'),
+                  'Solution': riskFunction.get('Solution')}
+        riskFunctionResult.append(result)
+    print(riskFunctionResult)
+    return riskFunctionResult
 
+
+def addRiskFunction(FunctionName=None, RiskLevel=None, Solution=None):
+    RiskFunctionObject = leancloud.Object.extend('RiskFunctionObject')
+    riskFunctionObject = RiskFunctionObject()
+    riskFunctionObject.set('FunctionName', FunctionName)
+    riskFunctionObject.set('RiskLevel', RiskLevel)
+    riskFunctionObject.set('Solution', Solution)
+    riskFunctionObject.save()
+    print('add')
+
+
+def deleteRiskFunction(FunctionName):
+    query = leancloud.Query('RiskFunctionObject')
+    query.equal_to('FunctionName', FunctionName)
+    row = query.first()
+    if row:
+        row.destroy()
+        print("delete yes")
+    else:
+        print("delete no")
+
+
+deleteRiskFunction('vsnprintf')
 

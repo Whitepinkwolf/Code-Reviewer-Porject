@@ -94,18 +94,19 @@ class FindDialog(QtWidgets.QDialog):
                         previous_cursor.setBlockFormat(format)
                         # 将光标设置为初始位置
                         previous_cursor.movePosition(QTextCursor.StartOfBlock)
-                        previous_cursor.setPosition(previous_cursor.position() + len(previous_cursor.block().text()), QTextCursor.KeepAnchor)
+                        previous_cursor.setPosition(previous_cursor.position() + len(previous_cursor.block().text()),
+                                                    QTextCursor.KeepAnchor)
 
                 # 滚动到显示匹配字符串的行
                 text_edit.ensureCursorVisible()
 
-                self.ui.label.setText(f"{self.current_index+1}/{len(selections)}")
+                self.ui.label.setText(f"{self.current_index + 1}/{len(selections)}")
                 self.current_index += 1
-
 
 
 def set_search_dialog(ui, MainWindow):
     ui.findAction.triggered.connect(lambda: show_find_dialog(MainWindow))
+
 
 def show_find_dialog(MainWindow):
     dialog = FindDialog(parent=MainWindow)
