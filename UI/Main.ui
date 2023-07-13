@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1288</width>
-    <height>860</height>
+    <width>1322</width>
+    <height>879</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>10</x>
       <y>0</y>
       <width>281</width>
-      <height>791</height>
+      <height>821</height>
      </rect>
     </property>
     <property name="widgetResizable">
@@ -32,16 +32,16 @@
        <x>0</x>
        <y>0</y>
        <width>279</width>
-       <height>789</height>
+       <height>819</height>
       </rect>
      </property>
      <widget class="QTreeView" name="treeView">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>40</y>
-        <width>251</width>
-        <height>731</height>
+        <width>281</width>
+        <height>781</height>
        </rect>
       </property>
      </widget>
@@ -95,27 +95,26 @@
      <rect>
       <x>330</x>
       <y>0</y>
-      <width>931</width>
-      <height>791</height>
+      <width>971</width>
+      <height>821</height>
      </rect>
     </property>
     <property name="currentIndex">
      <number>0</number>
     </property>
+    <property name="tabsClosable">
+     <bool>true</bool>
+    </property>
+    <property name="movable">
+     <bool>true</bool>
+    </property>
     <widget class="QWidget" name="tab">
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
      <attribute name="title">
       <string>Tab 1</string>
      </attribute>
-     <widget class="CodeEditor" name="plainTextEdit">
-      <property name="geometry">
-       <rect>
-        <x>-70</x>
-        <y>-120</y>
-        <width>1001</width>
-        <height>891</height>
-       </rect>
-      </property>
-     </widget>
     </widget>
    </widget>
   </widget>
@@ -124,7 +123,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1288</width>
+     <width>1322</width>
      <height>26</height>
     </rect>
    </property>
@@ -167,13 +166,6 @@
    </property>
   </action>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>CodeEditor</class>
-   <extends>QPlainTextEdit</extends>
-   <header location="global">CodeEditor</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

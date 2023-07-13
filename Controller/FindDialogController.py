@@ -15,21 +15,27 @@ class FindDialog(QtWidgets.QDialog):
 
         self.parent = parent
 
-        self.ui = Ui_Dialog()
+        self.ui = Ui_FindDialog()
         self.ui.setupUi(self)
 
-        self.ui.checkBox.setChecked(True)
-        self.ui.checkBox.setEnabled(False)
-        self.ui.checkBox_2.setChecked(True)
-        self.ui.checkBox_2.setEnabled(False)
+        self.initUI()
+        self.connectSignalsSlots()
 
-        self.ui.pushButton.clicked.connect(self.find_text)
-        self.ui.pb_next.clicked.connect(self.find_text_onebyone)
         self.sign = True
         self.current_index = 0  # 当前匹配字符串的索引位置
 
+    def initUI(self):
+        self.ui.ReCheckBox.setChecked(True)
+        self.ui.ReCheckBox.setEnabled(False)
+        self.ui.FindLineEdit.setChecked(True)
+        self.ui.FindLineEdit.setEnabled(False)
+
+    def connectSignalsSlots(self):
+        self.ui.FindPushButton.clicked.connect(self.find_text)
+        self.ui.FindNextPushButton.clicked.connect(self.find_text_onebyone)
+
     def find_text(self):
-        search_text = self.ui.lineEdit.text()
+        search_text = self.ui.FindLineEdit.text()
         if search_text:
             main_window = self.parent
             if isinstance(main_window, QtWidgets.QWidget):
@@ -102,19 +108,3 @@ class FindDialog(QtWidgets.QDialog):
 
                 self.ui.label.setText(f"{self.current_index + 1}/{len(selections)}")
                 self.current_index += 1
-
-
-def set_search_dialog(ui, MainWindow):
-    ui.findAction.triggered.connect(lambda: show_find_dialog(MainWindow))
-
-
-def show_find_dialog(MainWindow):
-    dialog = FindDialog(parent=MainWindow)
-    dialog.show()
-
-# if __name__ == "__main__":
-#     import sys
-#     app = QtWidgets.QApplication(sys.argv)
-#     dialog = FindDialog()
-#     dialog.show()
-#     sys.exit(app.exec_())

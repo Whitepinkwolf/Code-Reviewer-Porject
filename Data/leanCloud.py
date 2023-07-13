@@ -33,8 +33,6 @@ lean_initialization = leancloud.init(appId, master_key=masterkey)
 # riskFunctionObject.save()
 
 '''风险函数打印'''
-
-
 def riskFunctionShow(riskFunction):
     print(f'objectId = {riskFunction.get("objectId")}, '
           f'FunctionName = {riskFunction.get("FunctionName")}, '
@@ -43,60 +41,18 @@ def riskFunctionShow(riskFunction):
 
 
 '''风险函数查询'''
-
-
-def riskFunctionQuery():
-    '''
-    基础查询: 创建Object.query查询对象，用equal_to设置查询条件，用find进行查询
-        构建 leancloud.Query；
-        向其添加查询条件；
-        执行查询并获取包含满足条件的对象的数组。
-    '''
+def riskFunctionQuery(FunctionName):
     RiskFunctionObject = leancloud.Object.extend('RiskFunctionObject')
     query = RiskFunctionObject.query
-    # 以上两行等价于 query = leancloud.Query('Student')
-    query.equal_to('FunctionName', 'vsnprintf')
+    query.equal_to('FunctionName', FunctionName)
     RiskFunction_list = query.find()
     for riskFunction in RiskFunction_list:
-        riskFunctionShow(riskFunction)
-
-
-'''用户信息存储'''
-
-
-def UserStore(username, password):
-    UserObject = leancloud.Object.extend('UserObject')
-    userObject = UserObject()
-    userObject.set('Username', username)
-    userObject.set('Password', password)
-    userObject.save()
-
-
-'''用户信息打印'''
-
-
-def UserShow(riskFunction):
-    print(f'objectId = {riskFunction.get("objectId")}, '
-          f'Username = {riskFunction.get("username")}, '
-          f'Password = {riskFunction.get("password")}, ')
-
-
-'''用户信息匹配'''
-
-
-def UserQuery(Login_username):
-    '''
-    基础查询: 创建Object.query查询对象，用equal_to设置查询条件，用find进行查询
-        构建 leancloud.Query；
-        向其添加查询条件；
-        执行查询并获取包含满足条件的对象的数组。
-    '''
-    query = leancloud.Query('UserObject')
-    query.equal_to('Username', Login_username)
-    User_list = query.find()
-    for User in User_list:
-        return User.get("Password")
-
+        # riskFunctionShow(riskFunction)
+        result = []
+        result.append(riskFunction.get("FunctionName"))
+        result.append(riskFunction.get("RiskLevel"))
+        result.append(riskFunction.get("Solution"))
+        return result
 
 def getRiskFunction():
     """
@@ -117,7 +73,6 @@ def getRiskFunction():
     print(riskFunctionResult)
     return riskFunctionResult
 
-
 def addRiskFunction(FunctionName=None, RiskLevel=None, Solution=None):
     RiskFunctionObject = leancloud.Object.extend('RiskFunctionObject')
     riskFunctionObject = RiskFunctionObject()
@@ -126,7 +81,6 @@ def addRiskFunction(FunctionName=None, RiskLevel=None, Solution=None):
     riskFunctionObject.set('Solution', Solution)
     riskFunctionObject.save()
     print('add')
-
 
 def deleteRiskFunction(FunctionName):
     query = leancloud.Query('RiskFunctionObject')
@@ -139,5 +93,32 @@ def deleteRiskFunction(FunctionName):
         print("delete no")
 
 
-deleteRiskFunction('vsnprintf')
+'''用户信息存储'''
+def UserStore(username, password):
+    UserObject = leancloud.Object.extend('UserObject')
+    userObject = UserObject()
+    userObject.set('Username', username)
+    userObject.set('Password', password)
+    userObject.save()
 
+
+'''用户信息打印'''
+def UserShow(riskFunction):
+    print(f'objectId = {riskFunction.get("objectId")}, '
+          f'Username = {riskFunction.get("username")}, '
+          f'Password = {riskFunction.get("password")}, ')
+
+
+'''用户信息匹配'''
+def UserQuery(Login_username):
+    '''
+    基础查询: 创建Object.query查询对象，用equal_to设置查询条件，用find进行查询
+        构建 leancloud.Query；
+        向其添加查询条件；
+        执行查询并获取包含满足条件的对象的数组。
+    '''
+    query = leancloud.Query('UserObject')
+    query.equal_to('Username', Login_username)
+    User_list = query.find()
+    for User in User_list:
+        return User.get("Password")

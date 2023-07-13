@@ -13,7 +13,7 @@ class Getdata:
 
     def get_unique_datas(self, lists):
         unique_lists = list(set(lists))
-        return unique_lists;
+        return unique_lists
 
     def get_file_info_pre(self):
         with open(self.c_file, 'r') as file:

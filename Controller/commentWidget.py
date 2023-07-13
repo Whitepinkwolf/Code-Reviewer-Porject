@@ -18,12 +18,27 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
         self.current_index = 0
         self.pre_cursor = None
         self.cursor = None
+
+        self.initUI()
+        self.connectSignalsSlots()
+
+    def initUI(self):
+        self.stackedWidget.setCurrentIndex(0)
+
+    def connectSignalsSlots(self):
+        self.FunctionPushButton.clicked.connect(self.on_pushButton1_clicked)
+        self.RiskFunctionPushButton.clicked.connect(self.on_pushButton2_clicked)
         # 设置双击事件
         self.ShowDefineTableView.doubleClicked.connect(self.tableview_double_clicked)
+        self.ShowRiskFunctionTableView.doubleClicked.connect(self.tableview_double_clicked)
 
+    def on_pushButton1_clicked(self):
+        self.stackedWidget.setCurrentIndex(0)
+
+    def on_pushButton2_clicked(self):
+        self.stackedWidget.setCurrentIndex(1)
 
     def set_c_file_tableview(self, header_files, macro_definitions, variable_names, function_declarations):
-
         # 创建数据模型
         model = QStandardItemModel()
         # 设置列名称
@@ -67,6 +82,26 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
             model.appendRow(item_row)
 
         self.ShowDefineTableView.setModel(model)
+
+    def set_RiskFunction_tableview(self):
+        # 创建数据模型
+        model = QStandardItemModel()
+        # 设置列名称
+        column_names = ['FunctionName', 'RiskLevel', 'Solution']
+        model.setHorizontalHeaderLabels(column_names)
+
+        # 添加数据
+        datas = []
+
+        for row in datas:
+            item_row = []
+            for item in row:
+                item_cell = QStandardItem(item)
+                item_cell.setEditable(False)  # 设置单元格不可编辑
+                item_row.append(item_cell)
+            model.appendRow(item_row)
+
+        self.ShowRiskFunctionTableView.setModel(model)
 
     """
     bug
@@ -153,11 +188,12 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
         getdata.get_file_info_pre()
         getdata.get_local_info()
         file_content, header_files, macro_definitions, variable_names, function_declarations = getdata.get_all_local_data()
-        self.set_c_file_tableview(header_files, macro_definitions, variable_names, function_declarations)
 
-        """
-        还没有颜色
-        """
+        # 设置tableview中的内容
+        self.set_c_file_tableview(header_files, macro_definitions, variable_names, function_declarations)
+        # self.set_RiskFunction_tableview
+
+        # 设置editor中的内容
         lexer = get_lexer_by_name('c')
         formatter = HtmlFormatter(style='xcode')
         # 获取样式定义并嵌入到 HTML 代码中

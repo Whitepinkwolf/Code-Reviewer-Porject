@@ -6,63 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>966</width>
-    <height>770</height>
+    <width>971</width>
+    <height>807</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPlainTextEdit" name="ShowTextEdit">
-   <property name="geometry">
-    <rect>
-     <x>550</x>
-     <y>680</y>
-     <width>381</width>
-     <height>71</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QScrollArea" name="scrollArea_2">
-   <property name="geometry">
-    <rect>
-     <x>540</x>
-     <y>10</y>
-     <width>411</width>
-     <height>661</height>
-    </rect>
-   </property>
-   <property name="widgetResizable">
-    <bool>true</bool>
-   </property>
-   <widget class="QWidget" name="scrollAreaWidgetContents_2">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>409</width>
-      <height>659</height>
-     </rect>
-    </property>
-    <widget class="QTableView" name="ShowDefineTableView">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>381</width>
-       <height>631</height>
-      </rect>
-     </property>
-    </widget>
-   </widget>
-  </widget>
   <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>10</y>
+     <y>20</y>
      <width>511</width>
-     <height>741</height>
+     <height>761</height>
     </rect>
    </property>
    <property name="widgetResizable">
@@ -74,20 +31,149 @@
       <x>0</x>
       <y>0</y>
       <width>509</width>
-      <height>739</height>
+      <height>759</height>
      </rect>
     </property>
     <widget class="NewCodeEditor" name="commentCodeEditor">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>491</width>
-       <height>721</height>
+       <x>0</x>
+       <y>0</y>
+       <width>511</width>
+       <height>761</height>
       </rect>
      </property>
     </widget>
    </widget>
+  </widget>
+  <widget class="QStackedWidget" name="stackedWidget">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>40</y>
+     <width>441</width>
+     <height>751</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
+   <widget class="QWidget" name="page">
+    <widget class="QScrollArea" name="scrollArea_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>401</width>
+       <height>641</height>
+      </rect>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>399</width>
+        <height>639</height>
+       </rect>
+      </property>
+      <widget class="QTableView" name="ShowDefineTableView">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>401</width>
+         <height>641</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QPlainTextEdit" name="ShowTextEdit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>680</y>
+       <width>401</width>
+       <height>61</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_2">
+    <widget class="QScrollArea" name="scrollArea_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>401</width>
+       <height>641</height>
+      </rect>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_3">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>399</width>
+        <height>639</height>
+       </rect>
+      </property>
+      <widget class="QTableView" name="ShowRiskFunctionTableView">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>401</width>
+         <height>641</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QPlainTextEdit" name="RiskFunctionShowTextEdit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>680</y>
+       <width>401</width>
+       <height>61</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="FunctionPushButton">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>20</y>
+     <width>211</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>函数关系树列表</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="RiskFunctionPushButton">
+   <property name="geometry">
+    <rect>
+     <x>750</x>
+     <y>20</y>
+     <width>191</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>风险函数列表</string>
+   </property>
   </widget>
  </widget>
  <customwidgets>

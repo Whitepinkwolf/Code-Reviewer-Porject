@@ -18,6 +18,7 @@ def is_c_or_h_file(file_path):
     return file_path.endswith('.c') or file_path.endswith('.h')
 
 def File_get(file_path):
+    file_path = file_path.replace("/", "\\")
     file_obj=File(file_path)
     file_obj.parse_c_file()
     element_list=[]
@@ -74,19 +75,20 @@ def index_get_path(ui):
 
 
 class FileTree:
-    def __init__(self, ui):
+    def __init__(self, parent):
         self.folder_path = ""
-        self.ui=ui
-        self.tree_view = ui.treeView  # 显示存储结构
+
+        self.parent = parent
+        self.tree_view = parent.treeView  # 显示存储结构
+        self.ChooseComboBox = parent.ChooseComboBox
         self.tree_model = QStandardItemModel()  # 存储的数据结构
 
     def open_folder_dialog(self):
-        ui=self.ui
         folder_dialog = QtWidgets.QFileDialog()
-        folder_path = folder_dialog.getExistingDirectory(ui.treeView, "选择文件夹", 'D:\project_code\pythonproject\CodeAuditing\\test_c')
+        folder_path = folder_dialog.getExistingDirectory(self.parent.treeView, "选择文件夹", 'D:\project_code\pythonproject\CodeAuditing\\test_c')
         self.tree_model.clear()  # 清空现有的模型数据
         self.folder_path = folder_path
-        ui.ChooseComboBox.setVisible(True)
+        self.ChooseComboBox.setVisible(True)
         # 添加根节点
         root_item = QStandardItem(folder_path)
         self.tree_model.appendRow(root_item)
@@ -99,7 +101,7 @@ class FileTree:
 
 
 
-    def add_folder_to_node(self, folder_path, parent_item):#添加文件夹
+    def add_folder_to_node(self, folder_path, parent_item):  # 添加文件夹
         for file_name in os.listdir(folder_path):
             file_path = os.path.join(folder_path, file_name)
 
@@ -131,7 +133,7 @@ class FileTree:
         self.add_folder_to_node(folder_path, root_item)
         self.tree_view.setModel(self.tree_model)
         root_item = self.tree_model.item(0)  # 获取根节点
-        if root_item:# 遍历文件树，设置显示/隐藏属性
+        if root_item:       # 遍历文件树，设置显示/隐藏属性
             self.remove_filtered_files(root_item)
 
         self.tree_view.expandToDepth(0)
@@ -152,7 +154,7 @@ class FileTree:
                     parent_item.removeRow(row)
 
     def is_file_match_filter(self, file_path): #匹配筛选条件
-        filter_list = self.ui.ChooseComboBox.currentText().split(',')  # 获取当前选择的过滤规则
+        filter_list = self.ChooseComboBox.currentText().split(',')  # 获取当前选择的过滤规则
         file_name = os.path.basename(file_path)
         return any(fnmatch.fnmatch(file_name, filter_pattern) for filter_pattern in filter_list)
 

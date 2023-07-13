@@ -67,7 +67,7 @@ class File:
         #      "：表示匹配一个双引号。
         pattern1 = r'^\s*#include\s*<([^>]+)>'
         pattern2 = r'^\s*#include\s*"([^"]+)"'
-        with open(self.file_path,'r', encoding='utf-8') as file:
+        with open(self.file_path,'r', encoding='gbk') as file:
             lines = file.readlines()
             index = 1
             # print(lines)
