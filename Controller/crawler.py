@@ -46,7 +46,7 @@ class File:
         # \s +：匹配一个或多个空白字符。
         # (\d+)：匹配一个或多个数字字符（宏值）。
         macro_pattern = r'#define\s+(\w+)\s+(\w+)'
-        with open(self.file_path,'r', encoding='utf-8') as file:
+        with open(self.file_path,'r', encoding='gbk') as file:
             file_content = file.read()
         matches = re.findall(macro_pattern, file_content)
         if matches:

@@ -7,7 +7,7 @@ from pygments.lexers import get_lexer_by_name
 from qtpy import QtWidgets
 from UI.commentWidget import Ui_comment
 from Utils import *
-from getdata import Getdata
+from Data.getdata import Getdata
 
 
 class comment_Widget(QtWidgets.QWidget, Ui_comment):
@@ -15,8 +15,12 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
         super(comment_Widget, self).__init__(parent)
         self.setupUi(self)
 
+        self.current_index = 0
+        self.pre_cursor = None
+        self.cursor = None
         # 设置双击事件
         self.ShowDefineTableView.doubleClicked.connect(self.tableview_double_clicked)
+
 
     def set_c_file_tableview(self, header_files, macro_definitions, variable_names, function_declarations):
 
@@ -31,15 +35,15 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
 
         for item in header_files:
             data = []
-            data.append(item)
+            data.append(item[0])
             data.append(header_file_str)
-            data.append('\\')
+            data.append(str(item[1]))
             datas.append(data)
         for item in macro_definitions:
             data = []
-            data.append(item)
+            data.append(item[0])
             data.append(macro_definitions_str)
-            data.append('\\')
+            data.append(str(item[1]))
             datas.append(data)
         for item in variable_names:
             data = []
@@ -64,6 +68,9 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
 
         self.ShowDefineTableView.setModel(model)
 
+    """
+    bug
+    """
     def tableview_double_clicked(self, index):
         tableview = self.ShowDefineTableView
         pte_content = self.ShowTextEdit
@@ -82,61 +89,64 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
                 item = model.index(index_row, column).data(Qt.DisplayRole)
                 data.append(item)
             line = data[2]
-            # print(data)
+            print(data)
 
-            if index_column == 0:
-                search_text = value
-                cursor = code_text_new.textCursor()
-                format = QTextCharFormat()
-                format.setBackground(QColor("yellow"))
+            search_text = value
+            cursor = code_text_new.textCursor()
+            format = QTextCharFormat()
+            format.setBackground(QColor("yellow"))
 
-                extra_selections = []
-                code_text_new.moveCursor(QTextCursor.Start)
+            extra_selections = []
+            code_text_new.moveCursor(QTextCursor.Start)
 
-                while cursor.hasComplexSelection() or cursor.atEnd() == False:
-                    cursor = code_text_new.document().find(search_text, cursor)
+            while cursor.hasComplexSelection() or cursor.atEnd() == False:
+                cursor = code_text_new.document().find(search_text, cursor)
 
-                    if cursor.isNull() == False:
-                        target_number = cursor.block().blockNumber() + 1
-                        if str(target_number) == line:
-                            selection = QTextEdit.ExtraSelection()
-                            selection.format = format
-                            selection.cursor = QTextCursor(cursor)
-                            extra_selections.append(selection)
-                    else:
-                        break
-                code_text_new.setExtraSelections(extra_selections)
-            elif (line != '\\'):
-                target_text = data[0]
-                # 获取总行数
-                total_lines = code_text_new.document().blockCount()
-                # 设置高亮格式
-                format = QTextCharFormat()
-                format.setBackground(QColor("yellow"))
-                # 添加高亮选择
-                extra_selections = []
+                if cursor.isNull() == False:
+                    target_number = cursor.block().blockNumber() + 1
+                    if str(target_number) == line:
+                        selection = QTextEdit.ExtraSelection()
+                        selection.format = format
+                        selection.cursor = QTextCursor(cursor)
+                        extra_selections.append(selection)
+                else:
+                    break
+            code_text_new.setExtraSelections(extra_selections)
 
-                if int(line) <= total_lines:
-                    target_line = int(line) - 1
-                    block = code_text_new.document().findBlockByLineNumber(target_line)
-                    if block.isValid():
-                        # 获取目标行的文本
-                        line_text = block.text()
-                        # 在目标行中查找目标字符串的位置
-                        index = line_text.find(target_text)
-                        while index != -1:
-                            # 创建额外选择并设置高亮
-                            cursor = QTextCursor(block)
-                            cursor.setPosition(block.position() + index)
-                            cursor.setPosition(block.position() + index + len(target_text), QTextCursor.KeepAnchor)
-                            selection = QTextEdit.ExtraSelection()
-                            selection.format = format
-                            selection.cursor = cursor
-                            extra_selections.append(selection)
-                            # 在目标行中继续查找下一个目标字符串的位置
-                            index = line_text.find(target_text, index + len(target_text))
+            selections = code_text_new.extraSelections()
+            self.current_index = 0
+            print('selections length: ')
+            print(len(selections))
+            print('current_index: ')
+            print(self.current_index)
 
-                code_text_new.setExtraSelections(extra_selections)
+            if self.current_index < len(selections):
+                self.cursor = QTextCursor(selections[self.current_index].cursor)
+                code_text_new.setTextCursor(self.cursor)
+                self.current_index += 1
+
+                if self.pre_cursor is not None:
+                    # 设置行的格式
+                    format = self.pre_cursor.blockFormat()
+                    format.setBackground(QColor("#FFFFFF"))
+                    self.pre_cursor.setBlockFormat(format)
+                    # 将光标设置为初始位置
+                    self.pre_cursor.movePosition(QTextCursor.StartOfBlock)
+                    self.pre_cursor.setPosition(self.pre_cursor.position() + len(self.pre_cursor.block().text()),
+                                                QTextCursor.KeepAnchor)
+
+                line_number = self.cursor.blockNumber()
+
+                if int(line) == line_number+1:
+                    # 设置行的格式
+                    format = self.cursor.blockFormat()
+                    format.setBackground(QColor("red"))
+                    self.cursor.setBlockFormat(format)
+
+                    # 将光标设置为初始位置
+                    self.cursor.movePosition(QTextCursor.StartOfBlock)
+                    self.cursor.setPosition(self.cursor.position() + len(self.cursor.block().text()), QTextCursor.KeepAnchor)
+                self.pre_cursor = self.cursor
 
     def set_open_text(self, item_path):
         getdata = Getdata(item_path)
@@ -155,3 +165,6 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
         highlighted_code = highlight(file_content, lexer, formatter)
         html_code = f'<style>{css_style}</style>{highlighted_code}'
         self.commentCodeEditor.setHtml(html_code)
+
+    def get_code_text(self):
+        return self.commentCodeEditor.toPlainText()

@@ -18,13 +18,15 @@ class Getdata:
     def get_file_info_pre(self):
         with open(self.c_file, 'r') as file:
             lines = file.readlines()
+            index = 1
             # print(lines)
             for line in lines:
                 if line.startswith('#include'):
-                    self.header_files.append(line.strip())
+                    self.header_files.append((line.strip(), index))
                 elif line.startswith('#define'):
-                    self.macro_definitions.append(line.strip())
+                    self.macro_definitions.append((line.strip(), index))
                 self.file_content += line
+                index = index + 1
         self.header_files = self.get_unique_datas(self.header_files)
         self.macro_definitions = self.get_unique_datas(self.macro_definitions)
 

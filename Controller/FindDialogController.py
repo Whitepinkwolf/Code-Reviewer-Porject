@@ -1,5 +1,7 @@
+import re
+
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QRegularExpression
 from PyQt5.QtGui import QTextCursor, QColor, QTextCharFormat, QTextDocument
 from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit
 
@@ -15,6 +17,12 @@ class FindDialog(QtWidgets.QDialog):
 
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+
+        self.ui.checkBox.setChecked(True)
+        self.ui.checkBox.setEnabled(False)
+        self.ui.checkBox_2.setChecked(True)
+        self.ui.checkBox_2.setEnabled(False)
+
         self.ui.pushButton.clicked.connect(self.find_text)
         self.ui.pb_next.clicked.connect(self.find_text_onebyone)
         self.sign = True
@@ -37,7 +45,9 @@ class FindDialog(QtWidgets.QDialog):
         plain_text_edit.moveCursor(QTextCursor.Start)
 
         while cursor.hasComplexSelection() or cursor.atEnd() == False:
-            cursor = plain_text_edit.document().find(search_text, cursor)
+            # cursor = plain_text_edit.document().find(search_text, cursor)
+            regex = QRegularExpression(search_text)
+            cursor = plain_text_edit.document().find(regex, cursor)
 
             if cursor.isNull() == False:
                 selection = QTextEdit.ExtraSelection()
@@ -64,6 +74,31 @@ class FindDialog(QtWidgets.QDialog):
             if self.current_index < len(selections):
                 cursor = QTextCursor(selections[self.current_index].cursor)
                 text_edit.setTextCursor(cursor)
+
+                # 设置行的格式
+                format = cursor.blockFormat()
+                format.setBackground(QColor("red"))
+                cursor.setBlockFormat(format)
+                # 将光标设置为初始位置
+                cursor.movePosition(QTextCursor.StartOfBlock)
+                cursor.setPosition(cursor.position() + len(cursor.block().text()), QTextCursor.KeepAnchor)
+                line_number = cursor.blockNumber()
+
+                if self.current_index > 0:
+                    previous_cursor = QTextCursor(selections[self.current_index - 1].cursor)
+                    pre_line_number = previous_cursor.blockNumber()
+                    if line_number != pre_line_number:
+                        # 设置行的格式
+                        format = cursor.blockFormat()
+                        format.setBackground(QColor("#FFFFFF"))
+                        previous_cursor.setBlockFormat(format)
+                        # 将光标设置为初始位置
+                        previous_cursor.movePosition(QTextCursor.StartOfBlock)
+                        previous_cursor.setPosition(previous_cursor.position() + len(previous_cursor.block().text()), QTextCursor.KeepAnchor)
+
+                # 滚动到显示匹配字符串的行
+                text_edit.ensureCursorVisible()
+
                 self.ui.label.setText(f"{self.current_index+1}/{len(selections)}")
                 self.current_index += 1
 

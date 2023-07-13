@@ -41,7 +41,9 @@ def index_get_path(ui):
         parent_index = parent_index.parent()
     item_path = path
     if os.path.isfile(item_path):
-        return item_path,None
+        file_obj = File(item_path)
+        file_obj.parse_c_file()
+        return item_path,file_obj
     else:   #不是文件,分离最后一部分,并获取其中的对象
         item_path,element=os.path.split(path)
         e_type=element.split(':')[0]  #对应的类
@@ -79,7 +81,7 @@ class FileTree:
         folder_path = folder_dialog.getExistingDirectory(ui.treeView, "选择文件夹", 'D:\project_code\pythonproject\CodeAuditing\\test_c')
         self.tree_model.clear()  # 清空现有的模型数据
         self.folder_path = folder_path
-        ui.comboBox.setVisible(True)
+        ui.ChooseComboBox.setVisible(True)
         # 添加根节点
         root_item = QStandardItem(folder_path)
         self.tree_model.appendRow(root_item)
@@ -126,16 +128,19 @@ class FileTree:
     def remove_filtered_files(self, parent_item):
         for row in reversed(range(parent_item.rowCount())):
             item = parent_item.child(row)
-            if item.hasChildren():
-                self.remove_filtered_files(item)
-                if item.rowCount() == 0:
+            file_path = os.path.join(self.folder_path, item.text())
+            if is_c_or_h_file(file_path):  # c或者h文件,不会遍历其子节点
+                if not self.is_file_match_filter(file_path):
                     parent_item.removeRow(row)
-            else:
-                file_path = os.path.join(self.folder_path, item.text())
-                if  not self.is_file_match_filter(file_path):
+            elif item.hasChildren():  # 不是元素节点，但是不是c或者h文件
+                self.remove_filtered_files(item)
+                if item.rowCount() == 0:  # 节点为空删除
+                    parent_item.removeRow(row)
+            else:  # 一般文件
+                if not self.is_file_match_filter(file_path):
                     parent_item.removeRow(row)
 
     def is_file_match_filter(self, file_path): #匹配筛选条件
-        filter_list = self.ui.comboBox.currentText().split(',')  # 获取当前选择的过滤规则
+        filter_list = self.ui.ChooseComboBox.currentText().split(',')  # 获取当前选择的过滤规则
         file_name = os.path.basename(file_path)
         return any(fnmatch.fnmatch(file_name, filter_pattern) for filter_pattern in filter_list)
