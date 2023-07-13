@@ -42,6 +42,8 @@ class Struct:
         self.name = name
         self.fields = fields
         self.line=line
+
+
 class File:
     def __init__(self,filepath):
         self.fun_list=[]
@@ -56,8 +58,15 @@ class File:
         # (\w+)：匹配一个或多个字母数字字符（宏名称）。
         # (\d+)：匹配一个或多个数字字符（宏值）。
         macro_pattern = r'#define\s+(\w+)\s+(\w+)'
-        pattern1 = r'^\s*#include\s+<([^>]+)>'
-        pattern2 = r'^\s*#include\s+"([^"]+)"'
+        # ^ ：表示匹配字符串的开头。
+        # \s *：表示匹配零个或多个空白字符（包括空格、制表符、换行符等）。
+        # # include：表示匹配字面字符串 "#include"。
+        # \s +：表示匹配一个或多个空白字符。
+        # "：表示匹配一个双引号。
+        # ([ ^ "]+)：表示一个捕获组，用于匹配一个或多个非双引号字符。
+        #      "：表示匹配一个双引号。
+        pattern1 = r'^\s*#include\s*<([^>]+)>'
+        pattern2 = r'^\s*#include\s*"([^"]+)"'
         with open(self.file_path,'r', encoding='utf-8') as file:
             lines = file.readlines()
             index = 1
@@ -79,6 +88,8 @@ class File:
                             self.macro_list.append(Macro(macro_name, macro_value, index))
                 index = index + 1
         file.close()
+
+
 
     def parse_functions(self, translation_unit):
         current_file_path = os.path.abspath(self.file_path)
@@ -165,29 +176,53 @@ class File:
 
         return self.fun_list, self.macro_list, self.struct_list, self.var_list
 
+    def get_function_name(self):
+        """
+        @description: 仅仅获取文件名字,注意encoding方式
+        @Time：2023/7/13 || 16:18 ||20324
+        """
+        translation_unit = self.get_translation()
+        fun_list = []
+        with open(self.file_path, 'r',encoding='utf-8') as file:
+            content = file.read()
+        for node in translation_unit.cursor.walk_preorder():
+            if node.kind == clang.cindex.CursorKind.FUNCTION_DECL:
+                function_location = node.extent.start.file.name
+                function_name = node.spelling
+                if function_exists_in_file(content,function_name):
+                    fun_list.append(function_name)
+        file.close()
+        return fun_list
+
+def function_exists_in_file(content,function_name):
+    pattern = r'\b' + re.escape(function_name) + r'\b'
+    match = re.search(pattern, content)
+    if match:        return True
+    else:        return False
+
 # 测试示例
 if __name__ == "__main__":
-    file_path = "D:\project_code\pythonproject\CodeAuditing\\test_c\\graph.c"
-    # file_path = "D:/project_code/pythonproject/CodeAuditing/test_c\\graph.h"
+    file_path = "D:\\project_code\\pythonproject\\CodeAuditing\\test_c\\graph.c"
     file_obj=File(file_path)
-    file_obj.parse_c_file()
-    for function in file_obj.fun_list:
-        print(f"___________Function:{function.name}  {function.line}")
-        print("Parameters:", function.parameters)
-        print("return:",function.return_type)
-        print("is defined?:",function.is_define)
-        print("Local Variables:")
-        for variable in function.local_variables:
-            print(f"{variable.type} {variable.name} {variable.line}")
-    for macro in file_obj.macro_list:
-        print(f"___________Macro:{macro.name},value:{macro.value},line {macro.line}", )
-    for include in file_obj.include_list:
-        print(f"___________include_list:{include.name}.line{include.line}")
-    for struct in file_obj.struct_list:
-        print(f"___________Struct:{struct.name}")
-        print("Fields:")
-        for field in struct.fields:
-            print(field[0], ":", field[1])
-    for variable in file_obj.var_list:
-        print('___________Gobal var:')
-        print(variable.name, ":", variable.type)
+    print(file_obj.get_function_name())
+    # file_obj.parse_c_file()
+    # for function in file_obj.fun_list:
+    #     print(f"___________Function:{function.name}  {function.line}")
+    #     print("Parameters:", function.parameters)
+    #     print("return:",function.return_type)
+    #     print("is defined?:",function.is_define)
+    #     print("Local Variables:")
+    #     for variable in function.local_variables:
+    #         print(f"{variable.type} {variable.name} {variable.line}")
+    # for macro in file_obj.macro_list:
+    #     print(f"___________Macro:{macro.name},value:{macro.value},line {macro.line}", )
+    # for include in file_obj.include_list:
+    #     print(f"___________include_list:{include.name}.line{include.line}")
+    # for struct in file_obj.struct_list:
+    #     print(f"___________Struct:{struct.name}")
+    #     print("Fields:")
+    #     for field in struct.fields:
+    #         print(field[0], ":", field[1])
+    # for variable in file_obj.var_list:
+    #     print('___________Gobal var:')
+    #     print(variable.name, ":", variable.type)

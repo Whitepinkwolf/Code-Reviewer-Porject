@@ -7,6 +7,8 @@
 import fnmatch
 import os
 from PyQt5 import QtWidgets
+
+import Controller.crawler
 from Controller.crawler import File
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
@@ -68,6 +70,9 @@ def index_get_path(ui):
                     return item_path, fun_obj
         exit(f'指定的类型{e_type}，名字{e_name}不存在')
 
+
+
+
 class FileTree:
     def __init__(self, ui):
         self.folder_path = ""
@@ -88,7 +93,11 @@ class FileTree:
         # 遍历文件夹并添加到根节点
         self.add_folder_to_node(folder_path, root_item)
         self.tree_view.setModel(self.tree_model)
+        self.tree_view.reset()
         self.tree_view.expandToDepth(0)
+
+
+
 
     def add_folder_to_node(self, folder_path, parent_item):#添加文件夹
         for file_name in os.listdir(folder_path):
@@ -105,6 +114,8 @@ class FileTree:
                 self.add_element_to_node(file_path, file_item)
 
     def add_element_to_node(self, file_path, parent_item):
+        # print(f'add the file:{os.path.split(file_path)}')
+        # print(self.tree_model.rowCount())
         elements = File_get(file_path)
         for element in elements:
             function_item = QStandardItem(element)
@@ -144,3 +155,9 @@ class FileTree:
         filter_list = self.ui.ChooseComboBox.currentText().split(',')  # 获取当前选择的过滤规则
         file_name = os.path.basename(file_path)
         return any(fnmatch.fnmatch(file_name, filter_pattern) for filter_pattern in filter_list)
+
+    def get_element_line(self):
+        item_path,element=index_get_path(self.ui)
+        if not isinstance(element,Controller.crawler.File):
+            # print(element.name,element.line)
+            return element.name,element.line,item_path
