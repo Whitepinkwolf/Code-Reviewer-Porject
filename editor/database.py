@@ -49,7 +49,6 @@ class crawler_database:
         self.Macro_name = "Macro"
         self.Include_name = "Include"
         self.Struct_name = "Struct"
-
     def add_file(self,file_obj):
         # 声明 class
         self.filename=os.path.split(file_obj.file_path)[1]
@@ -78,9 +77,11 @@ class crawler_database:
             "name":fun_obj.name,
             'parameters' : fun_obj.parameters,
             'local_variables':var_list,
+            "local_function":fun_obj.local_functions,
             'return_type':fun_obj.return_type,
             'is_define':fun_obj.is_define,
-            'line':fun_obj.line,
+            'begin_line':fun_obj.line,
+            'end_line':fun_obj.end_line
         }
         add_element(self.fun_table_name,value_dict)
 
