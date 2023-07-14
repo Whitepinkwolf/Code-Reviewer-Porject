@@ -1,6 +1,7 @@
 # 参考 https://leancloud.cn/docs/sdk_setup-python.html, https://leancloud.github.io/python-sdk/
 
 import leancloud
+from Controller.crawler import *
 
 appId = 'hrwjWdJzRfN5ewluWwtvoono-gzGzoHsz'
 appKey = 'J4WDUUz6lekpuSAGiVpLvF3x'
@@ -33,6 +34,8 @@ lean_initialization = leancloud.init(appId, master_key=masterkey)
 # riskFunctionObject.save()
 
 '''风险函数打印'''
+
+
 def riskFunctionShow(riskFunction):
     print(f'objectId = {riskFunction.get("objectId")}, '
           f'FunctionName = {riskFunction.get("FunctionName")}, '
@@ -41,6 +44,8 @@ def riskFunctionShow(riskFunction):
 
 
 '''风险函数查询'''
+
+
 def riskFunctionQuery(FunctionName):
     RiskFunctionObject = leancloud.Object.extend('RiskFunctionObject')
     query = RiskFunctionObject.query
@@ -53,6 +58,7 @@ def riskFunctionQuery(FunctionName):
         result.append(riskFunction.get("RiskLevel"))
         result.append(riskFunction.get("Solution"))
         return result
+
 
 def getRiskFunction():
     """
@@ -73,6 +79,7 @@ def getRiskFunction():
     print(riskFunctionResult)
     return riskFunctionResult
 
+
 def addRiskFunction(FunctionName=None, RiskLevel=None, Solution=None):
     RiskFunctionObject = leancloud.Object.extend('RiskFunctionObject')
     riskFunctionObject = RiskFunctionObject()
@@ -81,6 +88,7 @@ def addRiskFunction(FunctionName=None, RiskLevel=None, Solution=None):
     riskFunctionObject.set('Solution', Solution)
     riskFunctionObject.save()
     print('add')
+
 
 def deleteRiskFunction(FunctionName):
     query = leancloud.Query('RiskFunctionObject')
@@ -93,7 +101,22 @@ def deleteRiskFunction(FunctionName):
         print("delete no")
 
 
+def detectRiskFunction(filePath):
+    fileObj = File(filePath)
+    functionName = fileObj.get_function_name()
+    result = []
+    for risk in getRiskFunction():
+        if risk in functionName:
+            result.append(risk)
+    return result
+
+
+filePath = "D:\Code-reviewer\Code-Reviewer-Porject\c_test_file\graph.c"
+print(detectRiskFunction(filePath))
+
 '''用户信息存储'''
+
+
 def UserStore(username, password):
     UserObject = leancloud.Object.extend('UserObject')
     userObject = UserObject()
@@ -103,6 +126,8 @@ def UserStore(username, password):
 
 
 '''用户信息打印'''
+
+
 def UserShow(riskFunction):
     print(f'objectId = {riskFunction.get("objectId")}, '
           f'Username = {riskFunction.get("username")}, '
@@ -110,6 +135,8 @@ def UserShow(riskFunction):
 
 
 '''用户信息匹配'''
+
+
 def UserQuery(Login_username):
     '''
     基础查询: 创建Object.query查询对象，用equal_to设置查询条件，用find进行查询

@@ -1,5 +1,6 @@
 import clang.cindex
 
+
 class Getdata:
     def __init__(self, c_file):
         self.c_file = c_file
@@ -81,7 +82,7 @@ class Getdata:
             variable = variable_tuple[0]
             type = variable_tuple[1]
             locs = variable_tuple[2]
-            if(var == variable):
+            if (var == variable):
                 locals.append(locs)
         return locals
 
@@ -91,7 +92,7 @@ class Getdata:
             variable = func_tuple[0]
             type = func_tuple[1]
             locs = func_tuple[2]
-            if(func == variable):
+            if (func == variable):
                 locals.append(locs)
         return locals
 
@@ -130,6 +131,3 @@ class Getdata:
             unused_entities.append(entity_name)
 
         return unused_entities
-
-
-
