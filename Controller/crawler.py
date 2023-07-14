@@ -44,7 +44,6 @@ class Struct:
         self.fields = fields
         self.line=line
 
-
 class File:
     def __init__(self,filepath):
         self.fun_list=[]
@@ -188,7 +187,6 @@ class File:
             content = file.read()
         for node in translation_unit.cursor.walk_preorder():
             if node.kind == clang.cindex.CursorKind.FUNCTION_DECL:
-                function_location = node.extent.start.file.name
                 function_name = node.spelling
                 if function_exists_in_file(content,function_name):
                     fun_list.append(function_name)
@@ -207,25 +205,25 @@ def function_exists_in_file(content,function_name):
 if __name__ == "__main__":
     file_path = "D:\\project_code\\pythonproject\\CodeAuditing\\test_c\\graph.c"
     file_obj=File(file_path)
-    print(file_obj.get_function_name())
-    # file_obj.parse_c_file()
-    # for function in file_obj.fun_list:
-    #     print(f"___________Function:{function.name}  {function.line}")
-    #     print("Parameters:", function.parameters)
-    #     print("return:",function.return_type)
-    #     print("is defined?:",function.is_define)
-    #     print("Local Variables:")
-    #     for variable in function.local_variables:
-    #         print(f"{variable.type} {variable.name} {variable.line}")
-    # for macro in file_obj.macro_list:
-    #     print(f"___________Macro:{macro.name},value:{macro.value},line {macro.line}", )
-    # for include in file_obj.include_list:
-    #     print(f"___________include_list:{include.name}.line{include.line}")
-    # for struct in file_obj.struct_list:
-    #     print(f"___________Struct:{struct.name}")
-    #     print("Fields:")
-    #     for field in struct.fields:
-    #         print(field[0], ":", field[1])
-    # for variable in file_obj.var_list:
-    #     print('___________Gobal var:')
-    #     print(variable.name, ":", variable.type)
+    # print(file_obj.get_function_name())
+    file_obj.parse_c_file()
+    for function in file_obj.fun_list:
+        print(f"___________Function:{function.name}  {function.line}")
+        print("Parameters:", function.parameters)
+        print("return:",function.return_type)
+        print("is defined?:",function.is_define)
+        print("Local Variables:")
+        for variable in function.local_variables:
+            print(f"{variable.type} {variable.name} {variable.line}")
+    for macro in file_obj.macro_list:
+        print(f"___________Macro:{macro.name},value:{macro.value},line {macro.line}", )
+    for include in file_obj.include_list:
+        print(f"___________include_list:{include.name}.line{include.line}")
+    for struct in file_obj.struct_list:
+        print(f"___________Struct:{struct.name}")
+        print("Fields:")
+        for field in struct.fields:
+            print(field[0], ":", field[1])
+    for variable in file_obj.var_list:
+        print('___________Gobal var:')
+        print(variable.name, ":", variable.type)
