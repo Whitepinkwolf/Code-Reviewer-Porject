@@ -106,7 +106,7 @@ def detectRiskFunction(filePath):
     functionName = fileObj.get_function_name()
     result = []
     for risk in getRiskFunction():
-        if risk in functionName:
+        if risk['FunctionName'] in functionName:
             result.append(risk)
     return result
 
