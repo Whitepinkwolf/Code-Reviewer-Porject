@@ -6,8 +6,7 @@
 """
 import fnmatch
 import os
-from PyQt5 import QtWidgets
-
+from PyQt5 import QtCore, QtWidgets
 import Controller.crawler
 from Controller.crawler import File
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
@@ -18,7 +17,6 @@ def is_c_or_h_file(file_path):
     return file_path.endswith('.c') or file_path.endswith('.h')
 
 def File_get(file_path):
-    file_path = file_path.replace("/", "\\")
     file_obj=File(file_path)
     file_obj.parse_c_file()
     element_list=[]
@@ -71,19 +69,56 @@ def index_get_path(ui):
                     return item_path, fun_obj
         exit(f'指定的类型{e_type}，名字{e_name}不存在')
 
-
+def from_index_get_path(treeview):
+    index = treeview.currentIndex()
+    model = treeview.model()
+    path = model.itemFromIndex(index).text()
+    parent_index = index.parent()
+    while parent_index.isValid():  # 向上层遍历获取路径
+        parent_name = treeview.model().itemFromIndex(parent_index).text()
+        path = parent_name + '/' + path  # 使用斜杠分隔路径部分
+        parent_index = parent_index.parent()
+    item_path = path
+    if os.path.isfile(item_path):
+        file_obj = File(item_path)
+        file_obj.parse_c_file()
+        return item_path,file_obj
+    else:   #不是文件,分离最后一部分,并获取其中的对象
+        item_path,element=os.path.split(path)
+        e_type=element.split(':')[0]  #对应的类
+        e_name = element.split(':')[1]# 真实的名字
+        file_obj=File(item_path)
+        file_obj.parse_c_file()
+        if e_type=='fun':
+            for fun_obj in file_obj.fun_list:
+                if fun_obj.name==e_name:
+                    return item_path,fun_obj
+        elif e_type=='struct':
+            for fun_obj in file_obj.struct_list:
+                if fun_obj.name == e_name:
+                    return item_path, fun_obj
+        elif e_type=='var':
+            for fun_obj in file_obj.var_list:
+                if fun_obj.name == e_name:
+                    return item_path, fun_obj
+        elif e_type=='macro':
+            for fun_obj in file_obj.macro_list:
+                if fun_obj.name == e_name:
+                    return item_path, fun_obj
+        exit(f'指定的类型{e_type}，名字{e_name}不存在')
 
 
 class FileTree:
     def __init__(self, parent):
         self.folder_path = ""
-
         self.parent = parent
         self.tree_view = parent.treeView  # 显示存储结构
         self.ChooseComboBox = parent.ChooseComboBox
         self.tree_model = QStandardItemModel()  # 存储的数据结构
+        self.root_item = QStandardItem()
 
     def open_folder_dialog(self):
+
         folder_dialog = QtWidgets.QFileDialog()
         folder_path = folder_dialog.getExistingDirectory(self.parent.treeView, "选择文件夹", 'D:\project_code\pythonproject\CodeAuditing\\test_c')
         self.tree_model.clear()  # 清空现有的模型数据
@@ -91,17 +126,14 @@ class FileTree:
         self.ChooseComboBox.setVisible(True)
         # 添加根节点
         root_item = QStandardItem(folder_path)
+        self.root_item=root_item
         self.tree_model.appendRow(root_item)
         # 遍历文件夹并添加到根节点
         self.add_folder_to_node(folder_path, root_item)
         self.tree_view.setModel(self.tree_model)
-        self.tree_view.reset()
         self.tree_view.expandToDepth(0)
 
-
-
-
-    def add_folder_to_node(self, folder_path, parent_item):  # 添加文件夹
+    def add_folder_to_node(self, folder_path, parent_item):#添加文件夹
         for file_name in os.listdir(folder_path):
             file_path = os.path.join(folder_path, file_name)
 
@@ -116,8 +148,6 @@ class FileTree:
                 self.add_element_to_node(file_path, file_item)
 
     def add_element_to_node(self, file_path, parent_item):
-        # print(f'add the file:{os.path.split(file_path)}')
-        # print(self.tree_model.rowCount())
         elements = File_get(file_path)
         for element in elements:
             function_item = QStandardItem(element)

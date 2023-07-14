@@ -77,7 +77,7 @@ def find_matching_allocation(line, argument, allocation_nodes):
     return None
 
 # 指定C语言文件路径
-c_file_path = '../test.c'
+c_file_path = '../c_test_file/test.c'
 
 # 调用函数进行内存泄漏检测
 find_memory_leaks(c_file_path)

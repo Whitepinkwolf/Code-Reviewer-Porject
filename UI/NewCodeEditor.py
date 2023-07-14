@@ -1,7 +1,7 @@
 import sys
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QTextDocument
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QTextDocument, QTextCursor
 
 
 class LineNumberArea(QtWidgets.QWidget):
@@ -20,6 +20,10 @@ class LineNumberArea(QtWidgets.QWidget):
         self.editor.line_number_area_paint_event(event)
 
 class NewCodeEditor(QtWidgets.QTextEdit):
+
+    doubleClicked = pyqtSignal(str)
+    clicked = pyqtSignal(str)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         # 添加自定义的初始化代码
@@ -29,6 +33,7 @@ class NewCodeEditor(QtWidgets.QTextEdit):
         self.textChanged.connect(lambda: self.update_line_number_area(self.rect(), 0))
         self.verticalScrollBar().valueChanged.connect(lambda dy: self.update_line_number_area(self.rect(), dy))
         self.update_line_number_area_width()
+        self.chosen_text = ''
 
 
     def line_number_area_width(self):
@@ -83,4 +88,39 @@ class NewCodeEditor(QtWidgets.QTextEdit):
             cursor.movePosition(QtGui.QTextCursor.Down)
             block_rect = self.cursorRect(cursor)
             top = block_rect.top()
+
+
+    def mouseDoubleClickEvent(self, event):
+        self.chosen_text = ''
+        # 获取当前鼠标位置的光标
+        cursor = self.cursorForPosition(event.pos())
+        # 选中光标所在位置的单词
+        cursor.select(QTextCursor.WordUnderCursor)
+        # 获取选中的文本
+        selected_text = cursor.selectedText()
+        self.chosen_text = selected_text
+        # # 在这里可以触发你想要的事件
+        # print("双击选中的文本：", selected_text)
+        # 调用父类的默认实现，以确保文本框的其他双击事件正常工作
+        # 发射双击事件信号
+        self.doubleClicked.emit(self.chosen_text)
+        super().mouseDoubleClickEvent(event)
+
+    def mousePressEvent(self, event):
+        self.chosen_text = ''
+        # 调用父类的默认实现，以确保文本框的其他单击事件正常工作
+        super().mousePressEvent(event)
+
+        if event.button() == Qt.LeftButton:
+            # 获取当前鼠标位置的光标
+            cursor = self.cursorForPosition(event.pos())
+            # 选中光标所在位置的单词
+            cursor.select(QTextCursor.WordUnderCursor)
+            # 获取选中的文本
+            selected_text = cursor.selectedText()
+            self.chosen_text = selected_text
+            # # 在这里可以触发你想要的事件
+            # print("单击选中的文本：", selected_text)
+            # 发射单击事件信号
+            self.clicked.emit(self.chosen_text)
 

@@ -7,6 +7,7 @@
 import os
 import clang.cindex
 import re
+from Utils import *
 class Function:
     def __init__(self, name, parameters,return_type,is_definition,line):
         self.name = name
@@ -67,7 +68,7 @@ class File:
         #      "：表示匹配一个双引号。
         pattern1 = r'^\s*#include\s*<([^>]+)>'
         pattern2 = r'^\s*#include\s*"([^"]+)"'
-        with open(self.file_path,'r', encoding='gbk') as file:
+        with open(self.file_path,'r', encoding=encoding_mode) as file:
             lines = file.readlines()
             index = 1
             # print(lines)
@@ -183,7 +184,7 @@ class File:
         """
         translation_unit = self.get_translation()
         fun_list = []
-        with open(self.file_path, 'r',encoding='utf-8') as file:
+        with open(self.file_path, 'r', encoding=encoding_mode) as file:
             content = file.read()
         for node in translation_unit.cursor.walk_preorder():
             if node.kind == clang.cindex.CursorKind.FUNCTION_DECL:
@@ -197,8 +198,10 @@ class File:
 def function_exists_in_file(content,function_name):
     pattern = r'\b' + re.escape(function_name) + r'\b'
     match = re.search(pattern, content)
-    if match:        return True
-    else:        return False
+    if match:
+        return True
+    else:
+        return False
 
 # 测试示例
 if __name__ == "__main__":

@@ -19,7 +19,7 @@
      <x>0</x>
      <y>20</y>
      <width>511</width>
-     <height>761</height>
+     <height>681</height>
     </rect>
    </property>
    <property name="widgetResizable">
@@ -31,7 +31,7 @@
       <x>0</x>
       <y>0</y>
       <width>509</width>
-      <height>759</height>
+      <height>679</height>
      </rect>
     </property>
     <widget class="NewCodeEditor" name="commentCodeEditor">
@@ -40,7 +40,7 @@
        <x>0</x>
        <y>0</y>
        <width>511</width>
-       <height>761</height>
+       <height>681</height>
       </rect>
      </property>
     </widget>
@@ -174,6 +174,39 @@
    <property name="text">
     <string>风险函数列表</string>
    </property>
+  </widget>
+  <widget class="QScrollArea" name="scrollArea_4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>716</y>
+     <width>501</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents_4">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>499</width>
+      <height>69</height>
+     </rect>
+    </property>
+    <widget class="QPlainTextEdit" name="FunctionMesShowTextEdit">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>501</width>
+       <height>71</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
   </widget>
  </widget>
  <customwidgets>

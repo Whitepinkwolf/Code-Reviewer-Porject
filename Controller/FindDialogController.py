@@ -19,16 +19,17 @@ class FindDialog(QtWidgets.QDialog):
         self.ui.setupUi(self)
 
         self.initUI()
-        self.connectSignalsSlots()
+
 
         self.sign = True
         self.current_index = 0  # 当前匹配字符串的索引位置
+        self.connectSignalsSlots()
 
     def initUI(self):
         self.ui.ReCheckBox.setChecked(True)
         self.ui.ReCheckBox.setEnabled(False)
-        self.ui.FindLineEdit.setChecked(True)
-        self.ui.FindLineEdit.setEnabled(False)
+        self.ui.IgonreCheckBox.setChecked(True)
+        self.ui.IgonreCheckBox.setEnabled(False)
 
     def connectSignalsSlots(self):
         self.ui.FindPushButton.clicked.connect(self.find_text)

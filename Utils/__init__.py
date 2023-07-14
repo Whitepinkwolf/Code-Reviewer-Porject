@@ -2,6 +2,7 @@ import os
 
 header_file_str = 'Header file'
 macro_definitions_str = 'Macro definition'
+encoding_mode = 'gbk'
 
 def check_extension(item_path):
     file_extension = os.path.splitext(item_path)[1]

@@ -1,4 +1,5 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtGui import QStandardItem, QStandardItemModel, QTextCharFormat, QColor, QTextCursor
 from PyQt5.QtWidgets import QTextEdit
 from pygments import highlight
@@ -8,6 +9,9 @@ from qtpy import QtWidgets
 from UI.commentWidget import Ui_comment
 from Utils import *
 from Data.getdata import Getdata
+from UI.NewCodeEditor import *
+
+from Controller.fileTree import *
 
 
 class comment_Widget(QtWidgets.QWidget, Ui_comment):
@@ -32,11 +36,81 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
         self.ShowDefineTableView.doubleClicked.connect(self.tableview_double_clicked)
         self.ShowRiskFunctionTableView.doubleClicked.connect(self.tableview_double_clicked)
 
+        self.commentCodeEditor.doubleClicked.connect(self.on_text_double_clicked)
+        self.commentCodeEditor.clicked.connect(self.on_text_clicked)
+
     def on_pushButton1_clicked(self):
         self.stackedWidget.setCurrentIndex(0)
 
     def on_pushButton2_clicked(self):
         self.stackedWidget.setCurrentIndex(1)
+
+    def find_related_text(self, selected_text):
+        self.FunctionMesShowTextEdit.setPlainText('')
+        item_path = self.commentCodeEditor.toPlainText().splitlines()[-1].replace('//', '').replace(' ','')
+        print(item_path)
+        file_obj = File(item_path)
+        file_obj.parse_c_file()
+        show_text = ''
+        sign = True
+        for function in file_obj.fun_list:
+            if sign:
+                show_text = show_text+ item_path + ': '
+                sign = False
+            for variable in function.local_variables:
+                if selected_text == variable.name:
+                    # print(True)
+                    show_text = show_text +  '[' + 'Function: ' + str(function.line) + ',' + function.name + ']' + '[' + 'Variables: '+ str(variable.line) + ',' + variable.name+']'
+                    show_text = show_text + '\n'
+        sign = True
+        for macro in file_obj.macro_list:
+            if sign:
+                show_text = show_text+ item_path + ': '
+                sign = False
+            if macro.name == selected_text:
+                show_text = show_text  + '[' + 'Macro: ' + str(macro.line) + ',' + macro.name + '=' + macro.value + ']'
+                show_text = show_text + '\n'
+        sign = True
+        for include in file_obj.include_list:
+            if sign:
+                show_text = show_text+ item_path + ': '
+                sign = False
+            if selected_text == include.name:
+                show_text = show_text  + '[' + 'Included file: ' + str(include.line) + ',' + include.name + ']'
+                show_text = show_text + '\n'
+        sign = True
+        for struct in file_obj.struct_list:
+            if sign:
+                show_text = show_text+ item_path + ': '
+                sign = False
+            if selected_text == struct.name:
+                show_text = show_text  + '[' + 'Struct: ' + str(struct.line) + ',' + struct.name + ']'+ '[' + 'Fields: '
+                for field in struct.fields:
+                    show_text = show_text + field[0] + '=' + field[1] + ' '
+                show_text = show_text + ']\n'
+        sign = True
+        for variable in file_obj.var_list:
+            if sign:
+                show_text = show_text+ item_path + ': '
+                sign = False
+            if selected_text == variable.name:
+                show_text = show_text  + '[' + 'Variable: ' + str(variable.line) + ',' + variable.name + ']'
+                show_text = show_text + '\n'
+        print(show_text)
+        self.FunctionMesShowTextEdit.setPlainText(show_text)
+
+
+    @pyqtSlot(str)
+    def on_text_double_clicked(self, selected_text):
+        # 在双击事件发生时执行的操作
+        print("双击选中的文本：", selected_text)
+        self.find_related_text(selected_text)
+
+    @pyqtSlot(str)
+    def on_text_clicked(self, selected_text):
+        # 在单击事件发生时执行的操作
+        print("单击选中的文本：", selected_text)
+        self.find_related_text(selected_text)
 
     def set_c_file_tableview(self, header_files, macro_definitions, variable_names, function_declarations):
         # 创建数据模型
@@ -194,6 +268,7 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
         # self.set_RiskFunction_tableview
 
         # 设置editor中的内容
+        file_content = file_content + '\n' + '//' + item_path
         lexer = get_lexer_by_name('c')
         formatter = HtmlFormatter(style='xcode')
         # 获取样式定义并嵌入到 HTML 代码中
