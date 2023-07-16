@@ -5,13 +5,13 @@
 #include "gragh.h"
 void graph_create_array(int a[][100], int n, int e) {
 	/*
-	 @description:¶Ô³ÆÊý×é´æ´¢µÄÁÚ½Ó±í
+	 @description:ï¿½Ô³ï¿½ï¿½ï¿½ï¿½ï¿½æ´¢ï¿½ï¿½ï¿½Ú½Ó±ï¿½
 	 @return : none
 	*/
 	int i, j, k, weigth;
 	for(i=0;i<n;i++)
 		for (j = 0; j < n; j++) {
-			a[i][j] = MaxValue; /*¸³×î´óÖµ*/
+			a[i][j] = MaxValue; /*ï¿½ï¿½ï¿½ï¿½ï¿½Öµ*/
 		}
 	for (k = 0; k < e; k++) {
 		scanf_s("%d %d %d \n", &i, &j, &weigth);
@@ -21,14 +21,14 @@ void graph_create_array(int a[][100], int n, int e) {
 }
 void graph_create_link(ver G[],int n,int e,int edata[][3]) {
 	/*
-	 @description:Á´±í´æ´¢µÄÁÚ½Ó±í
+	 @description:ï¿½ï¿½ï¿½ï¿½æ´¢ï¿½ï¿½ï¿½Ú½Ó±ï¿½
 	 @return : none
 	*/
 	int i, begin, end,weight;
 	edge *p,*q;
 
 	for (i = 0; i < n; i++) {
-		G[i].data = i + 1; //½Úµã´æ´¢µÄÐÅÏ¢¾ÍÊÇË÷Òý
+		G[i].data = i + 1; //ï¿½Úµï¿½æ´¢ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		G[i].next = NULL;
 	}
 	for (i = 0; i < e; i++) {
@@ -50,7 +50,7 @@ void graph_create_link(ver G[],int n,int e,int edata[][3]) {
 }
 void graph_link_print(ver G[],int n) {
 	/*
-	 @description:´òÓ¡Á´±í´æ´¢µÄÍ¼
+	 @description:ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½æ´¢ï¿½ï¿½Í¼
 	 @return : none
 	*/
 	int i;
@@ -58,7 +58,7 @@ void graph_link_print(ver G[],int n) {
 	edge* p;
 	for (i = 0; i < n; i++) {
 		ver_data = G[i].data;
-		printf("¶¥µã£º%d£¬ÆäÂ·¾¶µÄÖÕµã°üÀ¨£º", ver_data);
+		printf("ï¿½ï¿½ï¿½ã£º%dï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", ver_data);
 		p = G[i].next;
 		while (p) {
 			printf("--%d", p->loaction + 1);
@@ -69,11 +69,11 @@ void graph_link_print(ver G[],int n) {
 }
 
 void visit_ver(ver node) {
-	printf("·ÃÎÊ½Úµã£º%d\n", node.data);
+	printf("ï¿½ï¿½ï¿½Ê½Úµã£º%d\n", node.data);
 }
 /*
- @description: Éî¶ÈÓÅÏÈ±éÀú
- @param : GÎªÁ´±í´æ´¢µÄÁÚ½Ó±í£¬vÎª±éÀúµÄ¶¥µã£¬visited¼ÇÂ¼½Úµã·ÃÎÊÐÅÏ¢
+ @description: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È±ï¿½ï¿½ï¿½
+ @param : GÎªï¿½ï¿½ï¿½ï¿½æ´¢ï¿½ï¿½ï¿½Ú½Ó±ï¿½vÎªï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ã£¬visitedï¿½ï¿½Â¼ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 */
 void DFS(ver G[], int v, int visited[]) {
 	if (visited[v] == 1)
@@ -90,27 +90,27 @@ void DFS(ver G[], int v, int visited[]) {
 void graph_dfs(ver G[], int n) {
 	int i;
 	int* visits = (int*)calloc(sizeof(int),n);
-	//callocº¯Êý ·ÖÅäÄÚ´æ²¢¸³ÖµÎª0£¬´ËÍâÆä²ÎÊýÎª   ´óÐ¡£¬ÊýÁ¿
+	//callocï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ú´æ²¢ï¿½ï¿½ÖµÎª0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª   ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (i = 0; i < n; i++)
 		if (visits[i] == 0)
 			DFS(G, i, visits);
 }
 /*
- @description: ¹ã¶ÈÓÅÏÈÊ¹ÓÃµÝ¹éËã·¨
+ @description: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ÃµÝ¹ï¿½ï¿½ã·¨
  @return : none
 */
 void BFS(ver G[], int v, int visited[]) {
 	if (visited[v] == 1)
 		return;
 	edge* p = G[v].next;
-	//Í¨¹ýÕ»ÊµÏÖËùÓÐ ±ß½ÚµãµÄ´æ´¢
+	//Í¨ï¿½ï¿½Õ»Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß½Úµï¿½Ä´æ´¢
 	int queue[100];
 	int front = -1, rear = -1,temp;
-	//·ÃÎÊµ±Ç°½Úµã
+	//ï¿½ï¿½ï¿½Êµï¿½Ç°ï¿½Úµï¿½
 	visit_ver(G[v]);
 	visited[v] = 1;
 	while (p) {
-		//·ÃÎÊ±ß½Úµã
+		//ï¿½ï¿½ï¿½Ê±ß½Úµï¿½
 		temp = p->loaction;
 		if (visited[temp] == 0) {
 			queue[++rear] = temp;
@@ -119,46 +119,48 @@ void BFS(ver G[], int v, int visited[]) {
 		}
 		p = p->next;
 	}
-	//µÝ¹éµ÷ÓÃÊ£ÓàÕ»
+	//ï¿½Ý¹ï¿½ï¿½ï¿½ï¿½Ê£ï¿½ï¿½Õ»
 	while (front != rear) {
 		BFS(G, queue[++front],visited);
 	}
 }
 /*
- @description:²»Ê¹ÓÃµÝ¹éËã·¨
+ @description:ï¿½ï¿½Ê¹ï¿½ÃµÝ¹ï¿½ï¿½ã·¨
  @return : none
 */
 void BFS2(ver G[], int v, int visited[]) {
 	edge* p;
 	ver node;
-	//·ÃÎÊvÖ¸ÏòµÄ¶¥µã,ÊÂÊµÉÏÖ»ÓÐ³õÊ¼½ÚµãÐèÒªÔÚÑ­»·Íâ²¿·ÃÎÊ
+	//ï¿½ï¿½ï¿½ï¿½vÖ¸ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½,ï¿½ï¿½Êµï¿½ï¿½Ö»ï¿½Ð³ï¿½Ê¼ï¿½Úµï¿½ï¿½ï¿½Òªï¿½ï¿½Ñ­ï¿½ï¿½ï¿½â²¿ï¿½ï¿½ï¿½ï¿½
 	visit_ver(G[v]);
 	visited[v] = 1;
-	//Í¨¹ýÕ»ÊµÏÖËùÓÐ ±ß½ÚµãµÄ´æ´¢
+	//Í¨ï¿½ï¿½Õ»Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß½Úµï¿½Ä´æ´¢
 	int queue[100];
 	int front = -1, rear = -1, temp;
 
 	queue[++rear] = v;
 	while (front != rear) {
-		//»ñÈ¡µ±Ç°¶¥µã(µ±Ç°½ÚµãÒ»¶¨ÒÑ¾­±»·ÃÎÊ¹ýÁË)
+		//ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½Ç°ï¿½Úµï¿½Ò»ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½)
 		node = G[queue[++front]];
-		//·ÃÎÊÁ´½Úµã
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½
 		p = node.next;
 		while (p != NULL) {
 			temp = p->loaction;
 			if (visited[temp] == 0) {
 				visit_ver(G[temp]); 
 				visited[temp] = 1;
-				queue[++rear] = temp;//½øÕ»
+				queue[++rear] = temp;//ï¿½ï¿½Õ»
 			}
 			p = p->next;			
 		}
 	}
 }
 void graph_bfs(ver G[], int n) {
+	char str[50];
+	fgets(str);
 	int i;
 	int* visits = (int*)calloc(sizeof(int), n);
-	//callocº¯Êý ·ÖÅäÄÚ´æ²¢¸³ÖµÎª0£¬´ËÍâÆä²ÎÊýÎª   ´óÐ¡£¬ÊýÁ¿
+	//callocï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ú´æ²¢ï¿½ï¿½ÖµÎª0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª   ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (i = 0; i < n; i++)
 		if (visits[i] == 0)
 			BFS2(G, i, visits);
@@ -183,3 +185,4 @@ int main() {
 	printf("---------BFS\n");
 	graph_bfs(G, 9);
 }
+//E:/codeRe/Code-Reviewer-Porject/c_test_file/graph.c 

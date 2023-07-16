@@ -1,5 +1,5 @@
 /*
- @description: Õ»ÊµÏÖ£¬Í¨¹ýÊ¹ÓÃvoid*ÊµÏÖÄ£°å,»ñÈ¡ÖµÊ±ÐèÒªÊ¹ÓÃÇ¿ÖÆÀàÐÍ×ª»¯
+ @description: Õ»Êµï¿½Ö£ï¿½Í¨ï¿½ï¿½Ê¹ï¿½ï¿½void*Êµï¿½ï¿½Ä£ï¿½ï¿½,ï¿½ï¿½È¡ÖµÊ±ï¿½ï¿½ÒªÊ¹ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½
  @return : none
 */
 #include <stdio.h>
@@ -9,8 +9,8 @@
 #include <string.h>
 #include "stack.h"
 /*
- @description: Õ»µÄ³õÊ¼»¯
- @param: ÐèÒª´«ÈëÍ·½ÚµãµÄµØÖ· &(*node)
+ @description: Õ»ï¿½Ä³ï¿½Ê¼ï¿½ï¿½
+ @param: ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Í·ï¿½Úµï¿½Äµï¿½Ö· &(*node)
  @return: none
 */
 void stack_initial(node** a) {
@@ -18,18 +18,18 @@ void stack_initial(node** a) {
 }
 
 /*
- @description: ÅÐ¶ÏÕ»ÊÇ·ñÎª¿Õ
- @param: Õ»µÄÍ·½Úµã
- @return: ÈôÕ»Îª¿Õ·µ»Ø1£¬·ñÔò·µ»Ø0
+ @description: ï¿½Ð¶ï¿½Õ»ï¿½Ç·ï¿½Îªï¿½ï¿½
+ @param: Õ»ï¿½ï¿½Í·ï¿½Úµï¿½
+ @return: ï¿½ï¿½Õ»Îªï¿½Õ·ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½ï¿½ò·µ»ï¿½0
 */
 int stack_empty(node* a) {
 	return (a == NULL);
 }
 
 /*
- @description: ÏòÕ»ÖÐ²åÈëÔªËØ
- @param: ÐèÒª´«ÈëÍ·½ÚµãµÄµØÖ· &(*node) ºÍÒª²åÈëµÄÔªËØ
- @return: Èô²åÈë³É¹¦·µ»Ø1£¬·ñÔò·µ»Ø0
+ @description: ï¿½ï¿½Õ»ï¿½Ð²ï¿½ï¿½ï¿½Ôªï¿½ï¿½
+ @param: ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Í·ï¿½Úµï¿½Äµï¿½Ö· &(*node) ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
+ @return: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½ï¿½ò·µ»ï¿½0
 */
 int stack_insert(node** a, EleType item) {
 	node* temp;
@@ -43,9 +43,9 @@ int stack_insert(node** a, EleType item) {
 }
 
 /*
- @description: ´ÓÕ»ÖÐÉ¾³ýÔªËØ²¢·µ»ØÆäÖµ
- @param: ÐèÒª´«ÈëÍ·½ÚµãµÄµØÖ· &(*node)
- @return: ÈôÕ»Îª¿Õ·µ»ØNULL£¬·ñÔò·µ»ØÕ»¶¥ÔªËØµÄÖµ
+ @description: ï¿½ï¿½Õ»ï¿½ï¿½É¾ï¿½ï¿½Ôªï¿½Ø²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+ @param: ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Í·ï¿½Úµï¿½Äµï¿½Ö· &(*node)
+ @return: ï¿½ï¿½Õ»Îªï¿½Õ·ï¿½ï¿½ï¿½NULLï¿½ï¿½ï¿½ï¿½ï¿½ò·µ»ï¿½Õ»ï¿½ï¿½Ôªï¿½Øµï¿½Öµ
 */
 EleType stack_delete(node** a) {
 	EleType value;
@@ -59,9 +59,9 @@ EleType stack_delete(node** a) {
 }
 
 /*
- @description: »ñÈ¡Õ»¶¥ÔªËØµÄÖµ
- @param: Õ»µÄÍ·½Úµã ºÍ ÓÃÓÚ´æ´¢Õ»¶¥ÖµµÄÖ¸Õë
- @return: ÈôÕ»Îª¿Õ·µ»Ø0£¬·ñÔò·µ»Ø1
+ @description: ï¿½ï¿½È¡Õ»ï¿½ï¿½Ôªï¿½Øµï¿½Öµ
+ @param: Õ»ï¿½ï¿½Í·ï¿½Úµï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ú´æ´¢Õ»ï¿½ï¿½Öµï¿½ï¿½Ö¸ï¿½ï¿½
+ @return: ï¿½ï¿½Õ»Îªï¿½Õ·ï¿½ï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½ï¿½ò·µ»ï¿½1
 */
 int stack_gettop(node* a, EleType* result) {
 	if (stack_empty(a))
@@ -134,10 +134,10 @@ char*  inffix_to_suffix(char* inffix) {
 			while (1) {
 				stack_gettop(stack, &temp);
 				char k = (char)temp;
-				stack_delete(&stack);/*µ¯³ö*/
+				stack_delete(&stack);/*ï¿½ï¿½ï¿½ï¿½*/
 				if (k == '(') 
 					break;
-				else /*Èç¹ûµ¯³öµÄ²»ÊÇ(¾ÍÊÇÔËËã·û¿ªÊ¼Ð´Èë*/
+				else /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼Ð´ï¿½ï¿½*/
 					suffix[len++] = k;
 			}
 		}
@@ -147,7 +147,7 @@ char*  inffix_to_suffix(char* inffix) {
 					break;
 				stack_gettop(stack, &temp);
 				char k = (char)temp;
-				if (compare(c, k)) /*c´óÓÚµ±Ç°k²Å¿ÉÒÔ½øÕ»*/
+				if (compare(c, k)) /*cï¿½ï¿½ï¿½Úµï¿½Ç°kï¿½Å¿ï¿½ï¿½Ô½ï¿½Õ»*/
 					break;
 				else {
 					suffix[len++] = k;
@@ -157,14 +157,14 @@ char*  inffix_to_suffix(char* inffix) {
 			stack_insert(&stack, (EleType)c);
 		}
 	}
-	/*±éÀú½áÊø£¬ÒÀ´Îµ¯³öÕ»ÖÐµÄ¼ÆËã*/
+	/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½Õ»ï¿½ÐµÄ¼ï¿½ï¿½ï¿½*/
 	while (!stack_empty(stack)) {
 		stack_gettop(stack, &temp);
 		char k = (char)temp;
 		suffix[len++] = k;
 		stack_delete(&stack);
 	}
-	suffix[len++] = '\0';/*½ØÖÁ·û*/
+	suffix[len++] = '\0';/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 	return suffix;
 }
 
@@ -184,7 +184,7 @@ float eval_suffix(char* suffix) {
 		}
 			
 		else {
-			/*¶ÁÈ¡µ½ÔËËã·û¿ªÊ¼¼ÆËã,×¢ÒâmnµÄË³ÐòÎÊÌâ£¬ m c n Õ»ÖÐ´æ´¢£ºmnÏÈ¶Á³öµÄÊÇn*/
+			/*ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½,×¢ï¿½ï¿½mnï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½â£¬ m c n Õ»ï¿½Ð´æ´¢ï¿½ï¿½mnï¿½È¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½n*/
 			float m, n, result;
 			temp= stack_delete(&stack);
 			n = *(float*)temp;
@@ -228,7 +228,7 @@ float eval_suffix(char* suffix) {
 //	//EleType top;
 //
 //	//stack_insert(&stack, (EleType)2);
-//	///*´æ´¢Ö¸ÕëÀàÐÍ*/
+//	///*ï¿½æ´¢Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 //	///*stack_gettop(stack, &top);
 //	//int* pb = (int*)top;
 //	//int b = *pb;*/
@@ -248,3 +248,4 @@ float eval_suffix(char* suffix) {
 //
 //	//return 0;
 //}
+//E:/codeRe/Code-Reviewer-Porject/c_test_file/Stack.c 

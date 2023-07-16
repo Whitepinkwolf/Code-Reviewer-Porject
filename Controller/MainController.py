@@ -67,27 +67,14 @@
 #
 #
 
-import os
-import sys
-
-import pygments
-from PyQt5 import QtWidgets
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QTextCharFormat, QColor, QTextCursor
-from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTextEdit
-from pygments import highlight
-from pygments.formatters.html import HtmlFormatter
-from pygments.lexers import get_lexer_by_name
-from pygments.token import Token
 
+from Controller.customDialog.FindDialogController import set_search_dialog
+from Tool.fileTree import FileTree
 
-from Controller.FindDialogController import FindDialog, set_search_dialog
-from Data.getdata import Getdata
-from fileTree import FileTree
-
-from UI.Main import *
-from UI.CodeEditor import *
-from UI.FindDialog import *
+from UI.codeAudit.CodeEditor import *
+from UI.Dialog.FindDialog import *
 
 from Utils import *
 

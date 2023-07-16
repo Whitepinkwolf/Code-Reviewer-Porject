@@ -2,7 +2,7 @@
 
 import leancloud
 import os
-from  Controller.crawler import File
+from Tool.crawler import File
 appId = 'hrwjWdJzRfN5ewluWwtvoono-gzGzoHsz'
 appKey = 'J4WDUUz6lekpuSAGiVpLvF3x'
 masterkey = "ZDm5SkP4WOnkeK7suMar3gmU"

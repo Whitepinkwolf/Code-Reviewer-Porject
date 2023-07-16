@@ -6,9 +6,9 @@
 """
 import fnmatch
 import os
-from PyQt5 import QtCore, QtWidgets
-import Controller.crawler
-from Controller.crawler import File
+from PyQt5 import QtWidgets
+import Tool.crawler
+from Tool.crawler import File
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
 
@@ -190,6 +190,6 @@ class FileTree:
 
     def get_element_line(self):
         item_path,element=index_get_path(self.ui)
-        if not isinstance(element,Controller.crawler.File):
+        if not isinstance(element, Tool.crawler.File):
             # print(element.name,element.line)
             return element.name,element.line,item_path

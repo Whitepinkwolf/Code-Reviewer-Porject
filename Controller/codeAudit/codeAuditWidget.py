@@ -1,10 +1,12 @@
 import sys
 
 from PyQt5.QtWidgets import QTabBar
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtCore
 from PyQt5.QtWidgets import QApplication, QFileDialog
+from PyQt5.QtWidgets import QWidget
 
-from UI.Main import Ui_codeAudit
+from UI.codeAudit.codeAuditWidget import Ui_CodeAudit
+from UI.codeAudit.codeAuditMenuButton import codeAuditMenuButton
 from Controller.codeAudit.commentWidget import comment_Widget
 from Tool.fileTree import *
 from Controller.customDialog.FindDialogController import FindDialog
@@ -12,9 +14,9 @@ from Controller.customDialog.FindDialogController import FindDialog
 from Utils import *
 
 
-class codeAudit(QtWidgets.QWidget, Ui_codeAudit):
+class codeAudit_Widget(QWidget, Ui_CodeAudit):
     def __init__(self, parent=None):
-        super(codeAudit, self).__init__(parent)
+        super(codeAudit_Widget, self).__init__(parent)
         self.setupUi(self)
         self.initUI()
 
@@ -94,11 +96,8 @@ class codeAudit(QtWidgets.QWidget, Ui_codeAudit):
 
     def connectSignalsSlots(self):
         self.treeView.doubleClicked.connect(self.file_tree_clicked)
-        self.openAction.triggered.connect(self.openAction_click)  # 打开文件夹操作
         self.ChooseComboBox.activated.connect(self.fileTree.display_filtered_files)
-        self.findAction.triggered.connect(self.show_find_dialog)
-        self.saveAction.triggered.connect(lambda: self.show_save_dialog())
-        self.saveAsAction.triggered.connect(lambda: self.show_save_another_dialog())
+        self.OpenPushButton.clicked.connect(self.openAction_click)
         self.commentTabWidget.tabCloseRequested.connect(self.tabClose)
 
 
@@ -166,6 +165,6 @@ class codeAudit(QtWidgets.QWidget, Ui_codeAudit):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    win = codeAudit()
+    win = codeAudit_Widget()
     win.show()
     sys.exit(app.exec())

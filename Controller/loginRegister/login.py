@@ -1,11 +1,11 @@
 from PyQt5.QtWidgets import *
 
 from Data.leanCloud import UserQuery
-from UI.loginWidget import Ui_Login
+from UI.loginRegister.loginWidget import Ui_Login
 from register import MainRegistWindow
-from Data import leanCloud
-from leancloud import *
-from app import Window
+
+from Controller.menu import Menu
+
 import sys
 import configparser
 import os
@@ -15,11 +15,12 @@ UserP = {}  # 定义一个存储密码账号的元组
 
 filePath = os.path.dirname(os.getcwd())+"\\Data\\user.ini"
 
+
 class MainLoginWindow(QWidget, Ui_Login):
     def __init__(self, parent=None):
         super(MainLoginWindow, self).__init__(parent)
         self.re = MainRegistWindow()  # 这边一定要加self
-        self.mainWin = Window()
+        self.mainWin = Menu()
         self.setupUi(self)
         self.initUi()
 

@@ -1,20 +1,20 @@
 import sys
 
 from PyQt5.QtWidgets import QTabBar
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtCore
 from PyQt5.QtWidgets import QApplication, QFileDialog
 
-from UI.Main import Ui_codeAudit
-from Controller.codeAudit.commentWidget import comment_Widget
+from Controller.extentDetect.mutiCommentWidget import mutiComment_Widget
+from UI.extentDetect.extentWidegt import Ui_extent
 from Tool.fileTree import *
 from Controller.customDialog.FindDialogController import FindDialog
 
 from Utils import *
 
 
-class codeAudit(QtWidgets.QWidget, Ui_codeAudit):
+class extent_Widget(QtWidgets.QWidget, Ui_extent):
     def __init__(self, parent=None):
-        super(codeAudit, self).__init__(parent)
+        super(extent_Widget, self).__init__(parent)
         self.setupUi(self)
         self.initUI()
 
@@ -24,7 +24,7 @@ class codeAudit(QtWidgets.QWidget, Ui_codeAudit):
         self.fileTree = FileTree(self)
         self.set_file_tree()
 
-        self.commentWidget = None
+        self.mutiCommentWidget = None
         self.findDialog = None
         self.connectSignalsSlots()
 
@@ -64,7 +64,7 @@ class codeAudit(QtWidgets.QWidget, Ui_codeAudit):
             selected_file_name = os.path.basename(selected_file_path)
             selected_file_directory = os.path.dirname(selected_file_path)
 
-            file_content = self.commentWidget.get_code_text()
+            file_content = self.mutiCommentWidget.muti_get_code_text()
             save_file_dir = selected_file_directory
             print(save_file_dir)
             save_path, _ = QFileDialog.getSaveFileName(None, "另存为", selected_file_directory + '/' + 'untitle.c',
@@ -81,7 +81,7 @@ class codeAudit(QtWidgets.QWidget, Ui_codeAudit):
             selected_file_path = from_index_get_path(self.treeView)[0]
             selected_file_name = os.path.basename(selected_file_path)
             selected_file_directory = os.path.dirname(selected_file_path)
-            file_content = self.commentWidget.get_code_text()
+            file_content = self.mutiCommentWidget.get_code_text()
             save_file_dir = selected_file_path
             print(save_file_dir)
 
@@ -94,21 +94,13 @@ class codeAudit(QtWidgets.QWidget, Ui_codeAudit):
 
     def connectSignalsSlots(self):
         self.treeView.doubleClicked.connect(self.file_tree_clicked)
-        self.openAction.triggered.connect(self.openAction_click)  # 打开文件夹操作
         self.ChooseComboBox.activated.connect(self.fileTree.display_filtered_files)
-        self.findAction.triggered.connect(self.show_find_dialog)
-        self.saveAction.triggered.connect(lambda: self.show_save_dialog())
-        self.saveAsAction.triggered.connect(lambda: self.show_save_another_dialog())
+        self.OpenPushButton.clicked.connect(self.openAction_click)
         self.commentTabWidget.tabCloseRequested.connect(self.tabClose)
 
 
     def show_find_dialog(self):
-        # commentWidget = comment_Widget()
-        # self.commentTabWidget.addTab(commentWidget, item_path)
-        #
-        # self.commentWidget = commentWidget  # 添加该行
-
-        self.findDialog = FindDialog(self.commentWidget)
+        self.findDialog = FindDialog(self.mutiCommentWidget)
         self.findDialog.show()
 
     def file_tree_clicked(self):
@@ -121,19 +113,19 @@ class codeAudit(QtWidgets.QWidget, Ui_codeAudit):
             item_path = index_get_path(self)[0]
 
         if not os.path.isdir(item_path):
-            self.add_CommentWidget(item_path)
+            self.add_extent_CommentWidget(item_path)
             try:
                 with open(item_path, 'r', encoding=encoding_mode) as file:
                     file_content = file.read()
                     #  在这里可以使用文件内容进行进一步的处理
-                    self.commentWidget.set_open_text(item_path)
+                    self.mutiCommentWidget.muti_set_open_text(item_path)
 
             except FileNotFoundError:
                 print("文件不存在")
             except IOError:
                 print("无法读取文件")
 
-    def add_CommentWidget(self, item_path):
+    def add_extent_CommentWidget(self, item_path):
         file_name = os.path.basename(item_path)
 
         # 检查是否已存在相同路径的tab
@@ -145,12 +137,12 @@ class codeAudit(QtWidgets.QWidget, Ui_codeAudit):
                 return
 
         # 不存在相同路径的tab，新增tab
-        commentWidget = comment_Widget()
-        self.commentTabWidget.addTab(commentWidget, file_name)
-        commentWidget.setProperty("FilePath", item_path)
+        mutiCommentWidget = mutiComment_Widget()
+        self.commentTabWidget.addTab(mutiCommentWidget, file_name)
+        mutiCommentWidget.setProperty("FilePath", item_path)
 
-        self.commentWidget = commentWidget
-        self.commentTabWidget.setCurrentWidget(commentWidget)
+        self.mutiCommentWidget = mutiCommentWidget
+        self.commentTabWidget.setCurrentWidget(mutiCommentWidget)
 
     def set_file_tree(self):
         model = QtWidgets.QFileSystemModel()
@@ -166,6 +158,6 @@ class codeAudit(QtWidgets.QWidget, Ui_codeAudit):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    win = codeAudit()
+    win = extent_Widget()
     win.show()
     sys.exit(app.exec())

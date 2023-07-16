@@ -1,7 +1,7 @@
 # 参考 https://leancloud.cn/docs/sdk_setup-python.html, https://leancloud.github.io/python-sdk/
 
 import leancloud
-from Controller.crawler import *
+from Tool.crawler import *
 
 appId = 'hrwjWdJzRfN5ewluWwtvoono-gzGzoHsz'
 appKey = 'J4WDUUz6lekpuSAGiVpLvF3x'
@@ -76,7 +76,7 @@ def getRiskFunction():
                   'RiskLevel': riskFunction.get('RiskLevel'),
                   'Solution': riskFunction.get('Solution')}
         riskFunctionResult.append(result)
-    print(riskFunctionResult)
+    # print(riskFunctionResult)
     return riskFunctionResult
 
 
@@ -104,15 +104,18 @@ def deleteRiskFunction(FunctionName):
 def detectRiskFunction(filePath):
     fileObj = File(filePath)
     functionName = fileObj.get_function_name()
+    print(functionName)
+
     result = []
     for risk in getRiskFunction():
         if risk['FunctionName'] in functionName:
             result.append(risk)
+    print(result)
     return result
 
 
-filePath = "D:\Code-reviewer\Code-Reviewer-Porject\c_test_file\graph.c"
-print(detectRiskFunction(filePath))
+# filePath = "D:\Code-reviewer\Code-Reviewer-Porject\c_test_file\graph.c"
+# print(detectRiskFunction(filePath))
 
 '''用户信息存储'''
 

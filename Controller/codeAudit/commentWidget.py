@@ -1,17 +1,15 @@
-from PyQt5.QtCore import Qt, pyqtSlot
-from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtGui import QStandardItem, QStandardItemModel, QTextCharFormat, QColor, QTextCursor
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtGui import QTextCharFormat, QColor
 from PyQt5.QtWidgets import QTextEdit
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
-from qtpy import QtWidgets
-from UI.commentWidget import Ui_comment
-from Utils import *
+from UI.codeAudit.commentWidget import Ui_comment
 from Data.getdata import Getdata
-from UI.NewCodeEditor import *
+from UI.codeAudit.NewCodeEditor import *
 
-from Controller.fileTree import *
+from Tool.fileTree import *
+from leanCloud import *
 
 
 class comment_Widget(QtWidgets.QWidget, Ui_comment):
@@ -33,8 +31,8 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
         self.FunctionPushButton.clicked.connect(self.on_pushButton1_clicked)
         self.RiskFunctionPushButton.clicked.connect(self.on_pushButton2_clicked)
         # 设置双击事件
-        self.ShowDefineTableView.doubleClicked.connect(self.tableview_double_clicked)
-        self.ShowRiskFunctionTableView.doubleClicked.connect(self.tableview_double_clicked)
+        self.ShowDefineTableView.doubleClicked.connect(self. c_file_tableview_double_clicked)
+        self.ShowRiskFunctionTableView.doubleClicked.connect(self.riskFunction_tableview_double_clicked)
 
         self.commentCodeEditor.doubleClicked.connect(self.on_text_double_clicked)
         self.commentCodeEditor.clicked.connect(self.on_text_clicked)
@@ -157,15 +155,15 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
 
         self.ShowDefineTableView.setModel(model)
 
-    def set_RiskFunction_tableview(self):
+    def set_RiskFunction_tableview(self, risk_function_data):
         # 创建数据模型
         model = QStandardItemModel()
         # 设置列名称
         column_names = ['FunctionName', 'RiskLevel', 'Solution']
         model.setHorizontalHeaderLabels(column_names)
 
-        # 添加数据
-        datas = []
+        datas = [[item[key] for key in item.keys()] for item in risk_function_data]
+        print(datas)
 
         for row in datas:
             item_row = []
@@ -177,10 +175,7 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
 
         self.ShowRiskFunctionTableView.setModel(model)
 
-    """
-    bug
-    """
-    def tableview_double_clicked(self, index):
+    def c_file_tableview_double_clicked(self, index):
         tableview = self.ShowDefineTableView
         pte_content = self.ShowTextEdit
         code_text_new = self.commentCodeEditor
@@ -200,13 +195,15 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
             line = data[2]
             print(data)
 
+            # 找到所有匹配字符并存储
             search_text = value
-            cursor = code_text_new.textCursor()
+            # cursor = code_text_new.textCursor()
             format = QTextCharFormat()
             format.setBackground(QColor("yellow"))
 
             extra_selections = []
             code_text_new.moveCursor(QTextCursor.Start)
+            cursor = code_text_new.textCursor()
 
             while cursor.hasComplexSelection() or cursor.atEnd() == False:
                 cursor = code_text_new.document().find(search_text, cursor)
@@ -222,6 +219,87 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
                     break
             code_text_new.setExtraSelections(extra_selections)
 
+            #
+            selections = code_text_new.extraSelections()
+            self.current_index = 0
+            print('selections length: ')
+            print(len(selections))
+            print('current_index: ')
+            print(self.current_index)
+
+            if self.current_index < len(selections):
+                self.cursor = QTextCursor(selections[self.current_index].cursor)
+                code_text_new.setTextCursor(self.cursor)
+                self.current_index += 1
+
+                if self.pre_cursor is not None:
+                    # 设置行的格式
+                    format = self.pre_cursor.blockFormat()
+                    format.setBackground(QColor("#FFFFFF"))
+                    self.pre_cursor.setBlockFormat(format)
+                    # 将光标设置为初始位置
+                    self.pre_cursor.movePosition(QTextCursor.StartOfBlock)
+                    self.pre_cursor.setPosition(self.pre_cursor.position() + len(self.pre_cursor.block().text()),
+                                                QTextCursor.KeepAnchor)
+
+                line_number = self.cursor.blockNumber()
+
+                if int(line) == line_number+1:
+                    # 设置行的格式
+                    format = self.cursor.blockFormat()
+                    format.setBackground(QColor("red"))
+                    self.cursor.setBlockFormat(format)
+
+                    # 将光标设置为初始位置
+                    self.cursor.movePosition(QTextCursor.StartOfBlock)
+                    self.cursor.setPosition(self.cursor.position() + len(self.cursor.block().text()), QTextCursor.KeepAnchor)
+                self.pre_cursor = self.cursor
+
+    def riskFunction_tableview_double_clicked(self, index):
+        tableview = self.ShowDefineTableView
+        pte_content = self.RiskFunctionShowTextEdit
+        code_text_new = self.commentCodeEditor
+        if index.isValid():
+            index_row = index.row()
+            index_column = index.column()
+            value = index.data()
+            print(f"Double clicked on item: row={index_row}, column={index_column}, item={value}")
+            pte_content.setPlainText(value)
+
+            # 获取行数据
+            model = tableview.model()
+            data = []
+            for column in range(model.columnCount()):
+                item = model.index(index_row, column).data(Qt.DisplayRole)
+                data.append(item)
+            line = data[2]
+            print(data)
+
+            # 找到所有匹配字符并存储
+            search_text = value
+            # cursor = code_text_new.textCursor()
+            format = QTextCharFormat()
+            format.setBackground(QColor("yellow"))
+
+            extra_selections = []
+            code_text_new.moveCursor(QTextCursor.Start)
+            cursor = code_text_new.textCursor()
+
+            while cursor.hasComplexSelection() or cursor.atEnd() == False:
+                cursor = code_text_new.document().find(search_text, cursor)
+
+                if cursor.isNull() == False:
+                    target_number = cursor.block().blockNumber() + 1
+                    if str(target_number) == line:
+                        selection = QTextEdit.ExtraSelection()
+                        selection.format = format
+                        selection.cursor = QTextCursor(cursor)
+                        extra_selections.append(selection)
+                else:
+                    break
+            code_text_new.setExtraSelections(extra_selections)
+
+            #
             selections = code_text_new.extraSelections()
             self.current_index = 0
             print('selections length: ')
@@ -265,7 +343,9 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
 
         # 设置tableview中的内容
         self.set_c_file_tableview(header_files, macro_definitions, variable_names, function_declarations)
-        # self.set_RiskFunction_tableview
+        risk_function_data = detectRiskFunction(item_path)
+        print(risk_function_data)
+        self.set_RiskFunction_tableview(risk_function_data)
 
         # 设置editor中的内容
         file_content = file_content + '\n' + '//' + item_path

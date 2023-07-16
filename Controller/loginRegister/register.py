@@ -3,10 +3,8 @@ import re
 from PyQt5.QtWidgets import *
 
 from Data.leanCloud import UserStore, UserQuery
-from UI.registerWidget import Ui_Register
-from Data import leanCloud
-from leancloud import *
-from PyQt5.QtCore import pyqtSignal,Qt
+from UI.loginRegister.registerWidget import Ui_Register
+from PyQt5.QtCore import pyqtSignal
 
 
 class MainRegistWindow(QWidget, Ui_Register):

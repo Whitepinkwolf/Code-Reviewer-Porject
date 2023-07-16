@@ -1,11 +1,8 @@
-import re
+from PyQt5.QtCore import QRegularExpression
+from PyQt5.QtGui import QTextCursor, QColor, QTextCharFormat
+from PyQt5.QtWidgets import QTextEdit
 
-from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtCore import Qt, QRegularExpression
-from PyQt5.QtGui import QTextCursor, QColor, QTextCharFormat, QTextDocument
-from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit
-
-from UI.FindDialog import *
+from UI.Dialog.FindDialog import *
 from UI.Main import *
 
 
@@ -44,12 +41,13 @@ class FindDialog(QtWidgets.QDialog):
                 self.highlight_text(text_edit, search_text)
 
     def highlight_text(self, plain_text_edit, search_text):
-        cursor = plain_text_edit.textCursor()
+        # cursor = plain_text_edit.textCursor()
         format = QTextCharFormat()
         format.setBackground(QColor("yellow"))
 
         extra_selections = []
         plain_text_edit.moveCursor(QTextCursor.Start)
+        cursor = plain_text_edit.textCursor()
 
         while cursor.hasComplexSelection() or cursor.atEnd() == False:
             # cursor = plain_text_edit.document().find(search_text, cursor)
@@ -84,7 +82,7 @@ class FindDialog(QtWidgets.QDialog):
 
                 # 设置行的格式
                 format = cursor.blockFormat()
-                format.setBackground(QColor("red"))
+                format.setBackground(QColor("blue"))
                 cursor.setBlockFormat(format)
                 # 将光标设置为初始位置
                 cursor.movePosition(QTextCursor.StartOfBlock)

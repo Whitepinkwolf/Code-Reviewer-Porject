@@ -10,14 +10,15 @@ int a[6][6] = {
 };
 
 /*
- @description: mÐÐnÁÐµÄÏ¡Êè¾ØÕó×ª»¯ÎªÈýÔª×é
- ¶þÎ¬Êý×é×÷Îª²ÎÊý£¬¶þÎ¬
+ @description: mï¿½ï¿½nï¿½Ðµï¿½Ï¡ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Îªï¿½ï¿½Ôªï¿½ï¿½
+ ï¿½ï¿½Î¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¬
  @return : none
 */
 void Sparse_matrix_convert_Triples(const ElemType** matrix,int height,int width,ElemType result[][3]) {
 	int i, j,sum=0;
 	result[0][0] = height;
 	result[0][1] = width;
+	fgets()
 	for (i = 0; i < height; i++) {
 		for (j = 0; j < width; j++) {
 			if (matrix[i][j] != 0) {
@@ -30,3 +31,8 @@ void Sparse_matrix_convert_Triples(const ElemType** matrix,int height,int width,
 	}
 	result[0][2] = sum;
 }
+
+
+//E:/codeRe/Code-Reviewer-Porject/c_test_file/arrayList.c 
+//E:/codeRe/Code-Reviewer-Porject/c_test_file/arrayList.c 
+//E:/codeRe/Code-Reviewer-Porject/c_test_file/arrayList.c 
