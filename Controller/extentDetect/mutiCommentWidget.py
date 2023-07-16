@@ -4,7 +4,7 @@ from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 
 from UI.extentDetect.MutiWidegt import Ui_MutiWidget
-from getdata import Getdata
+from Data import *
 
 
 class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):

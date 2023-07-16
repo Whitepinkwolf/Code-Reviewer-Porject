@@ -9,7 +9,7 @@ from Data.getdata import Getdata
 from UI.codeAudit.NewCodeEditor import *
 
 from Tool.fileTree import *
-from leanCloud import *
+from Data import *
 
 
 class comment_Widget(QtWidgets.QWidget, Ui_comment):
