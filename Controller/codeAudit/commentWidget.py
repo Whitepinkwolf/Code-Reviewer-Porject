@@ -4,12 +4,15 @@ from PyQt5.QtWidgets import QTextEdit
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
+
+from Data.leanCloud import *
 from UI.codeAudit.commentWidget import Ui_comment
 from Data.getdata import Getdata
 from UI.codeAudit.NewCodeEditor import *
 
 from Tool.fileTree import *
 from Data import *
+from Utils import *
 
 
 class comment_Widget(QtWidgets.QWidget, Ui_comment):
