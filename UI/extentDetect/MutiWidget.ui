@@ -34,12 +34,12 @@
       <height>589</height>
      </rect>
     </property>
-    <widget class="QTextEdit" name="CodeEditor">
+    <widget class="NewCodeEditor" name="CodeEditor">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>30</x>
        <y>0</y>
-       <width>451</width>
+       <width>421</width>
        <height>591</height>
       </rect>
      </property>
@@ -109,22 +109,28 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStackedWidget" name="stackedWidget">
+  <widget class="QTabWidget" name="LogAndCmd">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>690</y>
+     <y>660</y>
      <width>451</width>
-     <height>101</height>
+     <height>121</height>
     </rect>
    </property>
-   <widget class="QWidget" name="page">
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Log Information</string>
+    </attribute>
     <widget class="QScrollArea" name="scrollArea_2">
      <property name="geometry">
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>451</width>
+       <width>441</width>
        <height>91</height>
       </rect>
      </property>
@@ -136,7 +142,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>449</width>
+        <width>439</width>
         <height>89</height>
        </rect>
       </property>
@@ -145,7 +151,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>451</width>
+         <width>441</width>
          <height>91</height>
         </rect>
        </property>
@@ -153,13 +159,16 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="page_2">
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>CMD</string>
+    </attribute>
     <widget class="QScrollArea" name="scrollArea_3">
      <property name="geometry">
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>451</width>
+       <width>441</width>
        <height>91</height>
       </rect>
      </property>
@@ -171,17 +180,17 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>449</width>
+        <width>439</width>
         <height>89</height>
        </rect>
       </property>
-      <widget class="QTextEdit" name="te_cmd">
+      <widget class="CmdTextEdit" name="te_cmd">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>451</width>
-         <height>91</height>
+         <width>441</width>
+         <height>87</height>
         </rect>
        </property>
       </widget>
@@ -189,38 +198,22 @@
     </widget>
    </widget>
   </widget>
-  <widget class="QPushButton" name="pb_log">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>650</y>
-     <width>101</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Log</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pb_cmd">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>650</y>
-     <width>101</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>CMD</string>
-   </property>
-  </widget>
  </widget>
  <customwidgets>
   <customwidget>
    <class>detectMenuButton</class>
    <extends>QPushButton</extends>
    <header location="global">detectmenubutton</header>
+  </customwidget>
+  <customwidget>
+   <class>NewCodeEditor</class>
+   <extends>QTextEdit</extends>
+   <header location="global">NewCodeEditor</header>
+  </customwidget>
+  <customwidget>
+   <class>CmdTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header location="global">CmdTextEdit</header>
   </customwidget>
  </customwidgets>
  <resources/>

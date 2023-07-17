@@ -10,19 +10,20 @@ class ToolClang:
         self.ccc_analyzer = llvm_path + '/libexec/ccc-analyzer'
         self.clang = llvm_path + '/bin/clang.exe'
         self.compile_output = ''
-        self.compile_error = None
+        self.compile_error = ''
         self.static_scan_output = ''
-        self.static_scan_error = None
+        self.static_scan_error = ''
         self.run_output = ''
-        self.run_error = None
+        self.run_error = ''
         self.format_output = ''
-        self.format_error = None
+        self.format_error = ''
         self.static_scan_strict_output = ''
-        self.static_scan_strict_error = None
+        self.static_scan_strict_error = ''
         self.static_scan_report_output = ''
-        self.static_scan_report_error = None
+        self.static_scan_report_error = ''
         self.code_evaluation_output = ''
         self.code_evaluation_error = ''
+        self.is_compile = False
 
     # clang --driver-mode=gcc -Wall -g3 -o D:/work1/c_test_file/test.exe D:/work1/c_test_file/test.c
     # 编译对应的c文件，并获取对应的错误输出，如果编译成功则输出The program compiles successfully
@@ -37,10 +38,14 @@ class ToolClang:
             self.compile_output = output
             if self.compile_output == '':
                 self.compile_output = 'The program compiles successfully ( '+self.file_path+' )'
-            print(self.compile_output)
+
+            self.is_compile = True
         except subprocess.CalledProcessError as e:
             self.compile_error = e.output
-            print(self.compile_error)
+        print('stdout:')
+        print(self.compile_output)
+        print('stderr:')
+        print(self.compile_error)
 
     # clang-tidy.exe -checks=*, -header-filter=.*, -extra-arg=-std=c11 D:/work1/c_test_file/test.c ---std=c++98：使用 C++98 标准。
     # -std=c++03：使用 C++03 标准，它是对 C++98 标准的一些修正和更正。
@@ -58,25 +63,29 @@ class ToolClang:
         try:
             output = subprocess.check_output(cmd, stderr=subprocess.STDOUT, universal_newlines=True)
             self.static_scan_output = output
-            print(self.static_scan_output)
+
         except subprocess.CalledProcessError as e:
             self.static_scan_error = e.output
             print(self.static_scan_error)
         except Exception as e:
             self.static_scan_error = str(e)
-            print(self.static_scan_error)
+        print('stdout:')
+        print(self.static_scan_output)
+        print('stderr:')
+        print(self.static_scan_error)
 
     # 运行对应的编译完成的exe文件，需要在函数run_compile之后运行
     def run_exec(self):
-        if self.compile_error is None:
+        if self.compile_error == '' and os.path.exists(self.file_path.replace('.c', '.exe')):
             try:
                 output = subprocess.check_output(self.file_path.replace('.c', '.exe'), shell=True, universal_newlines=True)
                 self.run_output = output
-                print(self.run_output)
             except subprocess.CalledProcessError as e:
-                self.run_error = e
-                print(self.run_error)
-
+                self.run_error = e.stdout
+            print('stdout:')
+            print(self.run_output)
+            print('stderr:')
+            print(self.run_error)
     #clang-format.exe -style=LLVM -i D:/work1/c_test_file/test.c
     # LLVM：使用LLVM项目的代码样式规范。
     # Google：使用Google开源项目的代码样式规范。
@@ -95,10 +104,13 @@ class ToolClang:
             self.format_output = output
             if self.format_output == '':
                 self.format_output = 'The program reformats successfully ( '+self.file_path+' )'
-            print(self.format_output)
+
         except subprocess.CalledProcessError as e:
             self.format_error = e.output
-            print(self.format_error)
+        print('stdout:')
+        print(self.format_output)
+        print('stderr:')
+        print(self.format_error)
 
     # clang-check.exe -extra-arg=-Wall -extra-arg=-Wextra -extra-arg=-Werror -extra-arg=-pedantic D:/work1/c_test_file/test.c --
     # 执行一个严格的扫描
@@ -111,11 +123,14 @@ class ToolClang:
             result = subprocess.run(cmd, capture_output=True, text=True)
             output = result.stderr
             self.static_scan_strict_output = output
-            print(self.static_scan_strict_output)
+
         except subprocess.CalledProcessError as e:
             error_output = e.stderr
             self.static_scan_strict_error = error_output
-            print(self.static_scan_strict_error)
+        print('stdout:')
+        print(self.static_scan_strict_output)
+        print('stderr:')
+        print(self.static_scan_strict_error)
 
     # scan-build.bat --use-cc=X:/llvm/libexec/ccc-analyzer --use-analyzer=X:/llvm/bin/clang.exe clang D:/work1/c_test_file/test.c
     def run_static_scan_report(self):
@@ -130,11 +145,14 @@ class ToolClang:
             result = subprocess.run(cmd, capture_output=True, text=True)
             output = result.stderr
             self.static_scan_report_output = output
-            print(self.static_scan_report_output)
+
         except subprocess.CalledProcessError as e:
             error_output = e.stderr
             self.static_scan_report_error = error_output
-            print(self.static_scan_report_error)
+        print('stdout:')
+        print(self.static_scan_report_output)
+        print('stderr:')
+        print(self.static_scan_report_error)
 
 
     # Filename: 源代码文件的路径。
@@ -164,10 +182,10 @@ class ToolClang:
             self.code_evaluation_output = self.code_evaluation_output+output
             # if output == '':
             #     self.code_evaluation_output = self.code_evaluation_output+'The program compiles successfully ( '+self.file_path+' )\n'
-            print(self.code_evaluation_output)
+
         except subprocess.CalledProcessError as e:
             self.code_evaluation_error = self.code_evaluation_error+e.output
-            print(self.code_evaluation_error)
+
         sleep(1)
         self.run_exec()
         cmd2 = ['llvm-profdata', 'merge', '-o', self.file_path.replace('.c', '.profdata'), self.file_path.replace('.c', '.profraw')]
@@ -177,10 +195,10 @@ class ToolClang:
             self.code_evaluation_output = self.code_evaluation_output + output
             # if output == '':
             #     self.code_evaluation_output = self.code_evaluation_output +'The program generates target parsing file successfully ( '+self.file_path+' )\n'
-            print(self.code_evaluation_output)
+
         except subprocess.CalledProcessError as e:
             self.code_evaluation_error = self.code_evaluation_error+e.output
-            print(self.code_evaluation_error)
+
         sleep(1)
         cmd3 = ['llvm-cov', 'report', self.file_path.replace('.c', '.exe'),
                 '-instr-profile='+self.file_path.replace('.c', '.profdata')]
@@ -193,15 +211,19 @@ class ToolClang:
             # print('stdout')
             # print(output.stdout)
             self.code_evaluation_output = self.code_evaluation_output + output.stdout
-            print(self.code_evaluation_output)
         except subprocess.CalledProcessError as e:
             self.code_evaluation_error = self.code_evaluation_error + e.output
-            print(self.code_evaluation_error)
+        print('stdout:')
+        print(self.code_evaluation_output)
+        print('stderr:')
+        print(self.code_evaluation_error)
 
     def init_files(self, file_path):
         # 检查文件是否存在
+        # print(os.path.exists(file_path))
         if os.path.exists(file_path):
             # 删除文件
+            print(file_path+' exists')
             os.remove(file_path)
 
     def from_code_evaluation_get_excel(self):
@@ -242,16 +264,16 @@ class ToolClang:
 
 if __name__ == '__main__':
     # #example
-    c_file_path = 'D:/work1/c_test_file/test.c'
+    c_file_path = 'D:/work1/c_test_file/test/test.c'
     llvm_path0 = get_available_llvm_path(llvm_path)
     tool_clang = ToolClang(c_file_path, llvm_path0)
 
     # tool_clang.format_code()
 
     # tool_clang.run_static_scan_strict()
-    # tool_clang.run_compile()
+    tool_clang.run_compile()
     # tool_clang.run_static_scan()
-    # tool_clang.run_exec()
+    tool_clang.run_exec()
     # tool_clang.run_static_scan_report()
 
     # tool_clang.run_code_quality_evaluation()

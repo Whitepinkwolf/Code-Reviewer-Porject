@@ -24,15 +24,15 @@ class detectMenuButton(QPushButton):
 
         # 创建QMenu
         self.contextMenu = QMenu(self)
-        self.actionA = self.contextMenu.addAction('1')
-        self.actionB = self.contextMenu.addAction('2')
-        self.actionC = self.contextMenu.addAction('3')
-        self.actionD = self.contextMenu.addAction('4')
-        self.actionE = self.contextMenu.addAction('5')
-        self.actionF = self.contextMenu.addAction('6')
+        self.actionA = self.contextMenu.addAction('FlawFinder扫描')
+        self.actionB = self.contextMenu.addAction('ClangTidy扫描')
+        self.actionC = self.contextMenu.addAction('ClangChecker扫描')
+        self.actionD = self.contextMenu.addAction('ClangScanBuild扫描')
+        self.actionE = self.contextMenu.addAction('CppChecker扫描')
+        self.actionF = self.contextMenu.addAction('Clang代码质量检测')
 
-        # # 将动作与处理函数相关联
-        # self.actionA.triggered.connect(self.parent.openAction_click)
+        # 将动作与处理函数相关联
+        # self.actionA.triggered.connect(self.parent.hello)
         # self.actionB.triggered.connect(self.parent.show_find_dialog)
         # self.actionC.triggered.connect(self.parent.show_save_dialog)
         # self.actionD.triggered.connect(self.parent.show_save_another_dialog)

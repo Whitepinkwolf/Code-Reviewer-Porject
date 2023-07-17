@@ -10,6 +10,7 @@ from PyQt5 import QtWidgets
 import Tool.crawler
 from Tool.crawler import File
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
+from Utils import *
 
 
 def is_c_or_h_file(file_path):
@@ -29,6 +30,7 @@ def File_get(file_path):
     for macro in file_obj.macro_list:
         element_list.append('macro:'+macro.name)
     return element_list
+
 
 def index_get_path(ui):
     treeview = ui.treeView
@@ -142,7 +144,7 @@ class FileTree:
                 parent_item.appendRow(folder_item)
                 self.add_folder_to_node(file_path, folder_item)
 
-            elif os.path.isfile(file_path):
+            elif os.path.isfile(file_path) and is_c_or_h_file(file_path):
                 file_item = QStandardItem(file_name)
                 parent_item.appendRow(file_item)
                 self.add_element_to_node(file_path, file_item)
