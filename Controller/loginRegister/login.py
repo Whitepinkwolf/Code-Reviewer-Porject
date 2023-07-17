@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 
-from Data.leanCloud import UserQuery
+from Data.leanCloud import *
 from UI.loginRegister.loginWidget import Ui_Login
 from register import MainRegistWindow
 
@@ -9,11 +9,12 @@ from Controller.menu import Menu
 import sys
 import configparser
 import os
+from Data.crypto import *
 
 global UserName
 UserP = {}  # 定义一个存储密码账号的元组
 
-filePath = os.path.dirname(os.getcwd())+"\\Data\\user.ini"
+filePath = os.path.dirname(os.path.dirname(os.getcwd()))+"\\Data\\user.ini"
 
 
 class MainLoginWindow(QWidget, Ui_Login):
@@ -94,7 +95,7 @@ class MainLoginWindow(QWidget, Ui_Login):
                 QMessageBox.information(self, "waining", "该账号不存在！", QMessageBox.Ok)
                 return False
             else:
-                if query_Passwd == Login_Passwd:  # 登陆成功
+                if checkPasswd(Login_Passwd, query_Passwd):  # 登陆成功
                     mess = QMessageBox()
                     mess.setWindowTitle("Success")
                     mess.setText("登录成功！")

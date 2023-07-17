@@ -8,51 +8,63 @@ import os
 import clang.cindex
 import re
 from Utils import *
+
+
 class Function:
-    def __init__(self, name, parameters,return_type,is_definition,local_functions,line,end_line):
+    def __init__(self, name, parameters, return_type, is_definition, local_functions, line, end_line):
         self.name = name
         self.parameters = parameters
-        self.return_type=return_type
+        self.return_type = return_type
         self.local_variables = []
-        self.local_functions=local_functions
-        self.is_define=is_definition #声明还是定义
-        self.line=line
-        self.end_line=end_line
+        self.local_functions = local_functions
+        self.is_define = is_definition  # 声明还是定义
+        self.line = line
+        self.end_line = end_line
+
     def combine_function(self):
         name = self.name
         param_type = [t[0] for t in self.parameters]
         combined = name + "(" + ", ".join(param_type) + ")"
         return combined
+
+
 class Variable:
-    def __init__(self, name, type,line):
+    def __init__(self, name, type, line):
         self.name = name
         self.type = type
-        self.line=line
+        self.line = line
+
+
 class Macro:
-    def __init__(self,name,content,line):
+    def __init__(self, name, content, line):
         # #define a 10   ,name=a  content=10
-        self.name=name
-        self.value=content
-        self.line=line
+        self.name = name
+        self.value = content
+        self.line = line
+
+
 class Include:
-    def __init__(self,name,line):
-        self.name=name
-        self.line=line
+    def __init__(self, name, line):
+        self.name = name
+        self.line = line
+
 
 class Struct:
-    def __init__(self, name, fields,line):
+    def __init__(self, name, fields, line):
         self.name = name
         self.fields = fields
-        self.line=line
+        self.line = line
+
 
 class File:
-    def __init__(self,filepath):
-        self.fun_list=[]
+    def __init__(self, filepath):
+        self.fun_list = []
         self.var_list = []
-        self.macro_list=[]
-        self.struct_list=[]
-        self.include_list=[]
-        self.file_path=filepath.replace("/", "\\")
+        self.macro_list = []
+        self.struct_list = []
+        self.include_list = []
+        self.file_path = filepath.replace("/", "\\")
+
     def find_define(self):
         macro_pattern = r'#define\s+(\w+)\s+(\w+)'
         # ^ ：表示匹配字符串的开头。
@@ -64,7 +76,7 @@ class File:
         #      "：表示匹配一个双引号。
         pattern1 = r'^\s*#include\s*<([^>]+)>'
         pattern2 = r'^\s*#include\s*"([^"]+)"'
-        with open(self.file_path,'r', encoding=encodings) as file:
+        with open(self.file_path, 'r', encoding=encodings) as file:
             lines = file.readlines()
             index = 1
             # print(lines)
@@ -85,19 +97,20 @@ class File:
                             self.macro_list.append(Macro(macro_name, macro_value, index))
                 index = index + 1
         file.close()
+
     def parse_functions(self, translation_unit):
         current_file_path = os.path.abspath(self.file_path)
-        all_fun_list=self.get_function_name() #获取文件名字
+        all_fun_list = self.get_function_name()  # 获取文件名字
 
         for node in translation_unit.cursor.walk_preorder():
             if node.kind == clang.cindex.CursorKind.FUNCTION_DECL:
                 function_location = node.extent.start.file.name
 
                 if function_location == current_file_path:
-                    #限制函数的实现在本文件进而实现相关功能
+                    # 限制函数的实现在本文件进而实现相关功能
                     function_name = node.spelling
                     function_start_line = node.extent.start.line
-                    function_end_line=node.extent.end.line
+                    function_end_line = node.extent.end.line
                     parameters = []
                     return_type = node.result_type.spelling
                     is_definition = False
@@ -109,24 +122,25 @@ class File:
                             parameter_name = child_node.spelling
                             parameters.append((parameter_type, parameter_name))
 
-
-                    #获取all_fun_list函数中 ，在目前遍历函数被调用的函数名字以及行数
-                    result=self.judge_fun_in_fun(all_fun_list,function_start_line,function_end_line)
+                    # 获取all_fun_list函数中 ，在目前遍历函数被调用的函数名字以及行数
+                    result = self.judge_fun_in_fun(all_fun_list, function_start_line, function_end_line)
                     function = Function(function_name, parameters, return_type,
-                                        is_definition,result,function_start_line,function_end_line)
+                                        is_definition, result, function_start_line, function_end_line)
                     self.fun_list.append(function)
-    def judge_fun_in_fun(self,funtion_list,begin,end):
+
+    def judge_fun_in_fun(self, funtion_list, begin, end):
         with open(self.file_path, 'r', encoding=encodings) as file:
             content = file.read()
-        result=[]
-        for function_name in funtion_list: #遍历当前的函数列表
-            lines=function_exists_in_file(content,function_name)
-            for line in lines: #遍历该函数名字对应的所有line
+        result = []
+        for function_name in funtion_list:  # 遍历当前的函数列表
+            lines = function_exists_in_file(content, function_name)
+            for line in lines:  # 遍历该函数名字对应的所有line
                 if begin < line < end:
-                    result.append((function_name,line))#一旦发现匹配直接写入结果跳出循环
+                    result.append((function_name, line))  # 一旦发现匹配直接写入结果跳出循环
                     lines.remove(line)  # 从lines中删除对应的行记录
                     break
-        return result  #返回所有可以匹配的函数列表,其中存储元组  (fun_name,line)
+        return result  # 返回所有可以匹配的函数列表,其中存储元组  (fun_name,line)
+
     def parse_global_variables(self, translation_unit):
         current_file_path = os.path.abspath(self.file_path)
 
@@ -139,8 +153,9 @@ class File:
                     variable_name = node.spelling
                     variable_type = node.type.spelling
                     variable_line = node.extent.start.line
-                    variable = Variable(variable_name, variable_type,variable_line)
+                    variable = Variable(variable_name, variable_type, variable_line)
                     self.var_list.append(variable)
+
     def parse_structs(self, translation_unit):
         current_file_path = os.path.abspath(self.file_path)
 
@@ -152,9 +167,10 @@ class File:
                     struct_name = node.spelling
                     fields = [(f.spelling, f.type.spelling) for f in node.get_children() if
                               f.kind == clang.cindex.CursorKind.FIELD_DECL]
-                    struct_line=node.extent.start.line
-                    struct = Struct(struct_name, fields,struct_line)
+                    struct_line = node.extent.start.line
+                    struct = Struct(struct_name, fields, struct_line)
                     self.struct_list.append(struct)
+
     def parse_local_variables(self, translation_unit):
         for node in translation_unit.cursor.walk_preorder():
             if node.kind == clang.cindex.CursorKind.VAR_DECL and \
@@ -165,13 +181,15 @@ class File:
                 parent_function_name = node.semantic_parent.spelling
                 for function in self.fun_list:
                     if function.name == parent_function_name:
-                        variable = Variable(variable_name, variable_type,variable_line)
+                        variable = Variable(variable_name, variable_type, variable_line)
                         function.local_variables.append(variable)
+
     def get_translation(self):
         file_path = self.file_path
         index = clang.cindex.Index.create()
         translation_unit = index.parse(file_path)
         return translation_unit
+
     def parse_c_file(self):
         self.find_define()
 
@@ -182,6 +200,7 @@ class File:
         self.parse_structs(translation_unit)
 
         return self.fun_list, self.macro_list, self.struct_list, self.var_list
+
     def get_function_name(self):
         """
         @description: 获取调用的函数名字,函数名字必须在本文件出现,注意encoding方式
@@ -193,17 +212,21 @@ class File:
             content = file.read()
         file.close()
         for node in translation_unit.cursor.walk_preorder():
-            if node.kind == clang.cindex.CursorKind.FUNCTION_DECL:#函数声明（注意库函数没有在本文件调用）
+            if node.kind == clang.cindex.CursorKind.FUNCTION_DECL:  # 函数声明（注意库函数没有在本文件调用）
                 function_name = node.spelling
-                if len(function_exists_in_file(content,function_name))!=0: #获取的函数出现位置list不为0
+                if len(function_exists_in_file(content, function_name)) != 0:  # 获取的函数出现位置list不为0
                     fun_list.append(function_name)
         return fun_list
+
+
 """
 @description: 静态函数部分
 @Time：2023/7/14 || 12:37 ||20324
 """
-def function_exists_in_file(content,function_name):
-    #返回函数出现的行数
+
+
+def function_exists_in_file(content, function_name):
+    # 返回函数出现的行数
     pattern = r'\b' + re.escape(function_name) + r'\b'
     matches = re.finditer(pattern, content)
     locations = []
@@ -213,11 +236,10 @@ def function_exists_in_file(content,function_name):
     return locations
 
 
-
 # 测试示例
 if __name__ == "__main__":
-    file_path ="D:\\project_code\\pythonproject\\CodeAuditing\\test_c\\graph.c"
-    file_obj=File(file_path)
+    file_path = "D:\\project_code\\pythonproject\\CodeAuditing\\test_c\\graph.c"
+    file_obj = File(file_path)
     file_obj.parse_c_file()
 
     print(file_obj.get_function_name())
@@ -227,8 +249,8 @@ if __name__ == "__main__":
         for para_name in function.local_functions:
             print(f"local function:{para_name[0]},line:{para_name[1]}")
         print("Parameters:", function.parameters)
-        print("return:",function.return_type)
-        print("is defined?:",function.is_define)
+        print("return:", function.return_type)
+        print("is defined?:", function.is_define)
         print("Local Variables:")
         for variable in function.local_variables:
             print(f"{variable.type} {variable.name} {variable.line}")

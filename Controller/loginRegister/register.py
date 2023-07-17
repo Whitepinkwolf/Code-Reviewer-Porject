@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import *
 from Data.leanCloud import UserStore, UserQuery
 from UI.loginRegister.registerWidget import Ui_Register
 from PyQt5.QtCore import pyqtSignal
-
+from Data.crypto import *
 
 class MainRegistWindow(QWidget, Ui_Register):
     SuccessReg = pyqtSignal()  # 定义一个注册成功信号

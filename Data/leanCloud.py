@@ -2,6 +2,8 @@
 
 import leancloud
 from Tool.crawler import *
+from Data.crypto import *
+
 
 appId = 'hrwjWdJzRfN5ewluWwtvoono-gzGzoHsz'
 appKey = 'J4WDUUz6lekpuSAGiVpLvF3x'
@@ -124,12 +126,12 @@ def UserStore(username, password):
     UserObject = leancloud.Object.extend('UserObject')
     userObject = UserObject()
     userObject.set('Username', username)
-    userObject.set('Password', password)
+    str_my_hashpassword = passwd_hash(password)
+    userObject.set('Password', str_my_hashpassword)
     userObject.save()
 
 
 '''用户信息打印'''
-
 
 def UserShow(riskFunction):
     print(f'objectId = {riskFunction.get("objectId")}, '
