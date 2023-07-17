@@ -2,6 +2,7 @@ import re
 import subprocess
 from Utils import *
 
+
 class ToolFlawfinder:
     def __init__(self, filepath):
         self.c_file_path = filepath
@@ -58,8 +59,9 @@ class ToolFlawfinder:
         self.levels_plus = re.findall(self.pattern4, self.Hits_level_plus)
         self.levels_plus_KSLOC = re.findall(self.pattern4, self.KSLOC)
 
+
 if __name__ == '__main__':
-    #example
+    # example
     c_file_path = 'D:/work1/c_test_file/flawfinder.c'
     tool_flawfinder = ToolFlawfinder(c_file_path)
     tool_flawfinder.run()
@@ -70,4 +72,3 @@ if __name__ == '__main__':
     print(tool_flawfinder.result_text)
     print(tool_flawfinder.levels_plus_KSLOC)
     # ...get other data
-

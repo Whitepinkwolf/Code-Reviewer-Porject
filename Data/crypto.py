@@ -1,6 +1,4 @@
 import bcrypt
-
-
 # passwd = '123456'
 #
 # bytes_my_password = bytes(passwd, encoding='utf-8')
