@@ -113,5 +113,5 @@ if __name__ == '__main__':
     # tool_memory.run_gcc_compile()
     tool_memory.run_cl_compile()
     tool_memory.run()
-    tool_memory.extract_memory_leaks('result.txt')
+    tool_memory.extract_memory_leaks()
 

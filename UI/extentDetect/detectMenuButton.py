@@ -30,7 +30,7 @@ class detectMenuButton(QPushButton):
         self.actionD = self.contextMenu.addAction('ClangScanBuild扫描')
         self.actionE = self.contextMenu.addAction('CppChecker扫描')
         self.actionF = self.contextMenu.addAction('Clang代码质量检测')
-
+        self.actionG = self.contextMenu.addAction('内存泄漏检测')
         # 将动作与处理函数相关联
         # self.actionA.triggered.connect(self.parent.hello)
         # self.actionB.triggered.connect(self.parent.show_find_dialog)

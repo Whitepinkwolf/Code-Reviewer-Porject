@@ -122,7 +122,8 @@ class FileTree:
     def open_folder_dialog(self):
 
         folder_dialog = QtWidgets.QFileDialog()
-        folder_path = folder_dialog.getExistingDirectory(self.parent.treeView, "选择文件夹", 'D:\project_code\pythonproject\CodeAuditing\\test_c')
+        folder_path = folder_dialog.getExistingDirectory(self.parent.treeView, "选择文件夹",
+                                                         r'D:\project_code\pythonproject\CodeAuditing\Code-Reviewer-Porject\c_test_file')
         self.tree_model.clear()  # 清空现有的模型数据
         self.folder_path = folder_path
         self.ChooseComboBox.setVisible(True)
@@ -195,3 +196,4 @@ class FileTree:
         if not isinstance(element, Tool.crawler.File):
             # print(element.name,element.line)
             return element.name,element.line,item_path
+

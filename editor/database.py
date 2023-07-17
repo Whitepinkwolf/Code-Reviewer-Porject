@@ -2,7 +2,6 @@
 
 import leancloud
 import os
-from Tool.crawler import File
 appId = 'hrwjWdJzRfN5ewluWwtvoono-gzGzoHsz'
 appKey = 'J4WDUUz6lekpuSAGiVpLvF3x'
 masterkey = "ZDm5SkP4WOnkeK7suMar3gmU"
@@ -119,10 +118,10 @@ class crawler_database:
         }
         add_element(self.Struct_name, value_dict)
 
-
-if __name__ == "__main__":
-    file_path = "D:\\project_code\\pythonproject\\CodeAuditing\\test_c\\graph.c"
-    file_obj=File(file_path)
-    file_obj.parse_c_file()
-    db=crawler_database()
-    db.add_file(file_obj)
+#
+# if __name__ == "__main__":
+#     file_path = "D:\\project_code\\pythonproject\\CodeAuditing\\test_c\\graph.c"
+#     file_obj=File(file_path)
+#     file_obj.parse_c_file()
+#     db=crawler_database()
+#     db.add_file(file_obj)

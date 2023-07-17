@@ -4,12 +4,11 @@
 @Time：2023/7/11 13:50
 @user: 20324
 """
-import os
 import clang.cindex
 import re
 from Utils import *
-
-
+from editor.database import crawler_database
+from Utils import open_with_encodings
 class Function:
     def __init__(self, name, parameters, return_type, is_definition, local_functions, line, end_line):
         self.name = name
@@ -76,27 +75,26 @@ class File:
         #      "：表示匹配一个双引号。
         pattern1 = r'^\s*#include\s*<([^>]+)>'
         pattern2 = r'^\s*#include\s*"([^"]+)"'
-        with open(self.file_path, 'r', encoding=encodings) as file:
-            lines = file.readlines()
-            index = 1
-            # print(lines)
-            for line in lines:
-                if line.startswith('#include'):
-                    matche1 = re.findall(pattern1, line)
-                    matche2 = re.findall(pattern2, line)
-                    if matche1:
-                        self.include_list.append(Include(matche1, index))
-                    else:
-                        self.include_list.append(Include(matche2, index))
-                elif line.startswith('#define'):
-                    matches = re.findall(macro_pattern, line)
-                    if matches:
-                        for match in matches:
-                            macro_name = match[0]
-                            macro_value = match[1]
-                            self.macro_list.append(Macro(macro_name, macro_value, index))
-                index = index + 1
-        file.close()
+        lines=open_with_encodings(self.file_path)
+        index = 1
+        # print(lines)
+        for line in lines:
+            if line.startswith('#include'):
+                matche1 = re.findall(pattern1, line)
+                matche2 = re.findall(pattern2, line)
+                if matche1:
+                    self.include_list.append(Include(matche1, index))
+                else:
+                    self.include_list.append(Include(matche2, index))
+            elif line.startswith('#define'):
+                matches = re.findall(macro_pattern, line)
+                if matches:
+                    for match in matches:
+                        macro_name = match[0]
+                        macro_value = match[1]
+                        self.macro_list.append(Macro(macro_name, macro_value, index))
+            index = index + 1
+
 
     def parse_functions(self, translation_unit):
         current_file_path = os.path.abspath(self.file_path)
@@ -129,8 +127,8 @@ class File:
                     self.fun_list.append(function)
 
     def judge_fun_in_fun(self, funtion_list, begin, end):
-        with open(self.file_path, 'r', encoding=encodings) as file:
-            content = file.read()
+        content=open_with_encodings(self.file_path)
+
         result = []
         for function_name in funtion_list:  # 遍历当前的函数列表
             lines = function_exists_in_file(content, function_name)
@@ -208,16 +206,17 @@ class File:
         """
         translation_unit = self.get_translation()
         fun_list = []
-        with open(self.file_path, 'r', encoding=encodings) as file:
-            content = file.read()
-        file.close()
+        content=open_with_encodings(self.file_path)
         for node in translation_unit.cursor.walk_preorder():
             if node.kind == clang.cindex.CursorKind.FUNCTION_DECL:  # 函数声明（注意库函数没有在本文件调用）
                 function_name = node.spelling
                 if len(function_exists_in_file(content, function_name)) != 0:  # 获取的函数出现位置list不为0
                     fun_list.append(function_name)
         return fun_list
-
+    def sava_to_database(self):
+        file_obj.parse_c_file()
+        db = crawler_database()
+        db.add_file(self)
 
 """
 @description: 静态函数部分
@@ -241,7 +240,7 @@ if __name__ == "__main__":
     file_path = "D:\\project_code\\pythonproject\\CodeAuditing\\test_c\\graph.c"
     file_obj = File(file_path)
     file_obj.parse_c_file()
-
+    # file_obj.sava_to_database() 存储到数据库操作
     print(file_obj.get_function_name())
 
     for function in file_obj.fun_list:

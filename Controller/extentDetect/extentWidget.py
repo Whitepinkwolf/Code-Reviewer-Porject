@@ -115,10 +115,8 @@ class extent_Widget(QtWidgets.QWidget, Ui_extent):
         if not os.path.isdir(item_path):
             self.add_extent_CommentWidget(item_path)
             try:
-                with open(item_path, 'r', encoding=encoding_mode) as file:
-                    file_content = file.read()
-                    #  在这里可以使用文件内容进行进一步的处理
-                    self.mutiCommentWidget.muti_set_open_text(item_path)
+                file_content=open_with_encodings(item_path)
+                self.mutiCommentWidget.muti_set_open_text(item_path)
 
             except FileNotFoundError:
                 print("文件不存在")

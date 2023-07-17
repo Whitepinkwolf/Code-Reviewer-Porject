@@ -2,11 +2,12 @@ import os
 
 header_file_str = 'Header file'
 macro_definitions_str = 'Macro definition'
+encoding_list=['utf-8', 'gbk'] #encoding列表
 encoding_mode = 'gbk'
 neu_copy_right = ' and Software College of Northeastern University'
 
 #这个部分传入对应的llvm的路径，第一个是我的，剩下的需要你们自行添加
-llvm_path = ['X:/llvm','','']
+llvm_path = ['X:/llvm','D:/llvm','']
 
 
 def get_available_llvm_path(llvm_path):
@@ -14,7 +15,7 @@ def get_available_llvm_path(llvm_path):
         if os.path.exists(path):
             return path
     return None
-
+encodings='utf-8'
 def check_extension(item_path):
     file_extension = os.path.splitext(item_path)[1]
     if file_extension == '.c' or file_extension == '.h':
@@ -35,5 +36,19 @@ def get_debug_database():
         print(db_path)
         return db_path
     return
+
+def open_with_encodings(file_path):
+    """
+    @description: 通过不停更换编码方式实现对于不同编码文件的一起访问
+    @Time：2023/7/17 || 20:47 ||20324
+    """
+    for encoding in encoding_list:
+        try:
+            with open(file_path, 'r', encoding=encoding) as file:
+                content = file.read()
+                return content
+        except UnicodeDecodeError:
+            continue
+    return None
 
 

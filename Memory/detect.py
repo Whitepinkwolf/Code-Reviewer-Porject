@@ -1,84 +1,66 @@
-import clang.cindex
+from Memory.tool_Clang import ToolClang ,get_available_llvm_path
+from Memory.tool_memory import ToolMemoryChecker
+from Memory.tool_cppchecker import ToolCppChecker
+from Memory.tool_flawfinder import ToolFlawfinder
+from Utils import llvm_path
 
-def find_memory_leaks(file_path):
-    # 创建Clang索引
-    index = clang.cindex.Index.create()
+def memory_merge(file_path):
+    result=[]
+    #cppcheck 工具
+    cppcheck_obj=ToolCppChecker(file_path)
+    cppcheck_obj.run_scan()
+    cpp_return={'cppcheckertext':cppcheck_obj.output}
+    result.append(cpp_return)
+    #drmemory内存检测工具
+    drmemory_obj=ToolMemoryChecker(file_path)
+    errors,errors_summery=drmemory_obj.extract_memory_leaks()
+    drmemory_text={'drmemory_error':errors,
+                   'drmemory_summery':errors_summery}
+    result.append(drmemory_text)
 
-    # 解析C语言文件
-    translation_unit = index.parse(file_path)
+    #clang 包括 clangcheck and clangvauation
+    llvm_path0 = get_available_llvm_path(llvm_path) #获取正确的llvm（我们多个人写了多个路径，会自动寻找合适的path）
+    clang_obj=ToolClang(file_path,llvm_path0)
+    clang_obj.format_code()
+    clang_obj.run_static_scan_strict()
+    clang_obj.run_compile()
+    clang_obj.run_static_scan()
+    clang_obj.run_exec()
+    clang_obj.run_static_scan_report()
+    clang_obj.run_code_quality_evaluation()
 
-    # 获取语法树的根节点
-    root = translation_unit.cursor
+    clang_check_return={'clangcheckertext':clang_obj.static_scan_strict_error}
+    result.append(clang_check_return)
 
-    # 存储内存分配的节点和对应的释放节点
-    allocation_nodes = {}
+    clang_valuation_return={'clangevaluationtext': clang_obj.code_evaluation_error}
+    result.append(clang_valuation_return)
 
-    # 遍历语法树，查找内存分配和释放的匹配对
-    for node in root.walk_preorder():
-        if node.kind == clang.cindex.CursorKind.CALL_EXPR:
-            # 检查内存分配函数
-            if node.spelling in ['malloc', 'calloc', 'realloc']:
-                # 获取内存分配函数的行号和大小参数
-                line = node.location.line
-                size = get_memory_allocation_size(node)
+    tool_flawfinder = ToolFlawfinder(file_path)
+    tool_flawfinder.run()
+    tool_flawfinder.get_data()
+    tool_flawfinder.get_graph_base_data()
+    tool_flawfinder_dict={'Flawfindertext': tool_flawfinder.result_text,
+          'copy_right': tool_flawfinder.copy_right,
+          'detect_rules': tool_flawfinder.detect_rules,
+          'examing_file': tool_flawfinder.examing_file,
+          'final_results': tool_flawfinder.final_results,
+          'analysis_summary': tool_flawfinder.analysis_summary,
+          'hits': tool_flawfinder.hits,
+          'detect_lines': tool_flawfinder.detect_lines,
+          'detect_real_lines': tool_flawfinder.detect_real_lines,
+          'Minimum_risk_level': tool_flawfinder.Minimum_risk_level,
+          'levels': tool_flawfinder.levels,
+          'levels_plus': tool_flawfinder.levels_plus,
+          'levels_plus_KSLOC': tool_flawfinder.levels_plus_KSLOC
+          }
+    result.append(tool_flawfinder_dict)
+    return result
+if __name__=='__main__':
+    file_path = r'D:\project_code\pythonproject\CodeAuditing\test_c\test.c'
+    result=memory_merge(file_path)
+    for dict in result:
+        for key,value in dict.items():
+            print(key,":",value)
 
-                # 存储内存分配节点
-                allocation_nodes[line] = {
-                    'node': node,
-                    'size': size,
-                    'freed': False
-                }
 
-            # 检查内存释放函数
-            elif node.spelling == 'free':
-                # 获取内存释放函数的行号和参数
-                line = node.location.line
-                argument = get_free_argument(node)
-
-                # 查找对应的内存分配节点
-                allocation_node = find_matching_allocation(line, argument, allocation_nodes)
-
-                if allocation_node is not None:
-                    # 标记该内存分配节点已被释放
-                    allocation_node['freed'] = True
-                else:
-                    print(f"Possible memory leak at line {line}")
-
-    # 输出未释放的内存分配
-    for line, allocation_node in allocation_nodes.items():
-        if not allocation_node['freed']:
-            print(f"Unfreed memory allocation at line {line}")
-
-    print('allocation_nodes: ')
-    print(allocation_nodes)
-
-def get_memory_allocation_size(node):
-    # 获取内存分配函数的大小参数
-    for argument in node.get_arguments():
-        if argument.kind == clang.cindex.CursorKind.INTEGER_LITERAL:
-            return int(argument.spelling)
-
-    return None
-
-def get_free_argument(node):
-    # 获取内存释放函数的参数
-    arguments = list(node.get_arguments())
-    if arguments:
-        return arguments[0].spelling
-
-    return None
-
-def find_matching_allocation(line, argument, allocation_nodes):
-    # 在已有的内存分配节点中查找匹配的节点
-    for allocation_node in allocation_nodes.values():
-        if not allocation_node['freed'] and allocation_node['size'] == argument:
-            return allocation_node
-
-    return None
-
-# 指定C语言文件路径
-c_file_path = '../c_test_file/test.c'
-
-# 调用函数进行内存泄漏检测
-find_memory_leaks(c_file_path)
 
