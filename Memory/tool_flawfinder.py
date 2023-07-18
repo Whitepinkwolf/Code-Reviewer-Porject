@@ -23,8 +23,8 @@ class ToolFlawfinder:
         self.KSLOC = ''
         self.Minimum_risk_level = ''
 
-        self.pattern3 = r"\[\d+\]\s(\d+)"  # 匹配方括号和数字
-        self.pattern4 = r"\[\d+\+\]\s(\d+)"  # 匹配方括号+和数字
+        self.pattern3 = r"\[\d+\]\s+(\d+)"  # 匹配方括号和数字
+        self.pattern4 = r"\[\d+\+\]\s+(\d+)"  # 匹配方括号+和数字
         self.levels = []
         self.levels_plus = []
         self.levels_plus_KSLOC = []
