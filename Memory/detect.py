@@ -10,6 +10,7 @@ def memory_merge(file_path):
     cppcheck_obj=ToolCppChecker(file_path)
     cppcheck_obj.run_scan()
     cpp_return={'cppcheckertext':cppcheck_obj.output}
+
     result.append(cpp_return)    #cpp直接运行的结果
     #drmemory内存检测工具
     drmemory_obj=ToolMemoryChecker(file_path)
@@ -18,6 +19,7 @@ def memory_merge(file_path):
     errors,errors_summery=drmemory_obj.extract_memory_leaks()
     drmemory_text={'drmemory_error':errors,      #命令列表
                    'drmemory_summery':errors_summery}  # 错误命令类型的数量计数
+
     result.append(drmemory_text)
 
     #clang 包括 clangcheck and clangvauation
