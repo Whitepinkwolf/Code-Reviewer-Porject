@@ -13,27 +13,28 @@ from PyQt5.QtWidgets import QApplication
 from UI.extentDetect.drmemoryWidget import Ui_Form
 from Memory.tool_memory import ToolMemoryChecker
 
-class drmemory_Widget(QtWidgets.QWidget, Ui_Form):
-    def __init__(self,filePath ,parent=None):
+class Drmemory_Widget(QtWidgets.QWidget, Ui_Form):
+    def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.file_path =filePath
+        # self.file_path =filePath
         self.setupUi(self)
-        self.connectSignalsSlots()
-        self.show_information()
+    #     self.connectSignalsSlots()
+    #     self.show_information()
+    #
+    # def connectSignalsSlots(self):
+    #
+    #     return
 
-    def connectSignalsSlots(self):
-
-        return
-
-    def show_information(self):
-        c_file_path = self.file_path
-        tool_memory = ToolMemoryChecker(c_file_path)
-        tool_memory.run_cl_compile()
-        tool_memory.run()
-        errors,errors_summery=tool_memory.extract_memory_leaks()
+    def show_information(self, errors, errors_summery):
+        # c_file_path = self.file_path
+        # tool_memory = ToolMemoryChecker(c_file_path)
+        # tool_memory.run_cl_compile()
+        # tool_memory.run()
+        # errors,errors_summery=tool_memory.extract_memory_leaks()
         self.textEdit.setText("\n".join(errors))
         self.write_to_table(errors_summery)
+
     def write_to_table(self,list):
         # 创建一个 QStandardItemModel 对象
         model = QStandardItemModel()
@@ -51,8 +52,8 @@ class drmemory_Widget(QtWidgets.QWidget, Ui_Form):
         self.tableView.setModel(model)
 
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    win = drmemory_Widget(r'D:\project_code\pythonproject\CodeAuditing\\test_c\\graph.c')
-    win.show()
-    sys.exit(app.exec())
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+#     win = drmemory_Widget(r'D:\project_code\pythonproject\CodeAuditing\\test_c\\graph.c')
+#     win.show()
+#     sys.exit(app.exec())

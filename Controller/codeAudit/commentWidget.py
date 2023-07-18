@@ -22,6 +22,14 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
         self.current_index = 0
         self.pre_cursor = None
         self.cursor = None
+        self.current_line = -1
+        self.pre_line = -1
+
+        self.risk_current_index = 0
+        self.risk_pre_cursor = None
+        self.risk_cursor = None
+        self.risk_current_line = -1
+        self.risk_pre_line = -1
 
         self.initUI()
         self.connectSignalsSlots()
@@ -34,6 +42,7 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
         self.RiskFunctionPushButton.clicked.connect(self.on_pushButton2_clicked)
         # 设置双击事件
         self.ShowDefineTableView.doubleClicked.connect(self. c_file_tableview_double_clicked)
+        self.ShowDefineTableView.clicked.connect(self.c_file_tableview_clicked)
         self.ShowRiskFunctionTableView.doubleClicked.connect(self.riskFunction_tableview_double_clicked)
 
         self.commentCodeEditor.doubleClicked.connect(self.on_text_double_clicked)
@@ -177,6 +186,17 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
 
         self.ShowRiskFunctionTableView.setModel(model)
 
+    def c_file_tableview_clicked(self, index):
+        if self.pre_cursor is not None:
+            # 设置行的格式
+            format = self.pre_cursor.blockFormat()
+            format.setBackground(QColor("#FFFFFF"))
+            self.pre_cursor.setBlockFormat(format)
+            # 将光标设置为初始位置
+            self.pre_cursor.movePosition(QTextCursor.StartOfBlock)
+            self.pre_cursor.setPosition(self.pre_cursor.position() + len(self.pre_cursor.block().text()),
+                                        QTextCursor.KeepAnchor)
+
     def c_file_tableview_double_clicked(self, index):
         tableview = self.ShowDefineTableView
         pte_content = self.ShowTextEdit
@@ -195,10 +215,11 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
                 item = model.index(index_row, column).data(Qt.DisplayRole)
                 data.append(item)
             line = data[2]
+            self.current_line = line
             print(data)
 
             # 找到所有匹配字符并存储
-            search_text = value
+            search_text = data[0]
             # cursor = code_text_new.textCursor()
             format = QTextCharFormat()
             format.setBackground(QColor("yellow"))
@@ -220,10 +241,12 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
                 else:
                     break
             code_text_new.setExtraSelections(extra_selections)
-
-            #
             selections = code_text_new.extraSelections()
-            self.current_index = 0
+
+            if self.current_index == len(selections) and self.current_line == self.pre_line:
+                self.current_index = 0
+            elif self.current_line != self.pre_line:
+                self.current_index = 0
             print('selections length: ')
             print(len(selections))
             print('current_index: ')
@@ -232,7 +255,8 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
             if self.current_index < len(selections):
                 self.cursor = QTextCursor(selections[self.current_index].cursor)
                 code_text_new.setTextCursor(self.cursor)
-                self.current_index += 1
+                if self.current_line == self.pre_line:
+                    self.current_index += 1
 
                 if self.pre_cursor is not None:
                     # 设置行的格式
@@ -256,9 +280,10 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
                     self.cursor.movePosition(QTextCursor.StartOfBlock)
                     self.cursor.setPosition(self.cursor.position() + len(self.cursor.block().text()), QTextCursor.KeepAnchor)
                 self.pre_cursor = self.cursor
+                self.pre_line = self.current_line
 
     def riskFunction_tableview_double_clicked(self, index):
-        tableview = self.ShowDefineTableView
+        tableview = self.ShowRiskFunctionTableView
         pte_content = self.RiskFunctionShowTextEdit
         code_text_new = self.commentCodeEditor
         if index.isValid():
@@ -312,7 +337,8 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
             if self.current_index < len(selections):
                 self.cursor = QTextCursor(selections[self.current_index].cursor)
                 code_text_new.setTextCursor(self.cursor)
-                self.current_index += 1
+                if self.current_line == self.pre_line:
+                    self.current_index += 1
 
                 if self.pre_cursor is not None:
                     # 设置行的格式
@@ -336,6 +362,7 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
                     self.cursor.movePosition(QTextCursor.StartOfBlock)
                     self.cursor.setPosition(self.cursor.position() + len(self.cursor.block().text()), QTextCursor.KeepAnchor)
                 self.pre_cursor = self.cursor
+                self.pre_line = self.current_line
 
     def set_open_text(self, item_path):
         getdata = Getdata(item_path)
@@ -346,7 +373,17 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
         # 设置tableview中的内容
         self.set_c_file_tableview(header_files, macro_definitions, variable_names, function_declarations)
         risk_function_data = detectRiskFunction(item_path)
-        print(risk_function_data)
+        new_risk_function_data = []
+        for data in risk_function_data:
+            risk_line = function_exists_in_file(file_content, data['FunctionName'])
+            new_data = {
+                'FunctionName': data['FunctionName'],
+                'RiskLevel': data['RiskLevel'],
+                'Solution': data['Solution'],
+                'Lines': risk_line
+            }
+            new_risk_function_data.append(new_data)
+        print(new_risk_function_data)
         self.set_RiskFunction_tableview(risk_function_data)
 
         # 设置editor中的内容

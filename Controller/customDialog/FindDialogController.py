@@ -19,11 +19,31 @@ class FindDialog(QtWidgets.QDialog):
 
         self.sign = True
         self.current_index = 0  # 当前匹配字符串的索引位置
+        self.cursor = None
+        self.previous_cursor = None
+        self.plain_text_edit = None
         self.connectSignalsSlots()
 
+    def unhighlight_text(self):
+        if self.plain_text_edit is not None:
+            self.plain_text_edit.setExtraSelections([])
+
+    def closeEvent(self, event):
+        if self.previous_cursor is not None:
+            format = self.previous_cursor.blockFormat()
+            format.setBackground(QColor("#FFFFFF"))
+            self.previous_cursor.setBlockFormat(format)
+            # 将光标设置为初始位置
+            self.previous_cursor.movePosition(QTextCursor.StartOfBlock)
+            self.previous_cursor.setPosition(self.previous_cursor.position() + len(self.previous_cursor.block().text()),
+                                             QTextCursor.KeepAnchor)
+        self.unhighlight_text()
+        # 调用父类的 closeEvent 方法继续执行默认的关闭操作
+        super().closeEvent(event)
+
     def initUI(self):
-        self.ui.ReCheckBox.setChecked(True)
-        self.ui.ReCheckBox.setEnabled(False)
+        self.ui.ReCheckBox.setChecked(False)
+        self.ui.ReCheckBox.setEnabled(True)
         self.ui.IgonreCheckBox.setChecked(True)
         self.ui.IgonreCheckBox.setEnabled(False)
 
@@ -37,6 +57,7 @@ class FindDialog(QtWidgets.QDialog):
             main_window = self.parent
             if isinstance(main_window, QtWidgets.QWidget):
                 text_edit = main_window.findChild(QTextEdit, 'commentCodeEditor')
+                self.plain_text_edit = text_edit
                 self.highlight_text(text_edit, search_text)
 
     def highlight_text(self, plain_text_edit, search_text):
@@ -49,10 +70,13 @@ class FindDialog(QtWidgets.QDialog):
         cursor = plain_text_edit.textCursor()
 
         while cursor.hasComplexSelection() or cursor.atEnd() == False:
-            # cursor = plain_text_edit.document().find(search_text, cursor)
-            regex = QRegularExpression(search_text)
-            cursor = plain_text_edit.document().find(regex, cursor)
-
+            is_ReCheck = self.ui.ReCheckBox.isChecked()
+            if is_ReCheck:
+                # cursor = plain_text_edit.document().find(search_text, cursor)
+                regex = QRegularExpression(search_text)
+                cursor = plain_text_edit.document().find(regex, cursor)
+            else:
+                cursor = plain_text_edit.document().find(search_text, cursor)
             if cursor.isNull() == False:
                 selection = QTextEdit.ExtraSelection()
                 selection.format = format
@@ -76,31 +100,32 @@ class FindDialog(QtWidgets.QDialog):
                 self.current_index = 0  # 若已到达最后一个匹配字符串，则从第一个开始
 
             if self.current_index < len(selections):
-                cursor = QTextCursor(selections[self.current_index].cursor)
-                text_edit.setTextCursor(cursor)
+                self.cursor = QTextCursor(selections[self.current_index].cursor)
+                text_edit.setTextCursor(self.cursor)
 
                 # 设置行的格式
-                format = cursor.blockFormat()
+                format = self.cursor.blockFormat()
                 format.setBackground(QColor("blue"))
-                cursor.setBlockFormat(format)
+                self.cursor.setBlockFormat(format)
                 # 将光标设置为初始位置
-                cursor.movePosition(QTextCursor.StartOfBlock)
-                cursor.setPosition(cursor.position() + len(cursor.block().text()), QTextCursor.KeepAnchor)
-                line_number = cursor.blockNumber()
+                self.cursor.movePosition(QTextCursor.StartOfBlock)
+                self.cursor.setPosition(self.cursor.position() + len(self.cursor.block().text()), QTextCursor.KeepAnchor)
+                line_number = self.cursor.blockNumber()
 
-                if self.current_index > 0:
-                    previous_cursor = QTextCursor(selections[self.current_index - 1].cursor)
-                    pre_line_number = previous_cursor.blockNumber()
+                if self.current_index >= 0 and self.previous_cursor is not None:
+                    # self.previous_cursor = QTextCursor(selections[self.current_index - 1].cursor)
+                    pre_line_number = self.previous_cursor.blockNumber()
                     if line_number != pre_line_number:
                         # 设置行的格式
-                        format = cursor.blockFormat()
+                        format = self.previous_cursor.blockFormat()
                         format.setBackground(QColor("#FFFFFF"))
-                        previous_cursor.setBlockFormat(format)
+                        self.previous_cursor.setBlockFormat(format)
                         # 将光标设置为初始位置
-                        previous_cursor.movePosition(QTextCursor.StartOfBlock)
-                        previous_cursor.setPosition(previous_cursor.position() + len(previous_cursor.block().text()),
+                        self.previous_cursor.movePosition(QTextCursor.StartOfBlock)
+                        self.previous_cursor.setPosition(self.previous_cursor.position() + len(self.previous_cursor.block().text()),
                                                     QTextCursor.KeepAnchor)
 
+                self.previous_cursor = self.cursor
                 # 滚动到显示匹配字符串的行
                 text_edit.ensureCursorVisible()
 

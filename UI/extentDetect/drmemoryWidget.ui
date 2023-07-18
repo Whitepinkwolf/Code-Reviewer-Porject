@@ -6,32 +6,55 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>618</width>
-    <height>830</height>
+    <width>447</width>
+    <height>532</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QTextEdit" name="textEdit">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>571</width>
-     <height>511</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QTableView" name="tableView">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>550</y>
-     <width>571</width>
+     <x>10</x>
+     <y>320</y>
+     <width>421</width>
      <height>192</height>
     </rect>
    </property>
+  </widget>
+  <widget class="QScrollArea" name="scrollArea">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>421</width>
+     <height>301</height>
+    </rect>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>419</width>
+      <height>299</height>
+     </rect>
+    </property>
+    <widget class="QTextEdit" name="textEdit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>401</width>
+       <height>281</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
   </widget>
  </widget>
  <resources/>

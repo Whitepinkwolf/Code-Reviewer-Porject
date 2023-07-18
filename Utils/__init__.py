@@ -32,6 +32,7 @@ def get_debug_database():
     if files:
         latest_file = max(files, key=lambda f: os.path.getctime(os.path.join(temp_folder, f)))
         db_path = os.path.join(temp_folder, latest_file)
+        print('db_path: ')
         print(db_path)
         return db_path
     return

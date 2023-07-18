@@ -60,6 +60,8 @@ class ToolFlawfinder:
         self.levels_plus_KSLOC = re.findall(self.pattern4, self.KSLOC)
 
 
+
+
 if __name__ == '__main__':
     # example
     c_file_path = 'D:/work1/c_test_file/flawfinder.c'
@@ -70,5 +72,7 @@ if __name__ == '__main__':
 
     copy_right = tool_flawfinder.copy_right
     print(tool_flawfinder.result_text)
+    print(tool_flawfinder.levels)
+    print(tool_flawfinder.levels_plus)
     print(tool_flawfinder.levels_plus_KSLOC)
     # ...get other data

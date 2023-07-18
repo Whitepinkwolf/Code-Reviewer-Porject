@@ -6,8 +6,12 @@ from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 
 from Controller.extentDetect.subExtentDetect.FlawfinderWidget import FlawFinder_Widget
+from Controller.extentDetect.drmemoryWidget import Drmemory_Widget
+from Controller.extentDetect.subExtentDetect.ScanBuildWidget import ScanBuilder_Widget
+
 from Data import *
 from Data.getdata import *
+from Memory.tool_memory import ToolMemoryChecker
 from UI.extentDetect.MutiWidget import Ui_MutiWidget
 from Memory.tool_Clang import *
 from Memory.tool_flawfinder import *
@@ -18,14 +22,17 @@ from Utils import *
 class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
     def __init__(self, parent=None):
         super(mutiComment_Widget, self).__init__(parent)
-        self.setupUi(self)
 
+        self.setupUi(self)
         self.file_path = None
         self.tool_clang = None
         self.tool_flawfinder = None
         self.tool_cppchecker = None
+        self.tool_memory = None
 
         self.flawfinderWidget = None
+        self.drmemory_Widget = None
+        self.scanBuilderWidget = None
 
         self.process = QProcess()
         self.cmd()
@@ -34,6 +41,7 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
 
     def connectSignalsSlots(self):
         self.te_cmd.commandEntered.connect(self.execute_command)
+
 
     def cmd(self):
         self.te_cmd.setReadOnly(False)
@@ -83,6 +91,7 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
         self.tool_clang = ToolClang(self.file_path, get_available_llvm_path(llvm_path))
         self.tool_flawfinder = ToolFlawfinder(self.file_path)
         self.tool_cppchecker = ToolCppChecker(self.file_path)
+        self.tool_memory = ToolMemoryChecker(self.file_path)
 
         self.pb_compile.clicked.connect(lambda: self.compile_code())
         self.pb_format.clicked.connect(lambda: self.format_code())
@@ -94,7 +103,13 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
         self.pb_detect.actionD.triggered.connect(lambda: self.run_clang_scan_build_scan())
         self.pb_detect.actionE.triggered.connect(lambda: self.run_cppchecker_scan())
         self.pb_detect.actionF.triggered.connect(lambda: self.run_code_evaluation())
+        self.pb_detect.actionG.triggered.connect(lambda: self.run_memory_detect())
 
+    # def on_pushButton1_clicked(self):
+    #     self.stackedWidget.setCurrentIndex(0)
+    #
+    # def on_pushButton2_clicked(self):
+    #     self.stackedWidget.setCurrentIndex(1)
 
     # 新增tab
     def add_CommentWidget(self, name):
@@ -107,13 +122,35 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
                 self.detectWidget.setCurrentWidget(tab_widget)
                 return
 
-        # 不存在相同路径的tab，新增tab
-        flawfinderWidget = FlawFinder_Widget()
-        self.detectWidget.addTab(flawfinderWidget, name)
-        flawfinderWidget.setProperty("name", name)
+        if name == '内存泄漏检测':
+            # 不存在相同路径的tab，新增tab
+            drmemory_Widget = Drmemory_Widget()
+            self.detectWidget.addTab(drmemory_Widget, name)
+            drmemory_Widget.setProperty("name", name)
+            self.drmemory_Widget = drmemory_Widget
+            self.detectWidget.setCurrentWidget(drmemory_Widget)
+        elif name == 'ClangScanBuild扫描':
+            # 不存在相同路径的tab，新增tab
+            scanBuilderWidget = ScanBuilder_Widget()
+            self.detectWidget.addTab(scanBuilderWidget, name)
+            scanBuilderWidget.setProperty("name", name)
+            self.scanBuilderWidget = scanBuilderWidget
+            self.detectWidget.setCurrentWidget(scanBuilderWidget)
+        else:
+            # 不存在相同路径的tab，新增tab
+            flawfinderWidget = FlawFinder_Widget()
+            self.detectWidget.addTab(flawfinderWidget, name)
+            flawfinderWidget.setProperty("name", name)
+            self.flawfinderWidget = flawfinderWidget
+            self.detectWidget.setCurrentWidget(flawfinderWidget)
 
-        self.flawfinderWidget = flawfinderWidget
-        self.detectWidget.setCurrentWidget(flawfinderWidget)
+    def run_memory_detect(self):
+        self.add_CommentWidget("内存泄漏检测")
+        self.tool_memory.run_cl_compile()
+        self.tool_memory.run()
+        errors, errors_summery = self.tool_memory.extract_memory_leaks()
+        self.drmemory_Widget.show_information(errors, errors_summery)
+
 
     #此部分的所有检测还未实现对应组件，因此仅仅是运行
     def run_flawfinder_scan(self):
@@ -124,42 +161,62 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
         self.tool_flawfinder.get_graph_base_data()
         print(self.tool_flawfinder.result_text)
         # ...
-        self.flawfinderWidget.te_flawfinder.setText(self.tool_flawfinder.result_text)
+        message = 'STDOUT:\n' + self.tool_flawfinder.result_text
+        self.flawfinderWidget.te_flawfinder.setText(message)
 
 
     def run_clang_tidy_scan(self):
         self.add_CommentWidget("ClangTidy扫描")
         self.tool_clang.run_static_scan()
+        message = 'STDOUT:\n' + self.tool_clang.static_scan_output + '\nSTDERR:\n' + self.tool_clang.static_scan_error
+        self.flawfinderWidget.te_flawfinder.setText(message)
 
     def run_clang_checker_scan(self):
         self.add_CommentWidget("ClangChecker扫描")
         self.tool_clang.run_static_scan_strict()
+        message = 'STDOUT:\n' + self.tool_clang.static_scan_strict_output + '\nSTDERR:\n' + self.tool_clang.static_scan_strict_error
+        self.flawfinderWidget.te_flawfinder.setText(message)
 
+    #展示较为复杂
     def run_clang_scan_build_scan(self):
         self.add_CommentWidget("ClangScanBuild扫描")
         self.tool_clang.run_static_scan_report()
+        message = 'STDOUT:\n' + self.tool_clang.static_scan_report_output + '\nSTDERR:\n' + self.tool_clang.static_scan_report_output
+        pre_path = get_debug_database()
+        report_file = pre_path + '\index.html'
+        print('report_file: ')
+        print(report_file)
+        file_content = open_with_encodings(report_file)
+        print('file_content: ')
+        print(file_content)
+        self.scanBuilderWidget.set_scanBuilder_res(message, file_content, pre_path, report_file)
+
 
     def run_cppchecker_scan(self):
         self.add_CommentWidget("CppChecker扫描")
         self.tool_cppchecker.run_scan()
+        message = 'STDOUT:\n' + self.tool_cppchecker.output + '\nSTDERR:\n' + self.tool_cppchecker.error
+        self.flawfinderWidget.te_flawfinder.setText(message)
 
     def run_code_evaluation(self):
         self.add_CommentWidget("Clang代码质量检测")
         self.tool_clang.run_code_quality_evaluation()
+        message = 'STDOUT:\n' + self.tool_clang.code_evaluation_output + '\nSTDERR:\n' + self.tool_clang.code_evaluation_error
+        self.flawfinderWidget.te_flawfinder.setText(message)
 
     def run_code(self):
         self.tool_clang.run_exec()
-        message = 'stdout: ' + self.tool_clang.run_output+'\n'+'stderr: '+self.tool_clang.run_error
+        message = 'STDOUT: ' + self.tool_clang.run_output+'\n'+'STDERR: '+self.tool_clang.run_error
         self.te_log.setPlainText(message)
 
     def compile_code(self):
         self.tool_clang.run_compile()
-        message = 'stdout: ' + self.tool_clang.compile_output+'\n'+'stderr: '+self.tool_clang.compile_error
+        message = 'STDOUT: ' + self.tool_clang.compile_output+'\n'+'STDERR: '+self.tool_clang.compile_error
         self.te_log.setPlainText(message)
 
     def format_code(self):
         self.tool_clang.format_code()
-        message = 'stdout: ' + self.tool_clang.format_output+'\n'+'stderr: '+self.tool_clang.format_error
+        message = 'STDOUT: ' + self.tool_clang.format_output+'\n'+'STDERR: '+self.tool_clang.format_error
         self.te_log.setPlainText(message)
 
 

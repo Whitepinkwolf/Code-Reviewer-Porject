@@ -222,7 +222,7 @@ class ToolClang:
         # 检查文件是否存在
         # print(os.path.exists(file_path))
         if os.path.exists(file_path):
-            # 如果存在指定的exe文件删除
+            # 删除文件
             print(file_path+' exists')
             os.remove(file_path)
 
@@ -268,13 +268,15 @@ if __name__ == '__main__':
     llvm_path0 = get_available_llvm_path(llvm_path)
     tool_clang = ToolClang(c_file_path, llvm_path0)
 
-    tool_clang.format_code()
-    tool_clang.run_static_scan_strict()
-    tool_clang.run_compile()
-    tool_clang.run_static_scan()
-    tool_clang.run_exec()
+    # tool_clang.format_code()
+
+    # tool_clang.run_static_scan_strict()
+    # tool_clang.run_compile()
+    # tool_clang.run_static_scan()
+    # tool_clang.run_exec()
     tool_clang.run_static_scan_report()
-    tool_clang.run_code_quality_evaluation()
+
+    # tool_clang.run_code_quality_evaluation()
     # tool_clang.from_code_evaluation_get_excel()
 
 

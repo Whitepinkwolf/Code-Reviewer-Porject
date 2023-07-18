@@ -7,8 +7,12 @@
 import clang.cindex
 import re
 from Utils import *
-from editor.database import crawler_database
+from editor import *
+
 from Utils import open_with_encodings
+from editor.database import *
+
+
 class Function:
     def __init__(self, name, parameters, return_type, is_definition, local_functions, line, end_line):
         self.name = name
@@ -235,7 +239,7 @@ def function_exists_in_file(content, function_name):
 
 # 测试示例
 if __name__ == "__main__":
-    file_path = r"D:\project_code\pythonproject\CodeAuditing\test_c\struct.h"
+    file_path = r"D:\work1\c_test_file\test\fgets.c"
     file_obj = File(file_path)
     file_obj.parse_c_file()
 
