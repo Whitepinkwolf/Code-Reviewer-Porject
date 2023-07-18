@@ -1,10 +1,10 @@
 from PyQt5.QtWidgets import *
 
-from Data.leanCloud import *
+from Data.leanCloud import UserQuery
 from UI.loginRegister.loginWidget import Ui_Login
-from register import MainRegistWindow
+from Controller.loginRegister.register import MainRegistWindow
 
-from Controller.menu import Menu
+from Controller.mainWindow.menu import Menu
 
 import sys
 import configparser
@@ -14,15 +14,17 @@ from Data.crypto import *
 global UserName
 UserP = {}  # 定义一个存储密码账号的元组
 
-filePath = os.path.dirname(os.path.dirname(os.getcwd()))+"\\Data\\user.ini"
-
-
 class MainLoginWindow(QWidget, Ui_Login):
     def __init__(self, parent=None):
         super(MainLoginWindow, self).__init__(parent)
         self.re = MainRegistWindow()  # 这边一定要加self
         self.mainWin = Menu()
         self.setupUi(self)
+
+        self.account = ""
+        self.passwd = ""
+        self.filePath = os.path.dirname(os.path.dirname(os.getcwd()))+"\\Data\\user.ini"
+
         self.initUi()
 
     def initUi(self):
@@ -39,8 +41,10 @@ class MainLoginWindow(QWidget, Ui_Login):
 
     """设置记住密码"""
     def IsRememberUser(self):
+        print(self.filePath)
         config = configparser.ConfigParser()
-        file = config.read(filePath)  # 读取密码账户的配置文件
+        file = config.read(self.filePath)  # 读取密码账户的配置文件
+        print(self.filePath)
         config_dict = config.defaults()  # 返回包含实例范围默认值的字典
         self.account = config_dict['user_name']  # 获取账号信息
         self.UserNameEdit.setText(self.account)  # 写入账号上面
@@ -68,7 +72,7 @@ class MainLoginWindow(QWidget, Ui_Login):
                 "password": "",
                 "remember": self.RememberPwcheckBox.isChecked()
             }
-        with open(filePath, 'w') as configfile:
+        with open(self.filePath, 'w') as configfile:
             config.write(configfile)
         print(self.account, self.passwd)
 

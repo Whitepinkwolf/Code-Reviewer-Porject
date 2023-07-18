@@ -17,7 +17,6 @@ class FindDialog(QtWidgets.QDialog):
 
         self.initUI()
 
-
         self.sign = True
         self.current_index = 0  # 当前匹配字符串的索引位置
         self.connectSignalsSlots()

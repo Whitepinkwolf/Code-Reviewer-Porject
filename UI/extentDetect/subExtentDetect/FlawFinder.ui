@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>664</width>
-    <height>704</height>
+    <width>524</width>
+    <height>584</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>641</width>
-     <height>501</height>
+     <width>501</width>
+     <height>541</height>
     </rect>
    </property>
    <property name="widgetResizable">
@@ -30,17 +30,17 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>639</width>
-      <height>499</height>
+      <width>499</width>
+      <height>539</height>
      </rect>
     </property>
     <widget class="QTextEdit" name="te_flawfinder">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>621</width>
-       <height>481</height>
+       <x>0</x>
+       <y>0</y>
+       <width>501</width>
+       <height>551</height>
       </rect>
      </property>
     </widget>

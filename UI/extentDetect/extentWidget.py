@@ -6,14 +6,14 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_extent(object):
     def setupUi(self, extent):
         extent.setObjectName("extent")
-        extent.resize(1328, 860)
+        extent.resize(1546, 860)
         self.commentTabWidget = QtWidgets.QTabWidget(extent)
-        self.commentTabWidget.setGeometry(QtCore.QRect(330, 20, 971, 821))
+        self.commentTabWidget.setGeometry(QtCore.QRect(330, 20, 1131, 821))
         self.commentTabWidget.setTabsClosable(True)
         self.commentTabWidget.setMovable(True)
         self.commentTabWidget.setObjectName("commentTabWidget")
@@ -69,4 +69,4 @@ class Ui_extent(object):
         self.ChooseComboBox.setItemText(2, _translate("extent", "*.h"))
         self.ChooseComboBox.setItemText(3, _translate("extent", "*.c,*.h"))
 
-from UI.ToolWidget.codeAuditMenuButton import codeAuditMenuButton
+from codeAuditMenuButton import codeAuditMenuButton

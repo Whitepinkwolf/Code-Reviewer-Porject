@@ -15,7 +15,6 @@ def get_available_llvm_path(llvm_path):
         if os.path.exists(path):
             return path
     return None
-encodings='utf-8'
 def check_extension(item_path):
     file_extension = os.path.splitext(item_path)[1]
     if file_extension == '.c' or file_extension == '.h':

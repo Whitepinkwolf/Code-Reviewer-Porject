@@ -69,4 +69,4 @@ class Ui_CodeAudit(object):
         self.commentTabWidget.setTabText(self.commentTabWidget.indexOf(self.tab), _translate("CodeAudit", "开始"))
         self.ChooseActionPushButton.setText(_translate("CodeAudit", "选择"))
 
-from UI.codeAudit.codeAuditMenuButton import codeAuditMenuButton
+from UI.ToolWidget.codeAuditMenuButton import codeAuditMenuButton

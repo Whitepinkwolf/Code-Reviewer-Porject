@@ -90,6 +90,7 @@ def addRiskFunction(FunctionName=None, RiskLevel=None, Solution=None):
     riskFunctionObject.set('Solution', Solution)
     riskFunctionObject.save()
     print('add')
+    return True
 
 
 def deleteRiskFunction(FunctionName):
@@ -99,8 +100,10 @@ def deleteRiskFunction(FunctionName):
     if row:
         row.destroy()
         print("delete yes")
+        return True
     else:
         print("delete no")
+        return False
 
 
 def detectRiskFunction(filePath):

@@ -73,7 +73,7 @@ from PyQt5.QtWidgets import QTextEdit
 from Controller.customDialog.FindDialogController import set_search_dialog
 from Tool.fileTree import FileTree
 
-from UI.codeAudit.CodeEditor import *
+from UI.ToolWidget.CodeEditor import *
 from UI.Dialog.FindDialog import *
 
 from Utils import *

@@ -6,33 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1475</width>
-    <height>886</height>
+    <width>1539</width>
+    <height>860</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="HidePushButton">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>150</y>
-     <width>41</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&lt;</string>
-   </property>
-  </widget>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>131</width>
-     <height>941</height>
+     <height>611</height>
     </rect>
    </property>
    <widget class="QPushButton" name="ExitPushButton">
@@ -101,10 +88,10 @@
   <widget class="QStackedWidget" name="ChangeStackedWidget">
    <property name="geometry">
     <rect>
-     <x>159</x>
+     <x>149</x>
      <y>9</y>
-     <width>1321</width>
-     <height>871</height>
+     <width>1471</width>
+     <height>841</height>
     </rect>
    </property>
    <property name="currentIndex">
@@ -113,6 +100,19 @@
    <widget class="QWidget" name="page1"/>
    <widget class="QWidget" name="page2"/>
    <widget class="QWidget" name="page3"/>
+  </widget>
+  <widget class="QPushButton" name="HidePushButton">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>820</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;</string>
+   </property>
   </widget>
  </widget>
  <resources/>

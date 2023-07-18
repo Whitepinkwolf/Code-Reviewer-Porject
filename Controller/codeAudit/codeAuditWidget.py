@@ -6,7 +6,6 @@ from PyQt5.QtWidgets import QApplication, QFileDialog
 from PyQt5.QtWidgets import QWidget
 
 from UI.codeAudit.codeAuditWidget import Ui_CodeAudit
-from UI.codeAudit.codeAuditMenuButton import codeAuditMenuButton
 from Controller.codeAudit.commentWidget import comment_Widget
 from Tool.fileTree import *
 from Controller.customDialog.FindDialogController import FindDialog
@@ -102,11 +101,6 @@ class codeAudit_Widget(QWidget, Ui_CodeAudit):
 
 
     def show_find_dialog(self):
-        # commentWidget = comment_Widget()
-        # self.commentTabWidget.addTab(commentWidget, item_path)
-        #
-        # self.commentWidget = commentWidget  # 添加该行
-
         self.findDialog = FindDialog(self.commentWidget)
         self.findDialog.show()
 

@@ -5,6 +5,7 @@ from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 
+from Controller.extentDetect.subExtentDetect.FlawfinderWidget import FlawFinder_Widget
 from Data import *
 from Data.getdata import *
 from UI.extentDetect.MutiWidget import Ui_MutiWidget
@@ -17,12 +18,14 @@ from Utils import *
 class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
     def __init__(self, parent=None):
         super(mutiComment_Widget, self).__init__(parent)
-
         self.setupUi(self)
+
         self.file_path = None
         self.tool_clang = None
         self.tool_flawfinder = None
         self.tool_cppchecker = None
+
+        self.flawfinderWidget = None
 
         self.process = QProcess()
         self.cmd()
@@ -31,7 +34,6 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
 
     def connectSignalsSlots(self):
         self.te_cmd.commandEntered.connect(self.execute_command)
-
 
     def cmd(self):
         self.te_cmd.setReadOnly(False)
@@ -93,53 +95,56 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
         self.pb_detect.actionE.triggered.connect(lambda: self.run_cppchecker_scan())
         self.pb_detect.actionF.triggered.connect(lambda: self.run_code_evaluation())
 
-    # def on_pushButton1_clicked(self):
-    #     self.stackedWidget.setCurrentIndex(0)
-    #
-    # def on_pushButton2_clicked(self):
-    #     self.stackedWidget.setCurrentIndex(1)
 
     # 新增tab
-    def add_extent_CommentWidget(self):
-        file_name = os.path.basename(item_path)
+    def add_CommentWidget(self, name):
 
         # 检查是否已存在相同路径的tab
-        for index in range(self.commentTabWidget.count()):
-            tab_widget = self.commentTabWidget.widget(index)
-            if tab_widget.property("FilePath") == item_path:
+        for index in range(self.detectWidget.count()):
+            tab_widget = self.detectWidget.widget(index)
+            if tab_widget.property("name") == name:
                 # 切换到已存在的tab
-                self.commentTabWidget.setCurrentWidget(tab_widget)
+                self.detectWidget.setCurrentWidget(tab_widget)
                 return
 
         # 不存在相同路径的tab，新增tab
-        mutiCommentWidget = mutiComment_Widget()
-        self.commentTabWidget.addTab(mutiCommentWidget, file_name)
-        mutiCommentWidget.setProperty("FilePath", item_path)
+        flawfinderWidget = FlawFinder_Widget()
+        self.detectWidget.addTab(flawfinderWidget, name)
+        flawfinderWidget.setProperty("name", name)
 
-        self.mutiCommentWidget = mutiCommentWidget
-        self.commentTabWidget.setCurrentWidget(mutiCommentWidget)
+        self.flawfinderWidget = flawfinderWidget
+        self.detectWidget.setCurrentWidget(flawfinderWidget)
 
     #此部分的所有检测还未实现对应组件，因此仅仅是运行
     def run_flawfinder_scan(self):
+        self.add_CommentWidget("FlawFinder扫描")
+
         self.tool_flawfinder.run()
         self.tool_flawfinder.get_data()
         self.tool_flawfinder.get_graph_base_data()
         print(self.tool_flawfinder.result_text)
         # ...
+        self.flawfinderWidget.te_flawfinder.setText(self.tool_flawfinder.result_text)
+
 
     def run_clang_tidy_scan(self):
+        self.add_CommentWidget("ClangTidy扫描")
         self.tool_clang.run_static_scan()
 
     def run_clang_checker_scan(self):
+        self.add_CommentWidget("ClangChecker扫描")
         self.tool_clang.run_static_scan_strict()
 
     def run_clang_scan_build_scan(self):
+        self.add_CommentWidget("ClangScanBuild扫描")
         self.tool_clang.run_static_scan_report()
 
     def run_cppchecker_scan(self):
+        self.add_CommentWidget("CppChecker扫描")
         self.tool_cppchecker.run_scan()
 
     def run_code_evaluation(self):
+        self.add_CommentWidget("Clang代码质量检测")
         self.tool_clang.run_code_quality_evaluation()
 
     def run_code(self):

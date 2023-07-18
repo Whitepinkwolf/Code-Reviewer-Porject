@@ -8,10 +8,9 @@ from pygments.lexers import get_lexer_by_name
 from Data.leanCloud import *
 from UI.codeAudit.commentWidget import Ui_comment
 from Data.getdata import Getdata
-from UI.codeAudit.NewCodeEditor import *
+from UI.ToolWidget.NewCodeEditor import *
 
 from Tool.fileTree import *
-from Data import *
 from Utils import *
 
 

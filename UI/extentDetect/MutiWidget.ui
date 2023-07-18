@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>988</width>
-    <height>799</height>
+    <width>1092</width>
+    <height>795</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>0</x>
      <y>50</y>
-     <width>451</width>
-     <height>591</height>
+     <width>501</width>
+     <height>551</height>
     </rect>
    </property>
    <property name="widgetResizable">
@@ -30,17 +30,17 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>449</width>
-      <height>589</height>
+      <width>499</width>
+      <height>549</height>
      </rect>
     </property>
     <widget class="NewCodeEditor" name="CodeEditor">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>-10</x>
        <y>0</y>
-       <width>421</width>
-       <height>591</height>
+       <width>511</width>
+       <height>551</height>
       </rect>
      </property>
     </widget>
@@ -49,10 +49,10 @@
   <widget class="QTabWidget" name="detectWidget">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>10</y>
-     <width>511</width>
-     <height>771</height>
+     <x>520</x>
+     <y>50</y>
+     <width>501</width>
+     <height>551</height>
     </rect>
    </property>
    <property name="currentIndex">
@@ -63,16 +63,11 @@
      <string>欢迎使用代码检测功能</string>
     </attribute>
    </widget>
-   <widget class="QWidget" name="tab_4">
-    <attribute name="title">
-     <string>Tab 2</string>
-    </attribute>
-   </widget>
   </widget>
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>30</x>
      <y>0</y>
      <width>431</width>
      <height>51</height>
@@ -113,13 +108,13 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>660</y>
-     <width>451</width>
-     <height>121</height>
+     <y>620</y>
+     <width>1021</width>
+     <height>171</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -130,8 +125,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>441</width>
-       <height>91</height>
+       <width>1021</width>
+       <height>151</height>
       </rect>
      </property>
      <property name="widgetResizable">
@@ -142,8 +137,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>439</width>
-        <height>89</height>
+        <width>1019</width>
+        <height>149</height>
        </rect>
       </property>
       <widget class="QTextEdit" name="te_log">
@@ -151,8 +146,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>441</width>
-         <height>91</height>
+         <width>1011</width>
+         <height>141</height>
         </rect>
        </property>
       </widget>
@@ -168,8 +163,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>441</width>
-       <height>91</height>
+       <width>1021</width>
+       <height>161</height>
       </rect>
      </property>
      <property name="widgetResizable">
@@ -180,23 +175,49 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>439</width>
-        <height>89</height>
+        <width>1019</width>
+        <height>159</height>
        </rect>
       </property>
       <widget class="CmdTextEdit" name="te_cmd">
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>0</y>
-         <width>441</width>
-         <height>87</height>
+         <y>-4</y>
+         <width>1021</width>
+         <height>161</height>
         </rect>
        </property>
       </widget>
      </widget>
     </widget>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="pb_download">
+   <property name="geometry">
+    <rect>
+     <x>909</x>
+     <y>10</y>
+     <width>102</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>下载</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pb_generate">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>10</y>
+     <width>102</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>生成审计报告</string>
+   </property>
   </widget>
  </widget>
  <customwidgets>

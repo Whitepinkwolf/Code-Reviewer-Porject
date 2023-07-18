@@ -11,12 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_menu(object):
     def setupUi(self, menu):
         menu.setObjectName("menu")
-        menu.resize(1475, 886)
-        self.HidePushButton = QtWidgets.QPushButton(menu)
-        self.HidePushButton.setGeometry(QtCore.QRect(110, 150, 41, 41))
-        self.HidePushButton.setObjectName("HidePushButton")
+        menu.resize(1539, 860)
         self.widget = QtWidgets.QWidget(menu)
-        self.widget.setGeometry(QtCore.QRect(0, 0, 131, 941))
+        self.widget.setGeometry(QtCore.QRect(0, 0, 131, 611))
         self.widget.setObjectName("widget")
         self.ExitPushButton = QtWidgets.QPushButton(self.widget)
         self.ExitPushButton.setGeometry(QtCore.QRect(0, 550, 131, 61))
@@ -34,7 +31,7 @@ class Ui_menu(object):
         self.graphicsView.setGeometry(QtCore.QRect(0, 0, 131, 121))
         self.graphicsView.setObjectName("graphicsView")
         self.ChangeStackedWidget = QtWidgets.QStackedWidget(menu)
-        self.ChangeStackedWidget.setGeometry(QtCore.QRect(159, 9, 1321, 871))
+        self.ChangeStackedWidget.setGeometry(QtCore.QRect(149, 9, 1471, 841))
         self.ChangeStackedWidget.setObjectName("ChangeStackedWidget")
         self.page1 = QtWidgets.QWidget()
         self.page1.setObjectName("page1")
@@ -45,6 +42,9 @@ class Ui_menu(object):
         self.page3 = QtWidgets.QWidget()
         self.page3.setObjectName("page3")
         self.ChangeStackedWidget.addWidget(self.page3)
+        self.HidePushButton = QtWidgets.QPushButton(menu)
+        self.HidePushButton.setGeometry(QtCore.QRect(0, 820, 31, 31))
+        self.HidePushButton.setObjectName("HidePushButton")
 
         self.retranslateUi(menu)
         self.ChangeStackedWidget.setCurrentIndex(1)
@@ -53,9 +53,9 @@ class Ui_menu(object):
     def retranslateUi(self, menu):
         _translate = QtCore.QCoreApplication.translate
         menu.setWindowTitle(_translate("menu", "Form"))
-        self.HidePushButton.setText(_translate("menu", "<"))
         self.ExitPushButton.setText(_translate("menu", "退出"))
         self.Page3pushButton.setText(_translate("menu", "扩展应用"))
         self.Page2pushButton.setText(_translate("menu", "审计管理"))
         self.Page1pushButton.setText(_translate("menu", "代码审计"))
+        self.HidePushButton.setText(_translate("menu", "<"))
 

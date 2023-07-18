@@ -17,14 +17,20 @@
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>150</y>
+     <y>120</y>
      <width>1231</width>
      <height>691</height>
     </rect>
    </property>
+   <property name="gridStyle">
+    <enum>Qt::SolidLine</enum>
+   </property>
+   <attribute name="horizontalHeaderCascadingSectionResizes">
+    <bool>true</bool>
+   </attribute>
    <column>
     <property name="text">
-     <string> </string>
+     <string/>
     </property>
    </column>
    <column>
@@ -47,7 +53,7 @@
    <property name="geometry">
     <rect>
      <x>370</x>
-     <y>80</y>
+     <y>50</y>
      <width>841</width>
      <height>41</height>
     </rect>
@@ -93,7 +99,7 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>80</y>
+     <y>50</y>
      <width>111</width>
      <height>41</height>
     </rect>
@@ -106,7 +112,7 @@
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>80</y>
+     <y>50</y>
      <width>111</width>
      <height>41</height>
     </rect>
