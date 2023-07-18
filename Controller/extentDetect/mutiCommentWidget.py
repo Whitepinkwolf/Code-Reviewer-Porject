@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QProcess, Qt
 from PyQt5.QtGui import QTextCursor
+from PyQt5.QtWidgets import QTabBar
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
@@ -37,10 +38,27 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
         self.process = QProcess()
         self.cmd()
 
+        self.initUI()
         self.connectSignalsSlots()
+
+    def initUI(self):
+        # 设置第一个Tab为不可删除
+        tab_bar = self.detectWidget.tabBar()
+        tab_bar.setTabButton(0, QTabBar.RightSide, None)
+
+    def tabClose(self, index):
+        self.detectWidget.removeTab(index)
 
     def connectSignalsSlots(self):
         self.te_cmd.commandEntered.connect(self.execute_command)
+        self.detectWidget.tabCloseRequested.connect(self.tabClose)
+        # 将动作与处理函数相关联
+        self.pb_detect_start.actionA.triggered.connect(lambda: self.run_flawfinder_scan())
+        self.pb_detect_start.actionB.triggered.connect(lambda: self.run_clang_tidy_scan())
+        self.pb_detect_start.actionC.triggered.connect(lambda: self.run_clang_checker_scan())
+        self.pb_detect_start.actionD.triggered.connect(lambda: self.run_clang_scan_build_scan())
+        self.pb_detect_start.actionE.triggered.connect(lambda: self.run_cppchecker_scan())
+        self.pb_detect_start.actionF.triggered.connect(lambda: self.run_code_evaluation())
 
 
     def cmd(self):

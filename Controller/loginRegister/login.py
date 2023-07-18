@@ -1,4 +1,7 @@
+from PyQt5.QtCore import QFile, Qt
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import *
+from qtpy import QtCore
 
 from Data.leanCloud import UserQuery
 from UI.loginRegister.loginWidget import Ui_Login
@@ -10,6 +13,8 @@ import sys
 import configparser
 import os
 from Data.crypto import *
+
+from qt_material import apply_stylesheet
 
 global UserName
 UserP = {}  # 定义一个存储密码账号的元组
@@ -28,6 +33,16 @@ class MainLoginWindow(QWidget, Ui_Login):
         self.initUi()
 
     def initUi(self):
+        pixmap1 = QPixmap(os.path.dirname(os.path.dirname(os.getcwd()))+"\\UI\\picture\\user-line.png")
+        pixmap2 = QPixmap(os.path.dirname(os.path.dirname(os.getcwd()))+"\\UI\\picture\\key-2-line.png")
+        pixmap3 = QPixmap(os.path.dirname(os.path.dirname(os.getcwd()))+"\\UI\\picture\\picLogin1.jpg")
+        pixmap3 = pixmap3.scaled(850, 800, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+
+        self.picLable1.setPixmap(pixmap1)
+        self.picLable2.setPixmap(pixmap2)
+        self.picLable3.setPixmap(pixmap3)
+        self.picLable3.setAlignment(Qt.AlignCenter)
+
         self.IsRememberUser()
         self.UserNameEdit.setFocus()
         self.UserNameEdit.setPlaceholderText("请输入账号")
@@ -108,7 +123,7 @@ class MainLoginWindow(QWidget, Ui_Login):
                     mess.exec_()
                     print("登录成功")
                     self.mainWin.show()
-                    LoginWin.close()  # 关闭 LoginWin
+                    self.close()  # 关闭 LoginWin
                     return True
                 else:
                     QMessageBox.information(self, "error!", "密码错误！", QMessageBox.Ok)
@@ -116,17 +131,24 @@ class MainLoginWindow(QWidget, Ui_Login):
 
     # 成功注册
     def Success_Regist(self):
-        LoginWin.show()
+        self.show()
         self.re.close()
 
     # 返回
     def Return_Login(self):
-        LoginWin.show()
+        self.show()
         self.re.close()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     LoginWin = MainLoginWindow()
+
+    path = os.path.dirname(os.path.dirname(os.getcwd()))+"\\UI\\theme_set\\my_theme.xml"
+
+    # setup stylesheet
+    apply_stylesheet(app, theme=path)
+    # apply_stylesheet(app, theme='light_cyan_500.xml', invert_secondary=True)
+
     LoginWin.show()
     sys.exit(app.exec())
 

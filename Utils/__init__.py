@@ -7,7 +7,7 @@ encoding_mode = 'gbk'
 neu_copy_right = ' and Software College of Northeastern University'
 
 #这个部分传入对应的llvm的路径，第一个是我的，剩下的需要你们自行添加
-llvm_path = ['X:/llvm','D:/llvm','']
+llvm_path = ['X:/llvm','D:/llvm','E:/codeRe/LLVM']
 
 
 def get_available_llvm_path(llvm_path):

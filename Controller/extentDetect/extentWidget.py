@@ -5,7 +5,7 @@ from PyQt5 import QtGui, QtCore
 from PyQt5.QtWidgets import QApplication, QFileDialog
 
 from Controller.extentDetect.mutiCommentWidget import mutiComment_Widget
-from UI.extentDetect.extentWidegt import Ui_extent
+from UI.extentDetect.extentWidget import Ui_extent
 from Tool.fileTree import *
 from Controller.customDialog.FindDialogController import FindDialog
 

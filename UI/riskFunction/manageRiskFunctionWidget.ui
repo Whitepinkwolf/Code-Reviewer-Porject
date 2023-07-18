@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1320</width>
-    <height>881</height>
+    <width>1333</width>
+    <height>863</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,11 +16,17 @@
   <widget class="QTableWidget" name="AllRiskFuncTableWidget">
    <property name="geometry">
     <rect>
-     <x>50</x>
+     <x>30</x>
      <y>120</y>
-     <width>1231</width>
-     <height>691</height>
+     <width>1261</width>
+     <height>721</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QTableWidget::horizontalHeader {
+    background-color: #98b4d5;
+}
+</string>
    </property>
    <property name="gridStyle">
     <enum>Qt::SolidLine</enum>
@@ -31,6 +37,9 @@
    <column>
     <property name="text">
      <string/>
+    </property>
+    <property name="whatsThis">
+     <string>QCheckBox</string>
     </property>
    </column>
    <column>
@@ -49,56 +58,10 @@
     </property>
    </column>
   </widget>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>370</x>
-     <y>50</y>
-     <width>841</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string/>
-   </property>
-   <widget class="QGraphicsView" name="graphicsView">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPlainTextEdit" name="FindPlainTextEdit">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>0</y>
-      <width>661</width>
-      <height>41</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="FindPushButton">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>0</y>
-      <width>111</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>查找</string>
-    </property>
-   </widget>
-  </widget>
   <widget class="QPushButton" name="DeletePushButton">
    <property name="geometry">
     <rect>
-     <x>220</x>
+     <x>230</x>
      <y>50</y>
      <width>111</width>
      <height>41</height>
@@ -111,7 +74,7 @@
   <widget class="QPushButton" name="AddPushButton">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>90</x>
      <y>50</y>
      <width>111</width>
      <height>41</height>
@@ -121,7 +84,63 @@
     <string>新增</string>
    </property>
   </widget>
+  <widget class="QTextEdit" name="FindTextEdit">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>50</y>
+     <width>621</width>
+     <height>41</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="FindPushButton">
+   <property name="geometry">
+    <rect>
+     <x>1090</x>
+     <y>50</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>查找</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="picLable">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>50</y>
+     <width>41</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="ClickableLabel" name="picLable2">
+   <property name="geometry">
+    <rect>
+     <x>1020</x>
+     <y>50</y>
+     <width>41</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ClickableLabel</class>
+   <extends>QLabel</extends>
+   <header location="global">UI.ToolWidget.ClickableLabel</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -1,10 +1,12 @@
+import os
 import re
 
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import *
 
 from Data.leanCloud import UserStore, UserQuery
 from UI.loginRegister.registerWidget import Ui_Register
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, Qt
 from Data.crypto import *
 
 class MainRegistWindow(QWidget, Ui_Register):
@@ -17,6 +19,11 @@ class MainRegistWindow(QWidget, Ui_Register):
         self.initUI()
 
     def initUI(self):
+        pixmap = QPixmap(os.path.dirname(os.path.dirname(os.getcwd()))+"\\UI\\picture\\picLogin2.png")
+        pixmap = pixmap.scaled(800, 600, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.picLable.setPixmap(pixmap)
+        self.picLable.setAlignment(Qt.AlignCenter)
+
         self.UserNameReEdit.setFocus()  # 鼠标焦点
         self.UserNameReEdit.setPlaceholderText("请输入注册用户名")
         self.PasswordReEdit.setPlaceholderText("请输入密码")
@@ -24,23 +31,10 @@ class MainRegistWindow(QWidget, Ui_Register):
         self.PasswordReEdit.setEchoMode(QLineEdit.Password)  # 密码隐藏
         self.ComfirmPwEdit.setEchoMode(QLineEdit.Password)
 
-        # self.UserNameReEdit.textChanged.connect(self.emit_Username)  # 用户名
-        # self.PasswordReEdit.textChanged.connect(self.emit_Password)  # 密码
-        # self.ComfirmPwEdit.textChanged.connect(self.emit_ConPassword)  # 确认密码
         self.ComFirmReButton.clicked.connect(self.emit_Confir_Button)  # 确认按钮
         self.ReturnReButton.clicked.connect(self.emit_Cancel)  # 返回按钮
 
-    # def emit_Username(self):
-    #     print("UserName发生改变")
-    #
-    # def emit_Password(self):
-    #     print("PassWord发生改变")
-    #
-    # def emit_ConPassword(self):
-    #     print("ConPassword发生改变")
-
     def emit_Confir_Button(self):
-
         if self.UserNameReEdit.text().strip() == '':
             QMessageBox.information(self, "error", "请输入用户名!")
         elif self.PasswordReEdit.text().strip() == '':

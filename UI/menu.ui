@@ -6,17 +6,36 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1539</width>
-    <height>860</height>
+    <width>1487</width>
+    <height>869</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton {
+    font-size: 16px;
+}
+QLabel {
+    font-size: 15px; 
+}
+
+/* 设置ComboBox字体大小为16 */
+QComboBox {
+    font-size: 16px;
+}
+
+/* 设置PushButton中设定的菜单字体大小为16 */
+QPushButton::menu {
+    font-size: 16px;
+}
+</string>
+  </property>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>10</x>
      <y>0</y>
      <width>131</width>
      <height>611</height>
@@ -74,25 +93,47 @@
      <string>代码审计</string>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="graphicsView">
+   <widget class="QLabel" name="picLable">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
+      <x>1</x>
+      <y>4</y>
       <width>131</width>
       <height>121</height>
      </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>
   <widget class="QStackedWidget" name="ChangeStackedWidget">
    <property name="geometry">
     <rect>
-     <x>149</x>
+     <x>150</x>
      <y>9</y>
-     <width>1471</width>
+     <width>1321</width>
      <height>841</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    font-size: 16px;
+}
+QLabel {
+    font-size: 15px; 
+}
+
+/* 设置ComboBox字体大小为16 */
+QComboBox {
+    font-size: 16px;
+}
+
+/* 设置PushButton中设定的菜单字体大小为16 */
+QPushButton::menu {
+    font-size: 16px;
+}
+</string>
    </property>
    <property name="currentIndex">
     <number>1</number>

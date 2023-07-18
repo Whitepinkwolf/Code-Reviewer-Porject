@@ -1,6 +1,8 @@
+import os
 import sys
 
-from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtCore import QCoreApplication, Qt
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox
 
 from Controller.extentDetect.extentWidget import extent_Widget
@@ -19,11 +21,17 @@ class Menu(QWidget, Ui_menu):
 
         self.loginWin = None
 
+        self.initUI()
+        self.connectSignalsSlots()
+
+    def initUI(self):
         # 透明化
         # self.setAttribute(Qt.WA_TranslucentBackground)
         # self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint | Qt.Tool)
-
-        self.connectSignalsSlots()
+        pixmap = QPixmap(os.path.dirname(os.path.dirname(os.getcwd())) + "\\UI\\picture\\symbol.png")
+        pixmap = pixmap.scaled(150, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.picLable.setPixmap(pixmap)
+        self.picLable.setAlignment(Qt.AlignCenter)
 
     def connectSignalsSlots(self):
         self.HidePushButton.clicked.connect(self.menu_hide)
@@ -33,6 +41,8 @@ class Menu(QWidget, Ui_menu):
         self.Page2pushButton.clicked.connect(self.show_widget_2)
         self.Page3pushButton.clicked.connect(self.show_widget_3)
         self.ExitPushButton.clicked.connect(self.close_Event)
+
+        self.uifunction.widthChanged.connect(self.update_parent_width)  # 连接信号和槽函数
 
     def menu_hide(self):
         if self.HidePushButton.text() == "<":
@@ -64,18 +74,19 @@ class Menu(QWidget, Ui_menu):
         # 显示该问答框作为模态对话框
         result = self.box.exec_()
         if self.box.clickedButton() == yes1:
-            print(11)
             from Controller.loginRegister.login import MainLoginWindow
             # 创建或获取LoginWin窗口实例
-
             if self.loginWin is None:
                 self.loginWin = MainLoginWindow()
             self.loginWin.show()
-            win.close()  # 关闭 Menu
-            print(11)
+            self.close()  # 关闭 Menu
         elif self.box.clickedButton() == yes2:
             QCoreApplication.instance().quit()
 
+    def update_parent_width(self, new_width):
+        # 在这里处理父级窗口的宽度
+        self.resize(self.width()+new_width, self.height())
+        pass
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -11,9 +11,26 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_menu(object):
     def setupUi(self, menu):
         menu.setObjectName("menu")
-        menu.resize(1539, 860)
+        menu.resize(1487, 869)
+        menu.setStyleSheet("QPushButton {\n"
+"    font-size: 16px;\n"
+"}\n"
+"QLabel {\n"
+"    font-size: 15px; \n"
+"}\n"
+"\n"
+"/* 设置ComboBox字体大小为16 */\n"
+"QComboBox {\n"
+"    font-size: 16px;\n"
+"}\n"
+"\n"
+"/* 设置PushButton中设定的菜单字体大小为16 */\n"
+"QPushButton::menu {\n"
+"    font-size: 16px;\n"
+"}\n"
+"")
         self.widget = QtWidgets.QWidget(menu)
-        self.widget.setGeometry(QtCore.QRect(0, 0, 131, 611))
+        self.widget.setGeometry(QtCore.QRect(10, 0, 131, 611))
         self.widget.setObjectName("widget")
         self.ExitPushButton = QtWidgets.QPushButton(self.widget)
         self.ExitPushButton.setGeometry(QtCore.QRect(0, 550, 131, 61))
@@ -27,11 +44,29 @@ class Ui_menu(object):
         self.Page1pushButton = QtWidgets.QPushButton(self.widget)
         self.Page1pushButton.setGeometry(QtCore.QRect(0, 220, 131, 61))
         self.Page1pushButton.setObjectName("Page1pushButton")
-        self.graphicsView = QtWidgets.QGraphicsView(self.widget)
-        self.graphicsView.setGeometry(QtCore.QRect(0, 0, 131, 121))
-        self.graphicsView.setObjectName("graphicsView")
+        self.picLable = QtWidgets.QLabel(self.widget)
+        self.picLable.setGeometry(QtCore.QRect(1, 4, 131, 121))
+        self.picLable.setText("")
+        self.picLable.setObjectName("picLable")
         self.ChangeStackedWidget = QtWidgets.QStackedWidget(menu)
-        self.ChangeStackedWidget.setGeometry(QtCore.QRect(149, 9, 1471, 841))
+        self.ChangeStackedWidget.setGeometry(QtCore.QRect(150, 9, 1321, 841))
+        self.ChangeStackedWidget.setStyleSheet("QPushButton {\n"
+"    font-size: 16px;\n"
+"}\n"
+"QLabel {\n"
+"    font-size: 15px; \n"
+"}\n"
+"\n"
+"/* 设置ComboBox字体大小为16 */\n"
+"QComboBox {\n"
+"    font-size: 16px;\n"
+"}\n"
+"\n"
+"/* 设置PushButton中设定的菜单字体大小为16 */\n"
+"QPushButton::menu {\n"
+"    font-size: 16px;\n"
+"}\n"
+"")
         self.ChangeStackedWidget.setObjectName("ChangeStackedWidget")
         self.page1 = QtWidgets.QWidget()
         self.page1.setObjectName("page1")

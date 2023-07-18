@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QTextCharFormat, QColor
-from PyQt5.QtWidgets import QTextEdit
+from PyQt5.QtWidgets import QTextEdit, QHeaderView
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
@@ -36,6 +36,20 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
 
     def initUI(self):
         self.stackedWidget.setCurrentIndex(0)
+
+        # 设置行宽
+        self.ShowDefineTableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.ShowRiskFunctionTableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+        # 设置交替行的颜色
+        style = "QTableWidget{												    \
+                                        background-color: #a6c0f0;			\
+                                        alternate-background-color: white;	\
+                                             }"
+        self.ShowDefineTableView.setAlternatingRowColors(True)  # 开启交替行颜色
+        self.ShowDefineTableView.setStyleSheet(style)
+        self.ShowRiskFunctionTableView.setAlternatingRowColors(True)  # 开启交替行颜色
+        self.ShowRiskFunctionTableView.setStyleSheet(style)
 
     def connectSignalsSlots(self):
         self.FunctionPushButton.clicked.connect(self.on_pushButton1_clicked)

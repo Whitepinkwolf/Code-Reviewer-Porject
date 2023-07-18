@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PyQt5.QtGui import QStandardItemModel, QStandardItem, QPixmap
 from PyQt5.QtWidgets import QTableWidgetItem, QCheckBox, QMessageBox
 from qtpy import QtWidgets
 
@@ -16,8 +16,18 @@ class manageRiskFunction_Widget(QtWidgets.QWidget, Ui_ManageRiskFunction):
         self.addDialog = None
         self.header = None
 
+        self.InitUI()
         self.Init_RiskFunction_table()
         self.connectSignalsSlots()
+
+    def InitUI(self):
+        pixmap1 = QPixmap(os.path.dirname(os.path.dirname(os.getcwd())) + "\\UI\\picture\\search-line.png")
+        pixmap2 = QPixmap(os.path.dirname(os.path.dirname(os.getcwd())) + "\\UI\\picture\\close-circle-line.png")
+
+        self.picLable.setPixmap(pixmap1)
+        self.picLable2.setPixmap(pixmap2)
+
+
 
     def Get_RiskFunction_Data(self):
         riskFunction_dict = getRiskFunction()
@@ -35,10 +45,27 @@ class manageRiskFunction_Widget(QtWidgets.QWidget, Ui_ManageRiskFunction):
         self.set_RiskFunction_table()
 
         # 调整列宽度
-        self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
-        self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-        self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+
+        # 设置Fixed，固定列宽度
+        # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(0, QHeaderView.Fixed)
+        self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.Fixed)
+        self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.Fixed)
+
+        # 设置宽度
+        self.AllRiskFuncTableWidget.setColumnWidth(1, 200)
+        self.AllRiskFuncTableWidget.setColumnWidth(2, 200)
+
+        self.AllRiskFuncTableWidget.setAlternatingRowColors(True) # 开启交替行颜色
+        # 设置交替行的颜色
+        style = "QTableWidget{												    \
+                                background-color: white;			\
+                                alternate-background-color: #cedcf8;	\
+                                     }"
+        self.AllRiskFuncTableWidget.setStyleSheet(style)
 
     def set_RiskFunction_table(self):
         # set数据
@@ -91,10 +118,14 @@ class manageRiskFunction_Widget(QtWidgets.QWidget, Ui_ManageRiskFunction):
             else:
                 self.header.updateCheckState(i, 0)
 
+    def delete_et(self):
+        self.FindTextEdit.setText("")
+
     def connectSignalsSlots(self):
         self.AddPushButton.clicked.connect(self.add_RiskFunction)
         self.DeletePushButton.clicked.connect(self.delete_RiskFunction)
         self.FindPushButton.clicked.connect(self.query_RiskFunction)
+        self.picLable2.clicked.connect(self.delete_et)
 
     def add_RiskFunction(self):
         self.addDialog = AddRiskFunctionDialog(self)
@@ -116,7 +147,7 @@ class manageRiskFunction_Widget(QtWidgets.QWidget, Ui_ManageRiskFunction):
         self.set_RiskFunction_table()
 
     def query_RiskFunction(self):
-        find = self.FindPlainTextEdit.toPlainText()
+        find = self.FindTextEdit.toPlainText()
 
         if not find:
             # 更新当前table

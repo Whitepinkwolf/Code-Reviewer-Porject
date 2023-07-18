@@ -11,9 +11,21 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_extent(object):
     def setupUi(self, extent):
         extent.setObjectName("extent")
-        extent.resize(1546, 860)
+        extent.resize(1342, 860)
+        extent.setStyleSheet("/* 设置ComboBox字体大小为16 */\n"
+"QComboBox {\n"
+"    font-size: 16px;\n"
+"}\n"
+"\n"
+"/* 设置PushButton中设定的菜单字体大小为16 */\n"
+"QPushButton::menu {\n"
+"    font-size: 16px;\n"
+"}\n"
+"QTabWidget::tab {\n"
+"    font-size: 16px;\n"
+"}")
         self.commentTabWidget = QtWidgets.QTabWidget(extent)
-        self.commentTabWidget.setGeometry(QtCore.QRect(330, 20, 1131, 821))
+        self.commentTabWidget.setGeometry(QtCore.QRect(280, 20, 1041, 821))
         self.commentTabWidget.setTabsClosable(True)
         self.commentTabWidget.setMovable(True)
         self.commentTabWidget.setObjectName("commentTabWidget")
@@ -21,30 +33,34 @@ class Ui_extent(object):
         self.tab.setAcceptDrops(False)
         self.tab.setObjectName("tab")
         self.label_2 = QtWidgets.QLabel(self.tab)
-        self.label_2.setGeometry(QtCore.QRect(380, 230, 211, 81))
+        self.label_2.setGeometry(QtCore.QRect(348, 210, 371, 81))
+        self.label_2.setStyleSheet("QLabel {\n"
+"    font-size: 30px; \n"
+"    qproperty-alignment: AlignCenter;\n"
+"}")
         self.label_2.setObjectName("label_2")
         self.OpenPushButton = QtWidgets.QPushButton(self.tab)
-        self.OpenPushButton.setGeometry(QtCore.QRect(400, 330, 93, 28))
+        self.OpenPushButton.setGeometry(QtCore.QRect(370, 320, 311, 51))
         self.OpenPushButton.setObjectName("OpenPushButton")
         self.commentTabWidget.addTab(self.tab, "")
         self.ChooseActionPushButton = codeAuditMenuButton(extent)
-        self.ChooseActionPushButton.setGeometry(QtCore.QRect(60, 30, 181, 41))
+        self.ChooseActionPushButton.setGeometry(QtCore.QRect(20, 30, 241, 41))
         self.ChooseActionPushButton.setObjectName("ChooseActionPushButton")
         self.scrollArea = QtWidgets.QScrollArea(extent)
-        self.scrollArea.setGeometry(QtCore.QRect(20, 90, 281, 751))
+        self.scrollArea.setGeometry(QtCore.QRect(20, 90, 241, 751))
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 279, 749))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 239, 749))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.treeView = QtWidgets.QTreeView(self.scrollAreaWidgetContents)
-        self.treeView.setGeometry(QtCore.QRect(0, 40, 281, 781))
+        self.treeView.setGeometry(QtCore.QRect(0, 40, 241, 781))
         self.treeView.setObjectName("treeView")
         self.label = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label.setGeometry(QtCore.QRect(10, 10, 241, 16))
         self.label.setObjectName("label")
         self.ChooseComboBox = QtWidgets.QComboBox(self.scrollAreaWidgetContents)
-        self.ChooseComboBox.setGeometry(QtCore.QRect(130, 10, 111, 22))
+        self.ChooseComboBox.setGeometry(QtCore.QRect(120, 10, 111, 22))
         self.ChooseComboBox.setObjectName("ChooseComboBox")
         self.ChooseComboBox.addItem("")
         self.ChooseComboBox.addItem("")
@@ -69,4 +85,4 @@ class Ui_extent(object):
         self.ChooseComboBox.setItemText(2, _translate("extent", "*.h"))
         self.ChooseComboBox.setItemText(3, _translate("extent", "*.c,*.h"))
 
-from codeAuditMenuButton import codeAuditMenuButton
+from UI.ToolWidget.codeAuditMenuButton import codeAuditMenuButton

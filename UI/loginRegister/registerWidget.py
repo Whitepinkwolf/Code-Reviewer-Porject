@@ -11,52 +11,88 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Register(object):
     def setupUi(self, Register):
         Register.setObjectName("Register")
-        Register.resize(1039, 519)
+        Register.resize(1039, 514)
         self.label = QtWidgets.QLabel(Register)
-        self.label.setGeometry(QtCore.QRect(800, 50, 151, 41))
+        self.label.setGeometry(QtCore.QRect(690, 50, 291, 41))
+        self.label.setStyleSheet("QLabel {\n"
+"    font-size: 30px; \n"
+"    qproperty-alignment: AlignCenter;\n"
+"}\n"
+"")
         self.label.setObjectName("label")
         self.frame = QtWidgets.QFrame(Register)
-        self.frame.setGeometry(QtCore.QRect(670, 140, 311, 31))
+        self.frame.setGeometry(QtCore.QRect(680, 120, 311, 51))
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.UserNameReEdit = QtWidgets.QLineEdit(self.frame)
-        self.UserNameReEdit.setGeometry(QtCore.QRect(90, 0, 211, 31))
+        self.UserNameReEdit.setGeometry(QtCore.QRect(90, 10, 201, 31))
+        self.UserNameReEdit.setStyleSheet("QLineEdit{\n"
+"    font-size: 15px; \n"
+"}")
         self.UserNameReEdit.setObjectName("UserNameReEdit")
         self.label_2 = QtWidgets.QLabel(self.frame)
-        self.label_2.setGeometry(QtCore.QRect(20, 0, 71, 31))
+        self.label_2.setGeometry(QtCore.QRect(0, 10, 91, 31))
+        self.label_2.setStyleSheet("QLabel {\n"
+"    font-size: 15px; \n"
+"    qproperty-alignment: AlignCenter;\n"
+"\n"
+"}")
         self.label_2.setObjectName("label_2")
         self.frame_2 = QtWidgets.QFrame(Register)
-        self.frame_2.setGeometry(QtCore.QRect(670, 210, 311, 31))
+        self.frame_2.setGeometry(QtCore.QRect(680, 190, 311, 51))
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
         self.PasswordReEdit = QtWidgets.QLineEdit(self.frame_2)
-        self.PasswordReEdit.setGeometry(QtCore.QRect(90, 0, 211, 31))
+        self.PasswordReEdit.setGeometry(QtCore.QRect(90, 10, 201, 31))
+        self.PasswordReEdit.setStyleSheet("QLineEdit{\n"
+"    font-size: 15px; \n"
+"}")
         self.PasswordReEdit.setObjectName("PasswordReEdit")
         self.label_3 = QtWidgets.QLabel(self.frame_2)
-        self.label_3.setGeometry(QtCore.QRect(20, 0, 71, 31))
+        self.label_3.setGeometry(QtCore.QRect(0, 10, 91, 31))
+        self.label_3.setStyleSheet("QLabel {\n"
+"    font-size: 15px; \n"
+"    qproperty-alignment: AlignCenter;\n"
+"\n"
+"}")
         self.label_3.setObjectName("label_3")
         self.frame_3 = QtWidgets.QFrame(Register)
-        self.frame_3.setGeometry(QtCore.QRect(670, 280, 311, 31))
+        self.frame_3.setGeometry(QtCore.QRect(680, 260, 311, 51))
         self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_3.setObjectName("frame_3")
         self.ComfirmPwEdit = QtWidgets.QLineEdit(self.frame_3)
-        self.ComfirmPwEdit.setGeometry(QtCore.QRect(90, 0, 211, 31))
+        self.ComfirmPwEdit.setGeometry(QtCore.QRect(90, 10, 201, 31))
+        self.ComfirmPwEdit.setStyleSheet("QLineEdit{\n"
+"    font-size: 15px; \n"
+"}")
         self.ComfirmPwEdit.setObjectName("ComfirmPwEdit")
         self.label_4 = QtWidgets.QLabel(self.frame_3)
-        self.label_4.setGeometry(QtCore.QRect(20, 0, 71, 31))
+        self.label_4.setGeometry(QtCore.QRect(0, 10, 91, 31))
+        self.label_4.setStyleSheet("QLabel {\n"
+"    font-size: 15px; \n"
+"    qproperty-alignment: AlignCenter;\n"
+"\n"
+"}")
         self.label_4.setObjectName("label_4")
         self.ComFirmReButton = QtWidgets.QPushButton(Register)
-        self.ComFirmReButton.setGeometry(QtCore.QRect(690, 350, 281, 41))
+        self.ComFirmReButton.setGeometry(QtCore.QRect(680, 350, 311, 41))
+        self.ComFirmReButton.setStyleSheet("QPushButton {\n"
+"    font-size: 16px;\n"
+"}")
         self.ComFirmReButton.setObjectName("ComFirmReButton")
         self.ReturnReButton = QtWidgets.QPushButton(Register)
-        self.ReturnReButton.setGeometry(QtCore.QRect(692, 420, 281, 41))
+        self.ReturnReButton.setGeometry(QtCore.QRect(682, 420, 311, 41))
+        self.ReturnReButton.setStyleSheet("QPushButton {\n"
+"    font-size: 16px;\n"
+"}")
         self.ReturnReButton.setObjectName("ReturnReButton")
-        self.graphicsView_3 = QtWidgets.QGraphicsView(Register)
-        self.graphicsView_3.setGeometry(QtCore.QRect(0, 0, 631, 521))
-        self.graphicsView_3.setObjectName("graphicsView_3")
+        self.picLable = QtWidgets.QLabel(Register)
+        self.picLable.setGeometry(QtCore.QRect(0, 0, 631, 511))
+        self.picLable.setText("")
+        self.picLable.setObjectName("picLable")
 
         self.retranslateUi(Register)
         QtCore.QMetaObject.connectSlotsByName(Register)
