@@ -4,7 +4,6 @@
 @Time：2023/7/11 13:50
 @user: 20324
 """
-import os
 import clang.cindex
 import re
 from Utils import *
@@ -58,8 +57,8 @@ class Struct:
 
 class File:
     def __init__(self, filepath):
-        self.fun_list = []
-        self.var_list = []
+        self.fun_list = []  #仅仅有用户自定的函数列表
+        self.var_list = []  #全局数据对象
         self.macro_list = []
         self.struct_list = []
         self.include_list = []
@@ -76,10 +75,12 @@ class File:
         #      "：表示匹配一个双引号。
         pattern1 = r'^\s*#include\s*<([^>]+)>'
         pattern2 = r'^\s*#include\s*"([^"]+)"'
-        lines=open_with_encodings(self.file_path)
+        lines=open_with_encodings(self.file_path,'lines')
         index = 1
-        # print(lines)
+        if not lines:
+            return
         for line in lines:
+            # print(line)
             if line.startswith('#include'):
                 matche1 = re.findall(pattern1, line)
                 matche2 = re.findall(pattern2, line)
@@ -128,7 +129,7 @@ class File:
                     self.fun_list.append(function)
 
     def judge_fun_in_fun(self, funtion_list, begin, end):
-        content=open_with_encodings(self.file_path)
+        content=open_with_encodings(self.file_path,'content')
 
         result = []
         for function_name in funtion_list:  # 遍历当前的函数列表
@@ -152,8 +153,8 @@ class File:
                     variable_name = node.spelling
                     variable_type = node.type.spelling
                     variable_line = node.extent.start.line
-                    variable = Variable(variable_name, variable_type, variable_line)
-                    self.var_list.append(variable)
+                    variable_obj = Variable(variable_name, variable_type, variable_line)
+                    self.var_list.append(variable_obj)
 
     def parse_structs(self, translation_unit):
         current_file_path = os.path.abspath(self.file_path)
@@ -207,17 +208,13 @@ class File:
         """
         translation_unit = self.get_translation()
         fun_list = []
-        content=open_with_encodings(self.file_path)
+        content=open_with_encodings(self.file_path,'content')
         for node in translation_unit.cursor.walk_preorder():
             if node.kind == clang.cindex.CursorKind.FUNCTION_DECL:  # 函数声明（注意库函数没有在本文件调用）
                 function_name = node.spelling
                 if len(function_exists_in_file(content, function_name)) != 0:  # 获取的函数出现位置list不为0
                     fun_list.append(function_name)
         return fun_list
-    def sava_to_database(self):
-        file_obj.parse_c_file()
-        db = crawler_database()
-        db.add_file(self)
 
 """
 @description: 静态函数部分
@@ -238,12 +235,16 @@ def function_exists_in_file(content, function_name):
 
 # 测试示例
 if __name__ == "__main__":
-    file_path = "D:\\project_code\\pythonproject\\CodeAuditing\\test_c\\graph.c"
+    file_path = r"D:\project_code\pythonproject\CodeAuditing\test_c\struct.h"
     file_obj = File(file_path)
     file_obj.parse_c_file()
-    # file_obj.sava_to_database() 存储到数据库操作
-    print(file_obj.get_function_name())
 
+    db = crawler_database()
+    db.clear_element()
+    db.add_file(file_obj)
+
+
+    print(file_obj.get_function_name())
     for function in file_obj.fun_list:
         print(f"___________Function:{function.name}  {function.line} {function.end_line}")
         for para_name in function.local_functions:

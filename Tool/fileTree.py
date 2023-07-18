@@ -5,14 +5,15 @@
 @user: 20324
 """
 import fnmatch
-import os
 from PyQt5 import QtWidgets
 import Tool.crawler
 from Tool.crawler import File
+from editor.database import crawler_database
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from Utils import *
+import multiprocessing
 
-
+default_folder_path=r'D:\project_code\pythonproject\CodeAuditing\test_c'
 def is_c_or_h_file(file_path):
     # 判断文件是否为C文件或头文件
     return file_path.endswith('.c') or file_path.endswith('.h')
@@ -20,6 +21,8 @@ def is_c_or_h_file(file_path):
 def File_get(file_path):
     file_obj=File(file_path)
     file_obj.parse_c_file()
+    # db=crawler_database() 数据库存储
+    # db.add_file(file_obj)
     element_list=[]
     for function in file_obj.fun_list:
         element_list.append('fun:'+function.name)
@@ -123,7 +126,7 @@ class FileTree:
 
         folder_dialog = QtWidgets.QFileDialog()
         folder_path = folder_dialog.getExistingDirectory(self.parent.treeView, "选择文件夹",
-                                                         r'D:\project_code\pythonproject\CodeAuditing\Code-Reviewer-Porject\c_test_file')
+                                                         default_folder_path)
         if not folder_path:
             return
         self.tree_model.clear()  # 清空现有的模型数据

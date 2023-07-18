@@ -23,13 +23,20 @@ def add_element(table_name, value_dict):
 
 def clear(table_name):
     """
-    @description: 清空函数
+    @description: 清空函数，如果table_name为空不需要删除
     @Time：2023/7/14 || 11:20 ||20324
     """
-    query = leancloud.Query(table_name)
+    YourClass = leancloud.Object.extend(table_name)
+
+    # 查询 class
+    query = YourClass.query
     objects = query.find()
-    for obj in objects:
-        obj.destroy()
+    # query = leancloud.Query(table_name)
+    # objects = query.find()
+    if objects:  #不为空开始删除
+        for obj in objects:
+            obj.destroy()
+        print('delete')
 
 def query_element(table_name,value_key,value):
     query = leancloud.Query(table_name)
@@ -48,6 +55,14 @@ class crawler_database:
         self.Macro_name = "Macro"
         self.Include_name = "Include"
         self.Struct_name = "Struct"
+    def clear_element(self):
+        #清空元素
+        clear(self.fun_table_name)
+        clear(self.gobal_var_table_name)
+        clear(self.Macro_name)
+        clear(self.Include_name)
+        clear(self.Struct_name)
+
     def add_file(self,file_obj):
         # 声明 class
         self.filename=os.path.split(file_obj.file_path)[1]
@@ -117,11 +132,13 @@ class crawler_database:
             "fields":object.fields
         }
         add_element(self.Struct_name, value_dict)
-
-#
-# if __name__ == "__main__":
-#     file_path = "D:\\project_code\\pythonproject\\CodeAuditing\\test_c\\graph.c"
-#     file_obj=File(file_path)
-#     file_obj.parse_c_file()
-#     db=crawler_database()
-#     db.add_file(file_obj)
+# fun_table_name="Function"
+# gobal_var_table_name = "GobalVar"
+# Macro_name = "Macro"
+# Include_name = "Include"
+# Struct_name = "Struct"
+# clear(fun_table_name)
+# clear(gobal_var_table_name)
+# clear(Macro_name)
+# clear(Include_name)
+# clear(Struct_name)

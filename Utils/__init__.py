@@ -36,7 +36,7 @@ def get_debug_database():
         return db_path
     return
 
-def open_with_encodings(file_path):
+def open_with_encodings(file_path,target='content'):
     """
     @description: 通过不停更换编码方式实现对于不同编码文件的一起访问
     @Time：2023/7/17 || 20:47 ||20324
@@ -44,7 +44,12 @@ def open_with_encodings(file_path):
     for encoding in encoding_list:
         try:
             with open(file_path, 'r', encoding=encoding) as file:
-                content = file.read()
+                if target=='lines':
+                    content = file.readlines()
+                elif target =='content':
+                    content=file.read()
+                else:
+                    content=file.readline()
                 return content
         except UnicodeDecodeError:
             continue
