@@ -13,6 +13,8 @@ def memory_merge(file_path):
     result.append(cpp_return)
     #drmemory内存检测工具
     drmemory_obj=ToolMemoryChecker(file_path)
+    drmemory_obj.run_cl_compile()
+    drmemory_obj.run()
     errors,errors_summery=drmemory_obj.extract_memory_leaks()
     drmemory_text={'drmemory_error':errors,
                    'drmemory_summery':errors_summery}
@@ -21,18 +23,12 @@ def memory_merge(file_path):
     #clang 包括 clangcheck and clangvauation
     llvm_path0 = get_available_llvm_path(llvm_path) #获取正确的llvm（我们多个人写了多个路径，会自动寻找合适的path）
     clang_obj=ToolClang(file_path,llvm_path0)
-    clang_obj.format_code()
     clang_obj.run_static_scan_strict()
     clang_obj.run_compile()
-    clang_obj.run_static_scan()
-    clang_obj.run_exec()
-    clang_obj.run_static_scan_report()
     clang_obj.run_code_quality_evaluation()
+    #cppcheck
 
-    clang_check_return={'clangcheckertext':clang_obj.static_scan_strict_error}
-    result.append(clang_check_return)
-
-    clang_valuation_return={'clangevaluationtext': clang_obj.code_evaluation_error}
+    clang_valuation_return={'clangevaluationtext': [clang_obj.code_evaluation_error,clang_obj.code_evaluation_output]}
     result.append(clang_valuation_return)
 
     tool_flawfinder = ToolFlawfinder(file_path)
@@ -56,8 +52,9 @@ def memory_merge(file_path):
     result.append(tool_flawfinder_dict)
     return result
 if __name__=='__main__':
-    file_path = r'D:\project_code\pythonproject\CodeAuditing\test_c\test.c'
+    file_path = r'D:\project_code\pythonproject\CodeAuditing\test_c\graph.c'
     result=memory_merge(file_path)
+    print("--------------------------------------------------")
     for dict in result:
         for key,value in dict.items():
             print(key,":",value)
