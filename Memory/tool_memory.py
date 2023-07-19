@@ -53,11 +53,14 @@ class ToolMemoryChecker:
             self.compile_output = output
             if self.compile_output == '':
                 self.compile_output = self.compile_output + 'The program compiles successfully ( '+self.file_path+' )'
-            print(self.compile_output)
+
         except subprocess.CalledProcessError as e:
             error_output = e.stderr
             self.compile_error = error_output
-            print(self.error)
+        print('stdout')
+        print(self.compile_output)
+        print('stderr')
+        print(self.error)
 
     def extract_memory_leaks(self):
         text=self.output
@@ -92,6 +95,7 @@ class ToolMemoryChecker:
                 recording = False
         errors_summery=convert_to_list(errors_summery)
         return errors,errors_summery
+
 def convert_to_list(num_list):
     value = [
         'unaddressable access(es)',
@@ -108,10 +112,10 @@ def convert_to_list(num_list):
     return main_list_with_value
 if __name__ == '__main__':
     # example
-    c_file_path = r'D:\project_code\pythonproject\CodeAuditing\test_c\graph.c'
+    c_file_path = r'D:\work1\c_test_file\test\flawfinder.c'
     tool_memory = ToolMemoryChecker(c_file_path)
     # tool_memory.run_gcc_compile()
     tool_memory.run_cl_compile()
-    tool_memory.run()
-    tool_memory.extract_memory_leaks()
+    # tool_memory.run()
+    # tool_memory.extract_memory_leaks()
 

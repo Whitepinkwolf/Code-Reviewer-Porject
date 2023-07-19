@@ -64,7 +64,7 @@ class ToolFlawfinder:
 
 if __name__ == '__main__':
     # example
-    c_file_path = 'D:/work1/c_test_file/flawfinder.c'
+    c_file_path = 'D:/work1/c_test_file/graph.c'
     tool_flawfinder = ToolFlawfinder(c_file_path)
     tool_flawfinder.run()
     tool_flawfinder.get_data()

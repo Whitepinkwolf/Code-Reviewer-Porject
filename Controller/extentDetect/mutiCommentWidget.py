@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QProcess, Qt
 from PyQt5.QtGui import QTextCursor
-from PyQt5.QtWidgets import QTabBar
+from PyQt5.QtWidgets import QTabBar, QMessageBox
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
@@ -18,6 +18,7 @@ from Memory.tool_Clang import *
 from Memory.tool_flawfinder import *
 from Memory.tool_cppchecker import *
 from Utils import *
+from Controller.report.test import *
 
 
 class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
@@ -114,6 +115,7 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
         self.pb_compile.clicked.connect(lambda: self.compile_code())
         self.pb_format.clicked.connect(lambda: self.format_code())
         self.pb_run.clicked.connect(lambda: self.run_code())
+        self.pb_generate_2.clicked.connect(lambda: self.get_report(item_path))
         # 将动作与处理函数相关联
         self.pb_detect.actionA.triggered.connect(lambda: self.run_flawfinder_scan())
         self.pb_detect.actionB.triggered.connect(lambda: self.run_clang_tidy_scan())
@@ -262,6 +264,10 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
 
     def muti_get_code_text(self):
         return self.CodeEditor.toPlainText()
+
+    def get_report(self, file_path):
+        get_report(file_path)
+
 
 
 

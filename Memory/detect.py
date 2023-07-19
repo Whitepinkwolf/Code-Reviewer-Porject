@@ -9,28 +9,35 @@ def memory_merge(file_path):
     #cppcheck 工具
     cppcheck_obj=ToolCppChecker(file_path)
     cppcheck_obj.run_scan()
-    cpp_return={'cppcheckertext':cppcheck_obj.output}
-
+    cpp_return={'cppcheckeroutput':cppcheck_obj.output, 'cppcheckererror':cppcheck_obj.error}
     result.append(cpp_return)    #cpp直接运行的结果
+
     #drmemory内存检测工具
     drmemory_obj=ToolMemoryChecker(file_path)
     drmemory_obj.run_cl_compile()
-    drmemory_obj.run()
-    errors,errors_summery=drmemory_obj.extract_memory_leaks()
-    drmemory_text={'drmemory_error':errors,      #命令列表
-                   'drmemory_summery':errors_summery}  # 错误命令类型的数量计数
-
+    if drmemory_obj.compile_output == 'The program compiles successfully ( '+file_path+' )':
+        drmemory_obj.run()
+        errors, errors_summery=drmemory_obj.extract_memory_leaks()
+        drmemory_text={'drmemory_error':errors,      #命令列表
+                       'drmemory_summery':errors_summery}  # 错误命令类型的数量计数
+    else:
+        drmemory_text = {'drmemory_error': '',  # 命令列表
+                         'drmemory_summery': ''}  # 错误命令类型的数量计数
     result.append(drmemory_text)
 
     #clang 包括 clangcheck and clangvauation
     llvm_path0 = get_available_llvm_path(llvm_path) #获取正确的llvm（我们多个人写了多个路径，会自动寻找合适的path）
     clang_obj=ToolClang(file_path,llvm_path0)
+    # clang_obj.run_compile()
     clang_obj.run_static_scan_strict()
-    clang_obj.run_compile()
     clang_obj.run_code_quality_evaluation()
     #cppcheck
 
-    clang_valuation_return={'clangevaluationtext': [clang_obj.code_evaluation_error,clang_obj.code_evaluation_output]}
+    clang_check_return = {'clangcheckererror': clang_obj.static_scan_strict_error  # 报错信息
+                              , "clangcheckroutput": clang_obj.static_scan_strict_output} # 运行信息
+    result.append(clang_check_return)
+
+    clang_valuation_return={'clangevaluationoutput': clang_obj.code_evaluation_output,'clangevaluationerror': clang_obj.code_evaluation_error}
     result.append(clang_valuation_return)
 
     tool_flawfinder = ToolFlawfinder(file_path)
@@ -55,12 +62,13 @@ def memory_merge(file_path):
     return result
 
 if __name__=='__main__':
-    file_path = r'D:\project_code\pythonproject\CodeAuditing\test_c\graph.c'
+    file_path = r'D:\work1\c_test_file\test\test.c'
     result=memory_merge(file_path)
     print("--------------------------------------------------")
-    for dict in result:
-        for key,value in dict.items():
-            print(key,":",value)
+    print(result)
+    # for dict in result:
+    #     for key,value in dict.items():
+    #         print(key,":",value)
 
 
 

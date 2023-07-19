@@ -11,6 +11,8 @@ from reportlab.lib.units import cm  # 单位：cm
 
 import matplotlib.pyplot as plt
 from Memory.detect import *
+from Data.leanCloud import *
+from Memory.detect import *
 
 plt.rcParams["font.sans-serif"] = ["SimHei"]  # 设置字体
 plt.rcParams["axes.unicode_minus"] = False  # 该语句解决图像中的“-”负号的乱码问题
@@ -154,7 +156,7 @@ class Graphs:
         return img
 
     @staticmethod
-    def createReport(reportResult, riskFunction):
+    def createReport(reportResult, riskFunction ,filepath):
         content = list()
 
         # 添加标题
@@ -202,6 +204,7 @@ class Graphs:
             ('低等风险函数', low)
         ]
         content.append(Graphs.draw_table(*data))
+
         # 添加图片生成plt图标测试
         labels = '低等', '中等', '高等'
         sizes = [low, mid, high]  # define size of each part
@@ -210,8 +213,8 @@ class Graphs:
         plt.pie(sizes, explode=explode, labels=labels, colors=colorsList,
                 autopct='%1.1f%%', shadow=True, startangle=50)  # plot pie
         plt.axis('equal')  # axis type
-        plt.savefig('PieChart')
-        content.append(Graphs.draw_img('PieChart.png'))
+        plt.savefig(filepath.replace('.c', 'PieChart.png'))
+        content.append(Graphs.draw_img(filepath.replace('.c', 'PieChart.png')))
 
         content.append(Graphs.draw_title(''))
         content.append(Graphs.draw_little_title('[各风险函数详细信息]'))
@@ -222,22 +225,202 @@ class Graphs:
 
         # 添加段落
         content.append(Graphs.draw_title(''))
-        content.append(Graphs.draw_little_title('[CPPCheck工具检测]'))
-        content.append(Graphs.draw_text(reportResult[0]['cppcheckertext']))
+        content.append(Graphs.draw_little_title('[CppCheck工具检测]'))
+        content.append(Graphs.draw_title(''))
+        content.append(Graphs.draw_little_title('[CppCheck工具检测:STDOUT]'))
+        content.append(Graphs.draw_text(reportResult[0]['cppcheckeroutput']))
+        content.append(Graphs.draw_title(''))
+        content.append(Graphs.draw_little_title('[CppCheck工具检测:STDERROR]'))
+        content.append(Graphs.draw_text(reportResult[0]['cppcheckeroutput']))
 
         content.append(Graphs.draw_title(''))
         content.append(Graphs.draw_little_title('[内存泄露检测报告]'))
-        content.append(Graphs.draw_text(reportResult[1]['drmemory_error']))
-        content.append(Graphs.draw_text(reportResult[1]['drmemory_summery']))
+        content.append(Graphs.draw_title(''))
+        errors = reportResult[1]['drmemory_error']
+        # summarys = reportResult[1]['drmemory_summery']
+        content.append(Graphs.draw_title(''))
+        content.append(Graphs.draw_little_title('[内存泄露数据说明]'))
+        for error in errors:
+            content.append(Graphs.draw_text(error))
+        content.append(Graphs.draw_title(''))
+        # content.append(Graphs.draw_little_title('[内存泄露数据总结]'))
+        # for summary in summarys:
+        #     content.append(Graphs.draw_text(summary))
 
         content.append(Graphs.draw_title(''))
-        content.append(Graphs.draw_little_title('[CLang评估报告]'))
-        content.append(Graphs.draw_text(reportResult[2]['clangevaluationtext']))
+        content.append(Graphs.draw_little_title('[ClangChecker评估报告]'))
+        content.append(Graphs.draw_title(''))
+        content.append(Graphs.draw_little_title('[ClangChecker评估报告:STDOUT]'))
+        content.append(Graphs.draw_text(reportResult[2]['clangcheckroutput']))
+        content.append(Graphs.draw_little_title('[ClangChecker评估报告:STDERR]'))
+        content.append(Graphs.draw_text(reportResult[2]['clangcheckererror']))
+
+        content.append(Graphs.draw_title(''))
+        content.append(Graphs.draw_little_title('[代码质量评估报告]'))
+        content.append(Graphs.draw_title(''))
+        content.append(Graphs.draw_little_title('[代码质量评估报告:STDOUT]'))
+        content.append(Graphs.draw_text(reportResult[3]['clangevaluationoutput']))
+        content.append(Graphs.draw_little_title('[代码质量评估报告:STDERR]'))
+        content.append(Graphs.draw_text(reportResult[3]['clangevaluationerror']))
+
+        content.append(Graphs.draw_title(''))
+        content.append(Graphs.draw_little_title('[代码综合评估报告]'))
+        content.append(Graphs.draw_title(''))
+        content.append(Graphs.draw_little_title('[代码综合评估报告:STDOUT]'))
+        content.append(Graphs.draw_title(''))
+        content.append(Graphs.draw_little_title('[关于代码综合评估的详细说明]'))
+        content.append(Graphs.draw_text(reportResult[4]['copy_right']))
+        content.append(Graphs.draw_text(reportResult[4]['detect_rules']))
+        content.append(Graphs.draw_text(reportResult[4]['examing_file']))
+        content.append(Graphs.draw_title(''))
+        content.append(Graphs.draw_little_title('[代码综合扫描结果]'))
+        content.append(Graphs.draw_text(reportResult[4]['final_results']))
+        content.append(Graphs.draw_text(reportResult[4]['hits']))
+        content.append(Graphs.draw_text(reportResult[4]['detect_lines']))
+        content.append(Graphs.draw_text(reportResult[4]['detect_real_lines']))
+        content.append(Graphs.draw_text(reportResult[4]['Minimum_risk_level']))
+        content.append(Graphs.draw_title(''))
+        content.append(Graphs.draw_little_title('[代码扫描结果分析]'))
+        content.append(Graphs.draw_text(reportResult[4]['analysis_summary']))
+
+        # 添加图片生成plt图标测试 1
+        labels = 'Low Risk', 'Moderate Risk', 'Significant Risk', 'High Risk', 'Critical Risk', 'Catastrophic Risk'
+        sizes = reportResult[4]['levels']  # define size of each part
+        colorsList = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF']# define color of each part on pie
+        explode = 0, 0, 0, 0, 0, 0.1  # define which one will be exploded
+        plt.pie(sizes, explode=explode, labels=labels, colors=colorsList,
+                autopct='%1.1f%%', shadow=True, startangle=50)  # plot pie
+        plt.axis('equal')  # axis type
+        plt.title('Quantity pieChart of each risk level')
+        plt.savefig(filepath.replace('.c', 'PieChart1.png'))
+        content.append(Graphs.draw_img(filepath.replace('.c', 'PieChart1.png')))
+
+        # Clear previous plot state
+        plt.clf()
+        # 添加图片生成plt图标测试
+        labels = ['Low Risk+', 'Moderate Risk+', 'Significant Risk+', 'High Risk+', 'Critical Risk+',
+                  'Catastrophic Risk+']
+        sizes = reportResult[4]['levels'] # define size of each part
+        colorsList = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF',
+                      '#00FFFF']  # define color of each part on pie
+        plt.bar(labels, sizes, color=colorsList)
+        plt.xlabel('Risk Levels')
+        plt.ylabel('KSLOC')
+        plt.title('Quantity histogram for each risk level')
+        # Invert y-axis
+        plt.gca().invert_yaxis()
+        plt.savefig(filepath.replace('.c', 'Histogram1.png'))
+        content.append(Graphs.draw_img(filepath.replace('.c', 'Histogram1.png')))
+
+        # Clear previous plot state
+        plt.clf()
+        # 添加图片生成plt图标测试 2
+        labels = 'Low Risk+', 'Moderate Risk+', 'Significant Risk+', 'High Risk+', 'Critical Risk+', 'Catastrophic Risk+'
+        sizes = reportResult[4]['levels_plus']  # define size of each part
+        colorsList = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF',
+                      '#00FFFF']  # define color of each part on pie
+        explode = 0, 0, 0, 0, 0, 0.1  # define which one will be exploded
+        plt.pie(sizes, explode=explode, labels=labels, colors=colorsList,
+                autopct='%1.1f%%', shadow=True, startangle=50)  # plot pie
+        plt.axis('equal')  # axis type
+        plt.title('Cumulative quantity pieChart of each risk level')
+        plt.savefig(filepath.replace('.c', 'PieChart2.png'))
+        content.append(Graphs.draw_img(filepath.replace('.c', 'PieChart2.png')))
+
+        # Clear previous plot state
+        plt.clf()
+        # 添加图片生成plt图标测试
+        labels = ['Low Risk+', 'Moderate Risk+', 'Significant Risk+', 'High Risk+', 'Critical Risk+',
+                  'Catastrophic Risk+']
+        sizes = reportResult[4]['levels_plus']   # define size of each part
+        colorsList = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF',
+                      '#00FFFF']  # define color of each part on pie
+        plt.bar(labels, sizes, color=colorsList)
+        plt.xlabel('Risk Levels')
+        plt.ylabel('KSLOC')
+        plt.title('Cumulative quantity histogram for each risk level')
+        # Invert y-axis
+        plt.gca().invert_yaxis()
+        plt.savefig(filepath.replace('.c', 'Histogram2.png'))
+        content.append(Graphs.draw_img(filepath.replace('.c', 'Histogram2.png')))
+
+        # Clear previous plot state
+        plt.clf()
+        # 添加图片生成plt图标测试 3
+        labels = 'Low Risk+', 'Moderate Risk+', 'Significant Risk+', 'High Risk+', 'Critical Risk+', 'Catastrophic Risk+'
+        sizes = reportResult[4]['levels_plus_KSLOC']  # define size of each part
+        colorsList = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF',
+                      '#00FFFF']  # define color of each part on pie
+        explode = 0, 0, 0, 0, 0, 0.1  # define which one will be exploded
+        plt.pie(sizes, explode=explode, labels=labels, colors=colorsList,
+                autopct='%1.1f%%', shadow=True, startangle=50)  # plot pie
+        plt.axis('equal')  # axis type
+        plt.title('Estimated defect density piecahrt for each risk level')
+        plt.savefig(filepath.replace('.c', 'PieChart3.png'))
+        content.append(Graphs.draw_img(filepath.replace('.c', 'PieChart3.png')))
+
+        # Clear previous plot state
+        plt.clf()
+        # 添加图片生成plt图标测试
+        labels = ['Low Risk+', 'Moderate Risk+', 'Significant Risk+', 'High Risk+', 'Critical Risk+',
+                  'Catastrophic Risk+']
+        sizes = reportResult[4]['levels_plus_KSLOC']  # define size of each part
+        colorsList = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF',
+                      '#00FFFF']  # define color of each part on pie
+        plt.bar(labels, sizes, color=colorsList)
+        plt.xlabel('Risk Levels')
+        plt.ylabel('KSLOC')
+        plt.title('Estimated defect density histogram for each risk level')
+        # Invert y-axis
+        plt.gca().invert_yaxis()
+        plt.savefig(filepath.replace('.c', 'Histogram3.png'))
+        content.append(Graphs.draw_img(filepath.replace('.c', 'Histogram3.png')))
 
         # 生成pdf文件
-        doc = SimpleDocTemplate('report.pdf', pagesize=letter)
+        doc = SimpleDocTemplate(filepath.replace('.c', '.pdf'), pagesize=letter)
         doc.build(content)
 
+def get_report(file_path):
+    risk = detectRiskFunction(file_path)
+    result = memory_merge(file_path)
+    Graphs.createReport(result, risk, file_path)
+
+if __name__ == '__main__':
+    file_path = r'D:\work1\c_test_file\test\test.c'
+    risk = detectRiskFunction(file_path)
+    result = memory_merge(file_path)
+    Graphs.createReport(result, risk, file_path)
+
+    # # # 添加图片生成plt图标测试
+    # #
+    # # 添加图片生成plt图标测试 1
+    # labels = 'Low Risk', 'Moderate Risk', 'Significant Risk', 'High Risk', 'Critical Risk', 'Catastrophic Risk'
+    # sizes = ['88', '0', '0', '0', '0', '0']  # define size of each part
+    # colorsList = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF']  # define color of each part on pie
+    # explode = 0, 0, 0, 0, 0, 0.1  # define which one will be exploded
+    # plt.pie(sizes, explode=explode, labels=labels, colors=colorsList,
+    #         autopct='%1.1f%%', shadow=True, startangle=50)  # plot pie
+    # plt.axis('equal')  # axis type
+    # plt.title('Quantity pieChart of each risk level')
+    # plt.savefig('hello1.png')
+    #
+    # # Clear previous plot state
+    # plt.clf()
+    # labels = ['Low Risk+', 'Moderate Risk+', 'Significant Risk+', 'High Risk+', 'Critical Risk+',
+    #           'Catastrophic Risk+']
+    # # sizes = [1,2,3,4,5,6]  # define size of each part
+    # sizes = ['88', '0', '0', '0', '0', '0']  # define size of each part
+    #
+    # colorsList = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF',
+    #               '#00FFFF']  # define color of each part on pie
+    #
+    # plt.xlabel('Risk Levels')
+    # plt.ylabel('KSLOC')
+    # plt.title('Estimated defect density histogram for each risk level')
+    #
+    #
+    #
+    # plt.savefig('hello2.png')
 
 #     # 创建内容对应的空列表
 #     content = list()
