@@ -4,7 +4,6 @@ import leancloud
 from Tool.crawler import *
 from Data.crypto import *
 
-
 appId = 'hrwjWdJzRfN5ewluWwtvoono-gzGzoHsz'
 appKey = 'J4WDUUz6lekpuSAGiVpLvF3x'
 masterkey = "ZDm5SkP4WOnkeK7suMar3gmU"
@@ -136,6 +135,7 @@ def UserStore(username, password):
 
 '''用户信息打印'''
 
+
 def UserShow(riskFunction):
     print(f'objectId = {riskFunction.get("objectId")}, '
           f'Username = {riskFunction.get("username")}, '
@@ -157,3 +157,147 @@ def UserQuery(Login_username):
     User_list = query.find()
     for User in User_list:
         return User.get("Password")
+
+# ------------------fuzz------------------
+
+def getStringFuzz():
+    query = leancloud.Query('StringFuzzObject')
+    FuzzObject = query.find()
+    FuzzResult = []
+    for Fuzz in FuzzObject:
+        result = {'id':Fuzz.get('id'),
+                  'FuzzRandomString': Fuzz.get('FuzzRandomString')}
+        FuzzResult.append(result)
+    # print(FuzzResult)
+    return FuzzResult
+
+def getIntFuzz():
+    query = leancloud.Query('IntFuzzObject')
+    FuzzObject = query.find()
+    FuzzResult = []
+    for Fuzz in FuzzObject:
+        result = {'id':Fuzz.get('id'),
+                  'FuzzRandomInteger': Fuzz.get('FuzzRandomInteger')}
+        FuzzResult.append(result)
+    # print(FuzzResult)
+    return FuzzResult
+
+def getByteFuzz():
+    query = leancloud.Query('ByteFuzzObject')
+    FuzzObject = query.find()
+    FuzzResult = []
+    for Fuzz in FuzzObject:
+        result = {'id':Fuzz.get('id'),
+                  'FuzzRandomByte': Fuzz.get('FuzzRandomByte')}
+        FuzzResult.append(result)
+    # print(FuzzResult)
+    return FuzzResult
+
+
+def addStringFuzz(FuzzRandomString=None):
+    FuzzObject = leancloud.Object.extend('StringFuzzObject')
+
+    query = FuzzObject.query
+    query.descending('id')
+    query.limit(1)
+    latest_object = query.first()
+    if latest_object is None:
+        new_id = 1  # 初始为1
+    else:
+        latest_id = latest_object.get('id')
+        new_id = latest_id + 1  # 比当前最大id+1
+
+    FuzzObject = FuzzObject()
+    FuzzObject.set('id', new_id)
+    FuzzObject.set('FuzzRandomString', FuzzRandomString)
+    FuzzObject.save()
+    print('add')
+    return True
+
+def addIntFuzz(FuzzRandomInteger=None):
+    FuzzObject = leancloud.Object.extend('IntFuzzObject')
+
+    query = FuzzObject.query
+    query.descending('id')
+    query.limit(1)
+    latest_object = query.first()
+    if latest_object is None:
+        new_id = 1  # 初始为1
+    else:
+        latest_id = latest_object.get('id')
+        new_id = latest_id + 1  # 比当前最大id+1
+
+    FuzzObject = FuzzObject()
+    FuzzObject.set('id', new_id)
+    FuzzObject.set('FuzzRandomInteger', FuzzRandomInteger)
+    FuzzObject.save()
+    print('add')
+    return True
+
+def addByteFuzz(FuzzRandomByte=None):
+    FuzzObject = leancloud.Object.extend('ByteFuzzObject')
+
+    query = FuzzObject.query
+    query.descending('id')
+    query.limit(1)
+    latest_object = query.first()
+    if latest_object is None:
+        new_id = 1  # 初始为1
+    else:
+        latest_id = latest_object.get('id')
+        new_id = latest_id + 1  # 比当前最大id+1
+
+    FuzzObject = FuzzObject()
+    FuzzObject.set('id', 1)
+    FuzzObject.set('FuzzRandomByte', FuzzRandomByte)
+    FuzzObject.save()
+    print('add')
+    return True
+
+
+# def addStringFuzz1(FuzzRandomString=None):
+#     FuzzObject = leancloud.Object.extend('StringFuzzObject')
+#     FuzzObject = FuzzObject()
+#     FuzzObject.set('id', 1)
+#     FuzzObject.set('FuzzRandomString', FuzzRandomString)
+#     FuzzObject.save()
+#     print('add')
+#     return True
+#
+# def addIntFuzz1(FuzzRandomInteger=None):
+#     FuzzObject = leancloud.Object.extend('IntFuzzObject')
+#     FuzzObject = FuzzObject()
+#     FuzzObject.set('id', 1)
+#     FuzzObject.set('FuzzRandomInteger', FuzzRandomInteger)
+#     FuzzObject.save()
+#     print('add')
+#     return True
+#
+# def addByteFuzz1(FuzzRandomByte=None):
+#     FuzzObject = leancloud.Object.extend('ByteFuzzObject')
+#     FuzzObject = FuzzObject()
+#     FuzzObject.set('id', 1)
+#     FuzzObject.set('FuzzRandomByte', FuzzRandomByte)
+#     FuzzObject.save()
+#     print('add')
+#     return True
+
+def deleteFuzz(sign, id):
+    if sign == 1:
+        table = "String"
+    elif sign == 2:
+        table = "Int"
+    elif sign == 3:
+        table = "Byte"
+
+    object_name = table + 'FuzzObject'
+    query = leancloud.Query(object_name)
+    query.equal_to('id', id)
+    row = query.first()
+    if row:
+        row.destroy()
+        print("delete yes")
+        return True
+    else:
+        print("delete no")
+        return False

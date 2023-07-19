@@ -6,33 +6,67 @@
 """
 import random
 import string
+
+from leanCloud import *
+
+
 class Fuzz:
-    def __init__(self,len):
-        self.len=len
+    def __init__(self):
+        self.len = random.randint(0, 10)
+        self.time = 10
+
     # 生成随机字符串
     def generate_random_string(self):
         characters = string.ascii_letters + string.digits + string.punctuation
         return ''.join(random.choice(characters) for _ in range(self.len))
+
     # 生成随机整数
     def generate_random_integer(self,min_value, max_value):
         return random.randint(min_value, max_value)
-    # 生成随机字节流
+
+    # # 生成随机字节流
     def generate_random_bytes(self):
-        return bytes(random.getrandbits(8) for _ in range(self.len))
-    def get_result(self):
-        random_string = self.generate_random_string()
-        random_integer = self.generate_random_integer(1, pow(10,self.len))
-        random_bytes = self.generate_random_bytes()
-        dict={
-            "String": random_string,
-            "Integer": random_integer,
-            "Bytes": random_bytes
-        }
-        return dict
+    #     random_bytes = random.getrandbits(8) for _ in range(self.len)
+    #
+    #     hex_string = random_bytes.hex()
+    #     return hex_string
+        return
+
+    # def get_result(self):
+    #     random_string = self.generate_random_string()
+    #     random_integer = self.generate_random_integer(1, pow(10,self.len))
+    #     random_bytes = self.generate_random_bytes()
+    #     dict={
+    #         "String": random_string,
+    #         "Integer": random_integer,
+    #         "Bytes": random_bytes
+    #     }
+    #     return dict
+
+    def generate_string(self):
+        for i in range(self.time):
+            random_string = self.generate_random_string()
+            addStringFuzz(random_string)
+
+    def generate_int(self):
+        for i in range(self.time):
+            random_int = self.generate_random_integer(1, pow(10,self.len))
+            addIntFuzz(random_int)
+
+    def generate_byte(self):
+        for i in range(self.time):
+            random_byte = self.generate_random_bytes()
+            addByteFuzz(random_byte)
+
         
-# 示例用法
-obj=Fuzz(10)
-dict=obj.get_result()
-print("Random String:", dict['String'])
-print("Random Integer:", dict["Integer"])
-print("Random Bytes:", dict["Bytes"])
+# # 示例用法
+# obj=Fuzz(10)
+# dict=obj.get_result()
+# print("Random String:", dict['String'])
+# print("Random Integer:", dict["Integer"])
+# print("Random Bytes:", dict["Bytes"])
+
+# obj = Fuzz()
+# obj.generate_string()
+# obj.generate_byte()
+# obj.generate_int()

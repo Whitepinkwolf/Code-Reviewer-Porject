@@ -117,7 +117,7 @@ class codeAudit_Widget(QWidget, Ui_CodeAudit):
             self.add_CommentWidget(item_path)
             try:
                 with open(item_path, 'r', encoding=encoding_mode) as file:
-                    file_content = file.read()
+                    # file_content = file.read()
                     #  在这里可以使用文件内容进行进一步的处理
                     self.commentWidget.set_open_text(item_path)
 

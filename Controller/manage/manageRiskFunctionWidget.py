@@ -1,12 +1,13 @@
-from PyQt5.QtGui import QStandardItemModel, QStandardItem, QPixmap
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QTableWidgetItem, QCheckBox, QMessageBox
 from qtpy import QtWidgets
 
 from Controller.customDialog.AddRiskFunctionDialog import AddRiskFunctionDialog
-from UI.riskFunction.manageRiskFunctionWidget import Ui_ManageRiskFunction
+from Controller.manage.fuzz import fuzz_Widget
+from UI.manage.manageRiskFunctionWidget import Ui_ManageRiskFunction
 
 from Data.leanCloud import *
-from UI.riskFunction.CheckBoxHeader import *
+from UI.ToolWidget.CheckBoxHeader import *
 
 class manageRiskFunction_Widget(QtWidgets.QWidget, Ui_ManageRiskFunction):
     def __init__(self, parent=None):
@@ -15,6 +16,7 @@ class manageRiskFunction_Widget(QtWidgets.QWidget, Ui_ManageRiskFunction):
 
         self.addDialog = None
         self.header = None
+        self.fuzzWidget = None
 
         self.InitUI()
         self.Init_RiskFunction_table()
@@ -27,6 +29,8 @@ class manageRiskFunction_Widget(QtWidgets.QWidget, Ui_ManageRiskFunction):
         self.picLable.setPixmap(pixmap1)
         self.picLable2.setPixmap(pixmap2)
 
+        self.fuzzWidget = fuzz_Widget()
+        self.tabWidget.addTab(self.fuzzWidget, "fuzz漏洞字符库管理")
 
 
     def Get_RiskFunction_Data(self):

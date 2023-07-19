@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QFile, Qt
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import *
 from qtpy import QtCore
 
@@ -15,6 +15,9 @@ import os
 from Data.crypto import *
 
 from qt_material import apply_stylesheet
+
+import ctypes
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
 
 global UserName
 UserP = {}  # 定义一个存储密码账号的元组
@@ -33,6 +36,10 @@ class MainLoginWindow(QWidget, Ui_Login):
         self.initUi()
 
     def initUi(self):
+
+        self.setWindowIcon(QIcon(os.path.dirname(os.path.dirname(os.getcwd()))+"\\UI\\picture\\all.ico"))
+        self.setWindowTitle("NeuCodeAudit")
+
         pixmap1 = QPixmap(os.path.dirname(os.path.dirname(os.getcwd()))+"\\UI\\picture\\user-line.png")
         pixmap2 = QPixmap(os.path.dirname(os.path.dirname(os.getcwd()))+"\\UI\\picture\\key-2-line.png")
         pixmap3 = QPixmap(os.path.dirname(os.path.dirname(os.getcwd()))+"\\UI\\picture\\picLogin1.jpg")

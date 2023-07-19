@@ -184,10 +184,11 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
         # 创建数据模型
         model = QStandardItemModel()
         # 设置列名称
-        column_names = ['FunctionName', 'RiskLevel', 'Solution']
+        column_names = ['FunctionName', 'RiskLevel', 'Solution', 'Line']
         model.setHorizontalHeaderLabels(column_names)
 
-        datas = [[item[key] for key in item.keys()] for item in risk_function_data]
+        datas = [[item['FunctionName'], item['RiskLevel'], item['Solution'], ', '.join(map(str, item['Lines']))] for
+                 item in risk_function_data]
         print(datas)
 
         for row in datas:
@@ -386,7 +387,9 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
 
         # 设置tableview中的内容
         self.set_c_file_tableview(header_files, macro_definitions, variable_names, function_declarations)
+
         risk_function_data = detectRiskFunction(item_path)
+        # 添加行数检测
         new_risk_function_data = []
         for data in risk_function_data:
             risk_line = function_exists_in_file(file_content, data['FunctionName'])
@@ -398,7 +401,7 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
             }
             new_risk_function_data.append(new_data)
         print(new_risk_function_data)
-        self.set_RiskFunction_tableview(risk_function_data)
+        self.set_RiskFunction_tableview(new_risk_function_data)
 
         # 设置editor中的内容
         file_content = file_content + '\n' + '//' + item_path

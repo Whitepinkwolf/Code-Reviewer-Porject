@@ -2,15 +2,19 @@ import os
 import sys
 
 from PyQt5.QtCore import QCoreApplication, Qt
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox
 
 from Controller.extentDetect.extentWidget import extent_Widget
 from Controller.codeAudit.codeAuditWidget import codeAudit_Widget
-from Controller.riskFunction.manageRiskFunctionWidget import manageRiskFunction_Widget
+from Controller.manage.manageRiskFunctionWidget import manageRiskFunction_Widget
 
 from UI.menu import Ui_menu
 from Tool.Animation import UIFunction
+
+import ctypes
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
+
 
 class Menu(QWidget, Ui_menu):
     def __init__(self, parent=None):
@@ -28,6 +32,10 @@ class Menu(QWidget, Ui_menu):
         # 透明化
         # self.setAttribute(Qt.WA_TranslucentBackground)
         # self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint | Qt.Tool)
+
+        self.setWindowIcon(QIcon(os.path.dirname(os.path.dirname(os.getcwd())) + "\\UI\\picture\\all.ico"))
+        self.setWindowTitle("NeuCodeAudit")
+
         pixmap = QPixmap(os.path.dirname(os.path.dirname(os.getcwd())) + "\\UI\\picture\\symbol.png")
         pixmap = pixmap.scaled(150, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.picLable.setPixmap(pixmap)
