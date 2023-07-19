@@ -7,7 +7,7 @@ def run_cmd(cmd_list):
     """
     if isinstance(cmd_list,list):
         try:
-            result = subprocess.run(cmd_list, capture_output=True, text=True,encoding='utf-8')
+            result = subprocess.run(cmd_list, capture_output=True, text=True,encoding='latin-1')
             output = result.stderr
             # print(output)
             return output
@@ -16,9 +16,9 @@ def run_cmd(cmd_list):
             exit(error_output)
     else:
         try:
-            result = subprocess.run(cmd_list, capture_output=True, text=True, shell=True,encoding='utf-8')
+            result = subprocess.run(cmd_list, capture_output=True, text=True, shell=True,encoding='latin-1')
             output = result.stderr
-            print(output)
+            # print(output)
             return output
         except subprocess.CalledProcessError as e:
             error_output = e.stderr

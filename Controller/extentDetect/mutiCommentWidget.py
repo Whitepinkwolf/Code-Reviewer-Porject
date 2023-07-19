@@ -12,6 +12,9 @@ from Controller.extentDetect.subExtentDetect.ScanBuildWidget import ScanBuilder_
 
 from Data import *
 from Data.getdata import *
+import Memory
+from Memory.compile import compile_project
+from Memory.project_tool import *
 from Memory.tool_memory import ToolMemoryChecker
 from UI.extentDetect.MutiWidget import Ui_MutiWidget
 from Memory.tool_Clang import *
@@ -124,12 +127,32 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
         self.pb_detect.actionE.triggered.connect(lambda: self.run_cppchecker_scan())
         self.pb_detect.actionF.triggered.connect(lambda: self.run_code_evaluation())
         self.pb_detect.actionG.triggered.connect(lambda: self.run_memory_detect())
-
+        #项目按钮的槽函数
+        # self.actionA = self.contextMenu.addAction('项目编译')
+        # self.actionB = self.contextMenu.addAction('项目ClangChecker扫描')
+        # self.actionC = self.contextMenu.addAction('项目CppChecker扫描')
+        # self.actionD = self.contextMenu.addAction('项目内存泄漏检测')
+        self.pushButton.actionA.triggered.connect(lambda: compile_project(self.file_path))
+        self.pushButton.actionB.triggered.connect(lambda: self.project_clangcheck())
+        self.pushButton.actionC.triggered.connect(lambda: self.project_cppcheck())
+        self.pushButton.actionD.triggered.connect(lambda: self.run_memory_detect())
     # def on_pushButton1_clicked(self):
     #     self.stackedWidget.setCurrentIndex(0)
     #
     # def on_pushButton2_clicked(self):
     #     self.stackedWidget.setCurrentIndex(1)
+    def project_clangcheck(self):
+        self.add_CommentWidget("project_clangcheck")
+        output=clangcheck(self.file_path)
+        self.flawfinderWidget.te_flawfinder.setText(output)
+    def project_cppcheck(self):
+        self.add_CommentWidget("project_cppcheck")
+        output = cppcheck(self.file_path)
+        self.flawfinderWidget.te_flawfinder.setText(output)
+    def project_drmemory(self):
+        self.add_CommentWidget("project_drmemory")
+        output = drmemory(self.file_path)
+        self.flawfinderWidget.te_flawfinder.setText(output)
 
     # 新增tab
     def add_CommentWidget(self, name):

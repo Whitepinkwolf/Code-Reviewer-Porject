@@ -39,7 +39,7 @@ def drmemory(file_path):
     output=run_cmd(cmd)
     return output
 
-def run_static_scan_strict(file_path):
+def clangcheck(file_path):
     """
     @description: clang_check
     @Time：2023/7/19 || 11:47 ||20324
@@ -73,6 +73,6 @@ if __name__=='__main__':
     compile_project(main_path)  #编译整个项目
 
     output=''
-    output=run_static_scan_strict(main_path)
+    output=cppcheck(main_path)
 
     print(output)
