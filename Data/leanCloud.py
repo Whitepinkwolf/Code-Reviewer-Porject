@@ -240,15 +240,20 @@ def addByteFuzz(FuzzRandomByte=None):
     query = FuzzObject.query
     query.descending('id')
     query.limit(1)
-    latest_object = query.first()
-    if latest_object is None:
-        new_id = 1  # 初始为1
-    else:
+    try:
+        latest_object = query.first()
         latest_id = latest_object.get('id')
-        new_id = latest_id + 1  # 比当前最大id+1
+        new_id = latest_id + 1  # Increment the current maximum id
+    except leancloud.errors.LeanCloudError as e:
+        # Handle the error if no object is found (101 error code)
+        if e.code == 101:
+            new_id = 1  # Initialize to 1 if no objects found
+        else:
+            # Handle other errors as needed
+            print("Error:", e)
 
     FuzzObject = FuzzObject()
-    FuzzObject.set('id', 1)
+    FuzzObject.set('id', new_id)
     FuzzObject.set('FuzzRandomByte', FuzzRandomByte)
     FuzzObject.save()
     print('add')
@@ -283,6 +288,7 @@ def addByteFuzz(FuzzRandomByte=None):
 #     return True
 
 def deleteFuzz(sign, id):
+    table = ""
     if sign == 1:
         table = "String"
     elif sign == 2:
@@ -291,6 +297,45 @@ def deleteFuzz(sign, id):
         table = "Byte"
 
     object_name = table + 'FuzzObject'
+    query = leancloud.Query(object_name)
+    query.equal_to('id', id)
+    row = query.first()
+    if row:
+        row.destroy()
+        print("delete yes")
+        return True
+    else:
+        print("delete no")
+        return False
+
+def deleteFuzz1(id):
+    object_name = 'StringFuzzObject'
+    query = leancloud.Query(object_name)
+    query.equal_to('id', id)
+    row = query.first()
+    if row:
+        row.destroy()
+        print("delete yes")
+        return True
+    else:
+        print("delete no")
+        return False
+
+def deleteFuzz2(id):
+    object_name = 'IntFuzzObject'
+    query = leancloud.Query(object_name)
+    query.equal_to('id', id)
+    row = query.first()
+    if row:
+        row.destroy()
+        print("delete yes")
+        return True
+    else:
+        print("delete no")
+        return False
+
+def deleteFuzz3(id):
+    object_name = 'ByteFuzzObject'
     query = leancloud.Query(object_name)
     query.equal_to('id', id)
     row = query.first()

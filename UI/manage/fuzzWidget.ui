@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1327</width>
-    <height>866</height>
+    <height>847</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QTableWidget" name="StringFuzzTableWidget">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>460</x>
      <y>100</y>
-     <width>361</width>
-     <height>741</height>
+     <width>401</width>
+     <height>721</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -40,6 +40,11 @@
     </property>
     <property name="whatsThis">
      <string>QCheckBox</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>id</string>
     </property>
    </column>
    <column>
@@ -64,7 +69,7 @@
   <widget class="QPushButton" name="RunPushButton">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>240</x>
      <y>30</y>
      <width>111</width>
      <height>41</height>
@@ -77,10 +82,10 @@
   <widget class="QTableWidget" name="IntFuzzTableWidget">
    <property name="geometry">
     <rect>
-     <x>420</x>
+     <x>30</x>
      <y>100</y>
-     <width>421</width>
-     <height>741</height>
+     <width>401</width>
+     <height>721</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -101,6 +106,11 @@
     </property>
     <property name="whatsThis">
      <string>QCheckBox</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>id</string>
     </property>
    </column>
    <column>
@@ -112,10 +122,10 @@
   <widget class="QTableWidget" name="ByteFuzzTableWidget">
    <property name="geometry">
     <rect>
-     <x>870</x>
+     <x>890</x>
      <y>100</y>
-     <width>421</width>
-     <height>741</height>
+     <width>401</width>
+     <height>721</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -140,6 +150,11 @@
    </column>
    <column>
     <property name="text">
+     <string>id</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
      <string>FuzzRandomByte</string>
     </property>
    </column>
@@ -147,9 +162,9 @@
   <widget class="QComboBox" name="comboBox">
    <property name="geometry">
     <rect>
-     <x>70</x>
+     <x>90</x>
      <y>30</y>
-     <width>121</width>
+     <width>111</width>
      <height>41</height>
     </rect>
    </property>

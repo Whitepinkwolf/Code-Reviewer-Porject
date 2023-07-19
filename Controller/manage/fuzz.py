@@ -1,3 +1,5 @@
+from functools import partial
+
 from PyQt5.QtWidgets import QTableWidgetItem, QCheckBox, QMessageBox
 from qtpy import QtWidgets
 
@@ -28,7 +30,7 @@ class fuzz_Widget(QtWidgets.QWidget, Ui_Fuzz):
     def set_all_fuzz_Data(self):
         fuzz_dict1 = getStringFuzz()
         fuzz_list1 = [[item[key] for key in item.keys()] for item in fuzz_dict1]
-        self.set_Fuzz_table(self.StringFuzzTableWidget,fuzz_list1)
+        self.set_Fuzz_table(self.StringFuzzTableWidget, fuzz_list1)
 
         fuzz_dict2 = getIntFuzz()
         fuzz_list2 = [[item[key] for key in item.keys()] for item in fuzz_dict2]
@@ -43,15 +45,15 @@ class fuzz_Widget(QtWidgets.QWidget, Ui_Fuzz):
         column_indices = [0]
         self.header = CheckBoxHeader(column_indices, Qt.Horizontal)
         table.setHorizontalHeader(self.header)
-        self.header.clicked.connect(self.updateModel)
-        table.itemChanged.connect(lambda :self.modelChanged(table))
+        self.header.clicked.connect(partial(self.updateModel, table))
+        table.itemChanged.connect(lambda: self.modelChanged(table))
 
         self.set_all_fuzz_Data()
 
         # 调整列宽度
         # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
-        # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
         # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
 
         # 设置Fixed，固定列宽度
@@ -75,7 +77,7 @@ class fuzz_Widget(QtWidgets.QWidget, Ui_Fuzz):
         # set数据
         # 设置表格的行数和列数
         num_rows = len(data)
-        num_columns = 2
+        num_columns = 3
         table.setRowCount(num_rows)
         table.setColumnCount(num_columns)
 
@@ -86,12 +88,16 @@ class fuzz_Widget(QtWidgets.QWidget, Ui_Fuzz):
 
             # 将数据放入表格中的第二列
             item = QTableWidgetItem()
-            item.setText(data[i][1])
+            item.setText(str(data[i][0]))
             table.setItem(i, 1, item)
+
+            item = QTableWidgetItem()
+            item.setText(data[i][1])
+            table.setItem(i, 2, item)
 
         # 居中显示
         for i in range(num_rows):
-            for j in range(1, num_columns - 1):
+            for j in range(1, num_columns):
                 item = table.item(i, j)
                 item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
@@ -138,23 +144,31 @@ class fuzz_Widget(QtWidgets.QWidget, Ui_Fuzz):
         self.set_all_fuzz_Data()
         return
 
-    def delete_Fuzz(self, table):
-        checked_name_list = []
-
+    def delete_Fuzz(self):
         sign = 1
-        for table in (self.StringFuzzTableWidget, self.IntFuzzTableWidget, self.ByteFuzzTableWidget):
-            for row in range(table.rowCount()):
-                checkbox_item = table.cellWidget(row, 0)
-                if checkbox_item.isChecked():
-                    value_item = table.item(row, 1)
-                    value = value_item.text()
-                    checked_name_list.append(value)
-            for id in checked_name_list:
-                deleteFuzz(sign, id)
+        for table in [self.StringFuzzTableWidget, self.IntFuzzTableWidget, self.ByteFuzzTableWidget]:
+            self.delete_fortable(table, sign)
             sign += 1
 
         QMessageBox.information(self, "Success", "删除成功!")
+
         # 更新当前table
         self.set_all_fuzz_Data()
+
+    def delete_fortable(self, table, sign):
+        checked_name_list = []
+        for row in range(table.rowCount()):
+            checkbox_item = table.cellWidget(row, 0)
+            if checkbox_item.isChecked():
+                value_item = table.item(row, 1)
+                value = int(value_item.text())
+                checked_name_list.append(value)
+        for id in checked_name_list:
+            if sign == 1:
+                deleteFuzz1(id)
+            elif sign == 2:
+                deleteFuzz2(id)
+            elif sign == 3:
+                deleteFuzz3(id)
 
 
