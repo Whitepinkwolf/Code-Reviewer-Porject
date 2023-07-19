@@ -112,9 +112,9 @@
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>0</x>
      <y>10</y>
-     <width>431</width>
+     <width>501</width>
      <height>41</height>
     </rect>
    </property>
@@ -164,6 +164,13 @@
       </property>
       <property name="text">
        <string>静态检测</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="ProjectMenuButton" name="pushButton">
+      <property name="text">
+       <string>项目</string>
       </property>
      </widget>
     </item>
@@ -310,6 +317,11 @@
    <class>CmdTextEdit</class>
    <extends>QTextEdit</extends>
    <header location="global">UI.ToolWidget.CmdTextEditor</header>
+  </customwidget>
+  <customwidget>
+   <class>ProjectMenuButton</class>
+   <extends>QPushButton</extends>
+   <header>ProjectMenuButton</header>
   </customwidget>
  </customwidgets>
  <resources/>

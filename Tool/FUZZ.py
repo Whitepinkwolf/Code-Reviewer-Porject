@@ -7,7 +7,7 @@
 import random
 import string
 
-from leanCloud import *
+from Data.leanCloud import *
 
 import sys
 from io import StringIO
@@ -81,6 +81,6 @@ class Fuzz:
 # print("Random Bytes:", dict["Bytes"])
 
 # obj = Fuzz()
-# # obj.generate_string()
+# obj.generate_string()
 # obj.generate_byte()
 # obj.generate_int()
