@@ -1,5 +1,7 @@
 import sys
 
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QTabBar
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtWidgets import QApplication, QFileDialog
@@ -34,6 +36,10 @@ class codeAudit_Widget(QWidget, Ui_CodeAudit):
         # 设置第一个Tab为不可删除
         tab_bar = self.commentTabWidget.tabBar()
         tab_bar.setTabButton(0, QTabBar.RightSide, None)
+
+        pixmap = QPixmap(os.path.dirname(os.path.dirname(os.getcwd())) + "\\UI\\picture\\waitpic (2).png")
+        pixmap = pixmap.scaled(800, 800, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.picLable.setPixmap(pixmap)
 
     def tabClose(self, index):
         self.commentTabWidget.removeTab(index)

@@ -1,5 +1,7 @@
+import os
+
 from PyQt5.QtCore import QRegularExpression
-from PyQt5.QtGui import QTextCursor, QColor, QTextCharFormat
+from PyQt5.QtGui import QTextCursor, QColor, QTextCharFormat, QIcon
 from PyQt5.QtWidgets import QTextEdit
 
 from UI.Dialog.FindDialog import *
@@ -42,6 +44,9 @@ class FindDialog(QtWidgets.QDialog):
         super().closeEvent(event)
 
     def initUI(self):
+        self.setWindowTitle("查找")
+        self.setWindowIcon(QIcon(os.path.dirname(os.path.dirname(os.getcwd()))+"\\UI\\picture\\all.ico"))
+
         self.ui.ReCheckBox.setChecked(False)
         self.ui.ReCheckBox.setEnabled(True)
         self.ui.IgonreCheckBox.setChecked(True)
@@ -63,7 +68,7 @@ class FindDialog(QtWidgets.QDialog):
     def highlight_text(self, plain_text_edit, search_text):
         # cursor = plain_text_edit.textCursor()
         format = QTextCharFormat()
-        format.setBackground(QColor("yellow"))
+        format.setBackground(QColor("#92acdc"))
 
         extra_selections = []
         plain_text_edit.moveCursor(QTextCursor.Start)
@@ -105,7 +110,7 @@ class FindDialog(QtWidgets.QDialog):
 
                 # 设置行的格式
                 format = self.cursor.blockFormat()
-                format.setBackground(QColor("blue"))
+                format.setBackground(QColor("#92cedc"))
                 self.cursor.setBlockFormat(format)
                 # 将光标设置为初始位置
                 self.cursor.movePosition(QTextCursor.StartOfBlock)

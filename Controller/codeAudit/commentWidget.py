@@ -237,7 +237,7 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
             search_text = data[0]
             # cursor = code_text_new.textCursor()
             format = QTextCharFormat()
-            format.setBackground(QColor("yellow"))
+            format.setBackground(QColor("#92acdc"))
 
             extra_selections = []
             code_text_new.moveCursor(QTextCursor.Start)
@@ -288,7 +288,7 @@ class comment_Widget(QtWidgets.QWidget, Ui_comment):
                 if int(line) == line_number+1:
                     # 设置行的格式
                     format = self.cursor.blockFormat()
-                    format.setBackground(QColor("red"))
+                    format.setBackground(QColor("#9294dc"))
                     self.cursor.setBlockFormat(format)
 
                     # 将光标设置为初始位置

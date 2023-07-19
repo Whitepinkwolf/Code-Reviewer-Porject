@@ -4,14 +4,11 @@
 @Time：2023/7/17 10:05
 @user: 20324
 """
-import sys
-import re
 from PyQt5 import  QtWidgets
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from PyQt5.QtWidgets import QApplication
 
-from UI.extentDetect.drmemoryWidget import Ui_Form
-from Memory.tool_memory import ToolMemoryChecker
+from UI.extentDetect.subExtentDetect.drmemoryWidget import Ui_Form
+
 
 class Drmemory_Widget(QtWidgets.QWidget, Ui_Form):
     def __init__(self, parent=None):

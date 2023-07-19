@@ -134,13 +134,13 @@ QTabWidget::tab {
     <attribute name="title">
      <string>开始</string>
     </attribute>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="picLable">
      <property name="geometry">
       <rect>
-       <x>280</x>
-       <y>230</y>
-       <width>401</width>
-       <height>81</height>
+       <x>0</x>
+       <y>130</y>
+       <width>961</width>
+       <height>401</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -150,15 +150,15 @@ QTabWidget::tab {
 }</string>
      </property>
      <property name="text">
-      <string>马上开始代码审计！</string>
+      <string/>
      </property>
     </widget>
     <widget class="QPushButton" name="OpenPushButton">
      <property name="geometry">
       <rect>
-       <x>352</x>
-       <y>330</y>
-       <width>241</width>
+       <x>322</x>
+       <y>500</y>
+       <width>311</width>
        <height>51</height>
       </rect>
      </property>

@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QRegularExpression
-from PyQt5.QtGui import QTextCursor, QColor, QTextCharFormat
+from PyQt5.QtGui import QTextCursor, QColor, QTextCharFormat, QIcon
 from PyQt5.QtWidgets import QTextEdit, QMessageBox
 
 from UI.Dialog.AddDialog import *
@@ -15,6 +15,9 @@ class AddRiskFunctionDialog(QtWidgets.QDialog):
         self.ui = Ui_AddDialog()
         self.ui.setupUi(self)
 
+        self.setWindowTitle("添加风险函数")
+        self.setWindowIcon(QIcon(os.path.dirname(os.path.dirname(os.getcwd()))+"\\UI\\picture\\all.ico"))
+
         self.connectSignalsSlots()
 
     def connectSignalsSlots(self):
@@ -26,7 +29,7 @@ class AddRiskFunctionDialog(QtWidgets.QDialog):
         riskLevel = self.ui.RiskLevelText.toPlainText()
         solution = self.ui.SolutionText.toPlainText()
         if addRiskFunction(functionName, riskLevel, solution):
-            QMessageBox.information(self, "Success", "添加成功!")
+            QMessageBox.information(self.parent, "成功", "添加成功!")
             self.ui.FunctionNameText.setText("")
             self.ui.RiskLevelText.setText("")
             self.ui.SolutionText.setText("")

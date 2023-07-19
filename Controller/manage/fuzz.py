@@ -50,20 +50,12 @@ class fuzz_Widget(QtWidgets.QWidget, Ui_Fuzz):
 
         self.set_all_fuzz_Data()
 
+        # 隐藏垂直表头，即行号
+        table.verticalHeader().setVisible(False)
+
         # 调整列宽度
-        # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-        # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
-
-        # 设置Fixed，固定列宽度
-        # # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(0, QHeaderView.Fixed)
-        # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.Fixed)
-        # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.Fixed)
-
-        # 设置宽度
-        # self.AllRiskFuncTableWidget.setColumnWidth(0, 50)
-        # self.AllRiskFuncTableWidget.setColumnWidth(2, 200)
 
         table.setAlternatingRowColors(True) # 开启交替行颜色
         # 设置交替行的颜色

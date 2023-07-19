@@ -1,7 +1,7 @@
 import os
 import re
 
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import *
 
 from Data.leanCloud import UserStore, UserQuery
@@ -19,6 +19,9 @@ class MainRegistWindow(QWidget, Ui_Register):
         self.initUI()
 
     def initUI(self):
+        self.setWindowIcon(QIcon(os.path.dirname(os.path.dirname(os.getcwd())) + "\\UI\\picture\\all.ico"))
+        self.setWindowTitle("NeuCodeAudit")
+
         pixmap = QPixmap(os.path.dirname(os.path.dirname(os.getcwd()))+"\\UI\\picture\\picLogin2.png")
         pixmap = pixmap.scaled(800, 600, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.picLable.setPixmap(pixmap)

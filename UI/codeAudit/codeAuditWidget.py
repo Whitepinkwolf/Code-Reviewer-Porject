@@ -57,15 +57,16 @@ class Ui_CodeAudit(object):
         self.tab = QtWidgets.QWidget()
         self.tab.setAcceptDrops(False)
         self.tab.setObjectName("tab")
-        self.label_2 = QtWidgets.QLabel(self.tab)
-        self.label_2.setGeometry(QtCore.QRect(280, 230, 401, 81))
-        self.label_2.setStyleSheet("QLabel {\n"
+        self.picLable = QtWidgets.QLabel(self.tab)
+        self.picLable.setGeometry(QtCore.QRect(0, 130, 961, 401))
+        self.picLable.setStyleSheet("QLabel {\n"
 "    font-size: 30px; \n"
 "    qproperty-alignment: AlignCenter;\n"
 "}")
-        self.label_2.setObjectName("label_2")
+        self.picLable.setText("")
+        self.picLable.setObjectName("picLable")
         self.OpenPushButton = QtWidgets.QPushButton(self.tab)
-        self.OpenPushButton.setGeometry(QtCore.QRect(352, 330, 241, 51))
+        self.OpenPushButton.setGeometry(QtCore.QRect(322, 500, 311, 51))
         self.OpenPushButton.setObjectName("OpenPushButton")
         self.commentTabWidget.addTab(self.tab, "")
         self.ChooseActionPushButton = codeAuditMenuButton(CodeAudit)
@@ -84,7 +85,6 @@ class Ui_CodeAudit(object):
         self.ChooseComboBox.setItemText(1, _translate("CodeAudit", "*.c"))
         self.ChooseComboBox.setItemText(2, _translate("CodeAudit", "*.h"))
         self.ChooseComboBox.setItemText(3, _translate("CodeAudit", "*.c,*.h"))
-        self.label_2.setText(_translate("CodeAudit", "马上开始代码审计！"))
         self.OpenPushButton.setText(_translate("CodeAudit", "打开文件夹"))
         self.commentTabWidget.setTabText(self.commentTabWidget.indexOf(self.tab), _translate("CodeAudit", "开始"))
         self.ChooseActionPushButton.setText(_translate("CodeAudit", "选择"))

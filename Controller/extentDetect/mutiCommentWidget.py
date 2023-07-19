@@ -1,13 +1,13 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QProcess, Qt
-from PyQt5.QtGui import QTextCursor
-from PyQt5.QtWidgets import QTabBar, QMessageBox
+from PyQt5.QtGui import QTextCursor, QPixmap
+from PyQt5.QtWidgets import QTabBar
 from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 
 from Controller.extentDetect.subExtentDetect.FlawfinderWidget import FlawFinder_Widget
-from Controller.extentDetect.drmemoryWidget import Drmemory_Widget
+from Controller.extentDetect.subExtentDetect.drmemoryWidget import Drmemory_Widget
 from Controller.extentDetect.subExtentDetect.ScanBuildWidget import ScanBuilder_Widget
 
 from Data import *
@@ -49,6 +49,10 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
         # 设置第一个Tab为不可删除
         tab_bar = self.detectWidget.tabBar()
         tab_bar.setTabButton(0, QTabBar.RightSide, None)
+
+        pixmap = QPixmap(os.path.dirname(os.path.dirname(os.getcwd())) + "\\UI\\picture\\waitpic (3).png")
+        pixmap = pixmap.scaled(800, 600, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.picLable.setPixmap(pixmap)
 
     def tabClose(self, index):
         self.detectWidget.removeTab(index)

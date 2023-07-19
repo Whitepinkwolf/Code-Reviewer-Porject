@@ -104,7 +104,7 @@ class MainLoginWindow(QWidget, Ui_Login):
         # self.sql = Oper_Mysql()
         # self.sql.ZSGC_Mysql()
         self.re.show()
-        LoginWin.close()
+        self.close()
 
     # 登录
     def login_button(self):
@@ -122,13 +122,12 @@ class MainLoginWindow(QWidget, Ui_Login):
                 return False
             else:
                 if checkPasswd(Login_Passwd, query_Passwd):  # 登陆成功
-                    mess = QMessageBox()
-                    mess.setWindowTitle("Success")
+                    mess = QMessageBox(self)
+                    mess.setWindowTitle("成功")
                     mess.setText("登录成功！")
                     mess.setStandardButtons(QMessageBox.Ok)
                     mess.button(QMessageBox.Ok).animateClick(1000)  # 弹框定时关闭
                     mess.exec_()
-                    print("登录成功")
                     self.mainWin.show()
                     self.close()  # 关闭 LoginWin
                     return True

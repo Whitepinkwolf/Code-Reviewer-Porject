@@ -32,15 +32,16 @@ class Ui_extent(object):
         self.tab = QtWidgets.QWidget()
         self.tab.setAcceptDrops(False)
         self.tab.setObjectName("tab")
-        self.label_2 = QtWidgets.QLabel(self.tab)
-        self.label_2.setGeometry(QtCore.QRect(348, 210, 371, 81))
-        self.label_2.setStyleSheet("QLabel {\n"
+        self.picLable = QtWidgets.QLabel(self.tab)
+        self.picLable.setGeometry(QtCore.QRect(38, 110, 961, 401))
+        self.picLable.setStyleSheet("QLabel {\n"
 "    font-size: 30px; \n"
 "    qproperty-alignment: AlignCenter;\n"
 "}")
-        self.label_2.setObjectName("label_2")
+        self.picLable.setText("")
+        self.picLable.setObjectName("picLable")
         self.OpenPushButton = QtWidgets.QPushButton(self.tab)
-        self.OpenPushButton.setGeometry(QtCore.QRect(370, 320, 311, 51))
+        self.OpenPushButton.setGeometry(QtCore.QRect(360, 480, 311, 51))
         self.OpenPushButton.setObjectName("OpenPushButton")
         self.commentTabWidget.addTab(self.tab, "")
         self.ChooseActionPushButton = codeAuditMenuButton(extent)
@@ -75,7 +76,6 @@ class Ui_extent(object):
     def retranslateUi(self, extent):
         _translate = QtCore.QCoreApplication.translate
         extent.setWindowTitle(_translate("extent", "Form"))
-        self.label_2.setText(_translate("extent", "马上开始使用扩展程序！"))
         self.OpenPushButton.setText(_translate("extent", "打开文件夹"))
         self.commentTabWidget.setTabText(self.commentTabWidget.indexOf(self.tab), _translate("extent", "开始"))
         self.ChooseActionPushButton.setText(_translate("extent", "选择"))

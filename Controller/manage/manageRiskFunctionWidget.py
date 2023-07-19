@@ -31,6 +31,9 @@ class manageRiskFunction_Widget(QtWidgets.QWidget, Ui_ManageRiskFunction):
 
         self.fuzzWidget = fuzz_Widget()
         self.tabWidget.addTab(self.fuzzWidget, "fuzz漏洞字符库管理")
+        # 修改选项卡宽度
+        tabBar = self.tabWidget.tabBar()
+        tabBar.setMinimumWidth(1300)
 
 
     def Get_RiskFunction_Data(self):
@@ -49,13 +52,9 @@ class manageRiskFunction_Widget(QtWidgets.QWidget, Ui_ManageRiskFunction):
         self.set_RiskFunction_table()
 
         # 调整列宽度
-        # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
-        # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-        # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
 
         # 设置Fixed，固定列宽度
-        # self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(0, QHeaderView.Fixed)
         self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.Fixed)
         self.AllRiskFuncTableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.Fixed)
 

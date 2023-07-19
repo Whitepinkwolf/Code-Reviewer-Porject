@@ -41,6 +41,12 @@ class Menu(QWidget, Ui_menu):
         self.picLable.setPixmap(pixmap)
         self.picLable.setAlignment(Qt.AlignCenter)
 
+        pixmap2 = QPixmap(os.path.dirname(os.path.dirname(os.getcwd())) + "\\UI\\picture\\waitpic (1).png")
+        pixmap2 = pixmap2.scaled(1200, 1000, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.picLable2.setPixmap(pixmap2)
+        self.picLable2.setAlignment(Qt.AlignCenter)
+
+
     def connectSignalsSlots(self):
         self.HidePushButton.clicked.connect(self.menu_hide)
 
