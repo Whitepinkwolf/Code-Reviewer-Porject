@@ -136,7 +136,7 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
         # self.actionB = self.contextMenu.addAction('项目ClangChecker扫描')
         # self.actionC = self.contextMenu.addAction('项目CppChecker扫描')
         # self.actionD = self.contextMenu.addAction('项目内存泄漏检测')
-        self.pushButton.actionA.triggered.connect(lambda: compile_project(self.file_path))
+        self.pushButton.actionA.triggered.connect(lambda: self.compile_project2())
         self.pushButton.actionB.triggered.connect(lambda: self.project_clangcheck())
         self.pushButton.actionC.triggered.connect(lambda: self.project_cppcheck())
         self.pushButton.actionD.triggered.connect(lambda: self.run_memory_detect())
@@ -145,6 +145,9 @@ class mutiComment_Widget(QtWidgets.QWidget, Ui_MutiWidget):
     #
     # def on_pushButton2_clicked(self):
     #     self.stackedWidget.setCurrentIndex(1)
+    def compile_project2(self):
+        output=compile_project(self.file_path)
+        self.te_log.setText(output)
     def project_clangcheck(self):
         self.add_CommentWidget("project_clangcheck")
         output=clangcheck(self.file_path)

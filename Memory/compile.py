@@ -17,7 +17,8 @@ def compile_project(main_path, inc_path="", src_path=""):
     cmd = f'clang -g -o {exe_path} {main_path} {src_path}/*.c -I{inc_path}'
     # cmd_list = cmd.split(' ')
     try:
-       run_cmd(cmd)
+       output=run_cmd(cmd)
+       return output
     except subprocess.CalledProcessError as e:
         print(f"GCC compile error: {e.stderr}")
 
