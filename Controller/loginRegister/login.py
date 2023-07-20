@@ -108,7 +108,6 @@ class MainLoginWindow(QWidget, Ui_Login):
 
     # 登录
     def login_button(self):
-
         Login_UserName = self.UserNameEdit.text()
         Login_Passwd = self.PassWordEdit.text()
 

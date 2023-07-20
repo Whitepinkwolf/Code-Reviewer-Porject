@@ -30,7 +30,7 @@ class Ui_AddDialog(object):
         self.label_3 = QtWidgets.QLabel(AddDialog)
         self.label_3.setGeometry(QtCore.QRect(30, 210, 141, 31))
         self.label_3.setObjectName("label_3")
-        self.SolutionText = QtWidgets.QPlainTextEdit(AddDialog)
+        self.SolutionText = QtWidgets.QTextEdit(AddDialog)
         self.SolutionText.setGeometry(QtCore.QRect(30, 240, 521, 101))
         self.SolutionText.setObjectName("SolutionText")
         self.CancelPushButton = QtWidgets.QPushButton(AddDialog)

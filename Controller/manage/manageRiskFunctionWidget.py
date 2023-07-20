@@ -41,6 +41,7 @@ class manageRiskFunction_Widget(QtWidgets.QWidget, Ui_ManageRiskFunction):
         riskFunction_list = [[item[key] for key in item.keys()] for item in riskFunction_dict]
         return riskFunction_list
 
+    # 表格初始化
     def Init_RiskFunction_table(self):
         # 首列复选框
         column_indices = [0]

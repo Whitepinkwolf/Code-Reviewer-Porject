@@ -1,11 +1,13 @@
 #pragma once
 typedef struct edge {
-	/*±ß½çµã¶¨Òå*/
-	int loaction; //¸Ã½ÚµãÎ»ÓÚÊý×éÖÐµÄÎ»ÖÃ
+	/*ï¿½ß½ï¿½ã¶¨ï¿½ï¿½*/
+	int loaction; //ï¿½Ã½Úµï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Î»ï¿½ï¿½
 	int weight;
 	struct edge* next;
 }edge;
 typedef struct ver {
-	int data; //¶¥µã´æ´¢µÄÐÅÏ¢
-	edge* next;//µÚÒ»¸ö±ß½çµã
+	int data; //ï¿½ï¿½ï¿½ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½Ï¢
+	edge* next;//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ß½ï¿½ï¿½
 }ver;
+// haha
+//E:/codeRe/Code-Reviewer-Porject/c_test_file/gragh.h 

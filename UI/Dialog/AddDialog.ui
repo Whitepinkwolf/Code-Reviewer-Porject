@@ -90,7 +90,7 @@
     <string>Solution</string>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="SolutionText">
+  <widget class="QTextEdit" name="SolutionText">
    <property name="geometry">
     <rect>
      <x>30</x>

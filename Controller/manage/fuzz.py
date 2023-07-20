@@ -89,7 +89,7 @@ class fuzz_Widget(QtWidgets.QWidget, Ui_Fuzz):
 
         # 居中显示
         for i in range(num_rows):
-            for j in range(1, num_columns):
+            for j in range(1, 3):
                 item = table.item(i, j)
                 item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
@@ -141,7 +141,6 @@ class fuzz_Widget(QtWidgets.QWidget, Ui_Fuzz):
         for table in [self.StringFuzzTableWidget, self.IntFuzzTableWidget, self.ByteFuzzTableWidget]:
             self.delete_fortable(table, sign)
             sign += 1
-
         QMessageBox.information(self, "Success", "删除成功!")
 
         # 更新当前table

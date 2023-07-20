@@ -45,8 +45,6 @@ def riskFunctionShow(riskFunction):
 
 
 '''风险函数查询'''
-
-
 def riskFunctionQuery(FunctionName):
     RiskFunctionObject = leancloud.Object.extend('RiskFunctionObject')
     query = RiskFunctionObject.query
@@ -122,8 +120,6 @@ def detectRiskFunction(filePath):
 # print(detectRiskFunction(filePath))
 
 '''用户信息存储'''
-
-
 def UserStore(username, password):
     UserObject = leancloud.Object.extend('UserObject')
     userObject = UserObject()
@@ -134,8 +130,6 @@ def UserStore(username, password):
 
 
 '''用户信息打印'''
-
-
 def UserShow(riskFunction):
     print(f'objectId = {riskFunction.get("objectId")}, '
           f'Username = {riskFunction.get("username")}, '
@@ -143,8 +137,6 @@ def UserShow(riskFunction):
 
 
 '''用户信息匹配'''
-
-
 def UserQuery(Login_username):
     '''
     基础查询: 创建Object.query查询对象，用equal_to设置查询条件，用find进行查询

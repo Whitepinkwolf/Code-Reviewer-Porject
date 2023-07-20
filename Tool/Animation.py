@@ -2,9 +2,6 @@ from PyQt5.QtCore import QPropertyAnimation, QRect, QEasingCurve
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
-global temp
-temp = 0
-
 
 class UIFunction(QWidget):
     widthChanged = pyqtSignal(int)  # 创建一个信号
@@ -38,9 +35,6 @@ class UIFunction(QWidget):
                                             stackedWidget.geometry().width(),
                                             stackedWidget.geometry().height()))
 
-            # current_width = self.parent().width()
-            # new_width = current_width - 131
-            # self.parent().resize(new_width, self.parent().height())
             self.widthChanged.emit(-131)  # 发送信号
 
         elif self.sign == "<":
@@ -54,9 +48,7 @@ class UIFunction(QWidget):
             animation.setEndValue(QRect(TarGet.geometry().x(), TarGet.geometry().y(),
                                             131,
                                             941))
-            # animation.setEndValue(QRect(TarGet.geometry().x(), TarGet.geometry().y(),
-            #                             TarGet.geometry().width(),
-            #                             TarGet.geometry().height()))
+
             animation.setDuration(200)
             animation.start()
 
@@ -66,7 +58,4 @@ class UIFunction(QWidget):
                                             stackedWidget.geometry().width(),
                                             stackedWidget.geometry().height()))
 
-            # current_width = self.parent().width()
-            # new_width = current_width + 131
-            # self.parent().resize(new_width, self.parent().height())
             self.widthChanged.emit(131)  # 发送信号
