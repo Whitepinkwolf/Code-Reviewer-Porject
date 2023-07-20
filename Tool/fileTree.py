@@ -150,16 +150,18 @@ class FileTree:
                 parent_item.appendRow(folder_item)
                 self.add_folder_to_node(file_path, folder_item)
 
-            elif os.path.isfile(file_path) and is_c_or_h_file(file_path):
+            elif os.path.isfile(file_path): #and is_c_or_h_file(file_path):
                 file_item = QStandardItem(file_name)
                 parent_item.appendRow(file_item)
                 self.add_element_to_node(file_path, file_item)
 
     def add_element_to_node(self, file_path, parent_item):
-        elements = File_get(file_path)
-        for element in elements:
-            function_item = QStandardItem(element)
-            parent_item.appendRow(function_item)
+        if is_c_or_h_file(file_path):   #只有c文件才会进行爬取操作
+            elements = File_get(file_path)
+            for element in elements:
+                function_item = QStandardItem(element)
+                parent_item.appendRow(function_item)
+
 
     def display_filtered_files(self):
         folder_path=self.folder_path
